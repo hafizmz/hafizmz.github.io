@@ -1225,7 +1225,7 @@ let prev="home",curRoute=null,fromHash=false;
 function go(v,title){const h=v==="route"?"route-"+curRoute:v;if(!fromHash&&location.hash.slice(1)!==h){try{location.hash=h}catch(_){}}const cur=document.querySelector(".view.on")?.id.slice(2);if(v==="route"&&cur!=="route")prev=cur;
  document.querySelectorAll(".view").forEach(x=>x.classList.toggle("on",x.id==="v-"+v));
  document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v||(v==="route"&&b.dataset.v==="home")));
- $("#back").style.display=v==="route"?"block":"none";$("#homeBtn").style.display=v==="home"?"none":"block";$("#title").textContent=title||"Penang Hill Trail Guide";if(v!=="library")window.scrollTo(0,0)}
+ $("#back").style.display=v==="route"?"block":"none";$("#homeBtn").style.display=v==="home"?"none":"block";$("#title").textContent=v==="route"?"":(title||"Penang Hill Trail Guide");if(v!=="library")window.scrollTo(0,0)}
 $("#nav").onclick=e=>{const b=e.target.closest("button");if(!b)return;go(b.dataset.v);if(b.dataset.v==="map"&&!selTrail&&$("#m-trail").style.display!=="none")requestAnimationFrame(startView)};
 $("#homeBtn").onclick=()=>go("home");
 $("#back").onclick=()=>{if(history.length>1)history.back();else go(prev)};
