@@ -1069,7 +1069,7 @@ function renderHeroMap(){const g=$("#heroCard");if(!g||typeof TRAILS2==="undefin
   <rect x="${CX0}" y="${CY0}" width="${CX1-CX0}" height="${CY1-CY0}" rx="7" fill="#fbf6ea"/>
   <rect x="${CX0}" y="${CY0}" width="${CX1-CX0}" height="${CY1-CY0}" rx="7" fill="#e6eedb" opacity=".6"/>
   <text x="${CX0+8}" y="${CY0+13}" font-size="7.2" font-weight="700" letter-spacing=".6" fill="#1f3d2b" font-family="Inter,sans-serif">TRAIL MAP · 10 ROUTES</text>
-  <circle cx="${CX0+10}" cy="${CY1-9}" r="2.6" fill="#2f7de1" stroke="#fff" stroke-width=".8"/><text x="${CX0+15}" y="${CY1-6.6}" font-size="6.2" font-weight="600" fill="#1f3d2b" font-family="Inter,sans-serif">Live train</text>
+  <circle cx="${CX0+10}" cy="${CY1-9}" r="2.6" fill="#2f7de1" stroke="#fff" stroke-width=".8"/><text x="${CX0+15}" y="${CY1-6.6}" font-size="6.2" font-weight="600" fill="#1f3d2b" font-family="Inter,sans-serif">Live tracking</text>
   <text x="${CX1-8}" y="${CY0+13}" font-size="7" font-weight="700" fill="#1f3d2b" text-anchor="end" font-family="Inter,sans-serif">▲N</text>
   <clipPath id="cardClip"><rect x="${CX0}" y="${CY0+17}" width="${CX1-CX0}" height="${CY1-CY0-17}" rx="7"/></clipPath>
   <g clip-path="url(#cardClip)"><g transform="translate(${tx.toFixed(2)},${ty.toFixed(2)}) scale(${k.toFixed(5)})">${roads}${pk}
@@ -1080,7 +1080,6 @@ function renderHeroMap(){const g=$("#heroCard");if(!g||typeof TRAILS2==="undefin
    <g><circle r="${(9*inv).toFixed(1)}" fill="#2f7de1" opacity=".25"><animate attributeName="r" dur="1.6s" repeatCount="indefinite" values="${(3*inv).toFixed(1)};${(11*inv).toFixed(1)}"/><animate attributeName="opacity" dur="1.6s" repeatCount="indefinite" values=".45;0"/></circle>
     <circle r="${(3.4*inv).toFixed(1)}" fill="#2f7de1" stroke="#fff" stroke-width="1.4" ${ns}/>
     <animateMotion dur="16s" repeatCount="indefinite" keyPoints="0;1;1;0;0" keyTimes="0;.42;.5;.92;1" calcMode="linear"><mpath href="#gpsRail"/></animateMotion></g>
-   <circle class="us" cx="-62" cy="-406" r="${(3*inv).toFixed(1)}" fill="#e8913a" stroke="#fff" stroke-width="1.2" ${ns}/>
 
   </g></g></g></svg>`;
  g.onclick=()=>{go("map");setMapMode("trail")}}
@@ -1118,7 +1117,7 @@ document.querySelector(".feat").onclick=e=>{const d=e.target.closest("[data-go]"
  if(k==="map"||k==="near"||k==="rec")document.querySelector(`.qa button[data-qa="${k}"]`).click();
  else if(k==="prog")$("#progCard").scrollIntoView({behavior:"smooth",block:"center"});
  else if(k==="lang")$("#langBtn").click();else if(k==="about")go("about")};
-Object.assign(MS_HOME,{"Home":"Utama","🏠 Home":"🏠 Utama","‹ Back":"‹ Kembali","Live train":"Kereta api langsung","UNESCO Biosphere Reserve · 130-million-year-old rainforest":"Rizab Biosfera UNESCO · hutan hujan berusia 130 juta tahun",
+Object.assign(MS_HOME,{"Home":"Utama","🏠 Home":"🏠 Utama","‹ Back":"‹ Kembali","Live tracking":"Penjejakan langsung","UNESCO Biosphere Reserve · 130-million-year-old rainforest":"Rizab Biosfera UNESCO · hutan hujan berusia 130 juta tahun",
  "🌏 UNESCO Biosphere Reserve · since #":"🌏 Rizab Biosfera UNESCO · sejak #","A living rainforest, from hilltop to sea":"Hutan hujan yang hidup, dari puncak ke laut",
  "On # September #, UNESCO named Penang Hill Malaysia's third Biosphere Reserve, after Tasik Chini and the Crocker Range. It protects an ancient rainforest while people continue to live, work and play around it.":"Pada # September #, UNESCO mengiktiraf Bukit Bendera sebagai Rizab Biosfera ketiga Malaysia, selepas Tasik Chini dan Banjaran Crocker. Ia melindungi hutan hujan purba sambil masyarakat terus hidup, bekerja dan beriadah di sekitarnya.",
  "about ¼ of Penang Island":"kira-kira ¼ Pulau Pinang","# M yrs":"# juta thn","age of the rainforest":"usia hutan hujan","species found in one survey":"spesies dalam satu kajian",
