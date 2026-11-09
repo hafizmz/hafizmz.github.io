@@ -192,7 +192,7 @@ path.sel{stroke-dasharray:14 8;animation:march 1s linear infinite}
 .vtick{color:var(--nature);font-weight:700;margin-left:4px}
 #langBtn{border:1px solid rgba(246,241,230,.5);background:none;color:var(--cream);border-radius:8px;padding:4px 8px;font:700 11.5px Inter,sans-serif;cursor:pointer;margin-left:6px}
 .hero2{position:relative;height:clamp(250px,55vw,440px);overflow:hidden;background:#2c5a3c}
-.hero2 .scene{position:absolute;inset:0;width:100%;height:100%}
+.hero2 .scene{position:absolute;inset:0;width:100%;height:100%}.hero2txt{pointer-events:none}
 .hero2txt{position:absolute;left:0;right:0;bottom:0;padding:0 18px 18px;color:var(--cream)}
 .hero2txt .greet{font:600 12px Inter,sans-serif;letter-spacing:.6px;text-transform:uppercase;opacity:.85}
 .hero2txt h2{color:var(--cream);font-size:27px;line-height:1.15;margin:4px 0 6px;text-shadow:0 2px 12px rgba(0,0,0,.25)}
@@ -275,8 +275,8 @@ path.sel{stroke-dasharray:14 8;animation:march 1s linear infinite}
       <g fill="#24503a">
         <circle cx="30" cy="196" r="9"/><circle cx="44" cy="192" r="11"/><circle cx="350" cy="118" r="8"/><circle cx="364" cy="114" r="10"/><circle cx="380" cy="116" r="7"/><circle cx="210" cy="150" r="7"/><circle cx="222" cy="146" r="9"/>
       </g>
-      <g id="heroMap"></g>
       <rect width="400" height="230" fill="url(#fade)"/>
+      <g id="heroMap"></g>
     </svg>
     <div class="hero2txt">
       <div class="greet" id="greet">Good morning, hiker</div>
@@ -1013,23 +1013,31 @@ function renderRouteCards(){$("#routeCards").innerHTML=ROUTES.map(r=>{const t=r.
 function renderHeroMap(){const g=$("#heroMap");if(!g||typeof TRAILS2==="undefined")return;
  const all=TRAILS2.flatMap(t=>t.pts);const xs=all.map(p=>p[0]),ys=all.map(p=>p[1]);
  const bx0=Math.min(...xs),bx1=Math.max(...xs),by0=Math.min(...ys),by1=Math.max(...ys);
- const RX0=170,RX1=368,RY0=22,RY1=146,k=Math.min((RX1-RX0)/(bx1-bx0),(RY1-RY0)/(by1-by0));
- const tx=RX1-(bx1-bx0)*k-bx0*k,ty=RY0-by0*k;
+ const CX0=214,CX1=378,CY0=20,CY1=130;           // the map card
+ const RX0=CX0+8,RX1=CX1-8,RY0=CY0+20,RY1=CY1-8,k=Math.min((RX1-RX0)/(bx1-bx0),(RY1-RY0)/(by1-by0));
+ const tx=(RX0+RX1)/2-(bx0+bx1)/2*k,ty=(RY0+RY1)/2-(by0+by1)/2*k;
  const simp=p=>p.filter((q,i)=>i%3===0||i===p.length-1);const dd=p=>"M"+simp(p).map(q=>q[0]+","+q[1]).join("L");
- const ns='vector-effect="non-scaling-stroke"';
- const rail=WAYS.filter(w=>w.k==="r");const railPts=rail.length?[[783,1242],[-62,-406]]:[];
- const hill=WAYS.filter(w=>w.k==="u"&&w.pts.some(p=>p[0]>bx0&&p[0]<bx1&&p[1]>by0&&p[1]<by1)).map(w=>`<path d="${dd(w.pts)}" fill="none" stroke="#ffffff" stroke-opacity=".18" stroke-width="1" ${ns}/>`).join("");
- const halo=TRAILS2.map(t=>`<path class="hh" d="${dd(t.pts)}" stroke-width="4.5" ${ns}/>`).join("");
- const lines=TRAILS2.map((t,i)=>`<path class="hr" pathLength="1" d="${dd(t.pts)}" stroke="${t.id==="heritage"?"#f6f1e6":t.c}" stroke-width="2.6" ${ns} style="animation-delay:${(0.3+i*0.22).toFixed(2)}s"/>`).join("");
+ const ns='vector-effect="non-scaling-stroke"';const railPts=[[783,1242],[-62,-406]];
+ const inb=p=>p[0]>bx0-300&&p[0]<bx1+300&&p[1]>by0-300&&p[1]<by1+300;
+ const roads=WAYS.filter(w=>(w.k==="u"||w.k==="m")&&w.pts.some(inb)).map(w=>`<path d="${dd(w.pts)}" fill="none" stroke="#e3d6c6" stroke-width="1" ${ns}/>`).join("");
+ const lines=TRAILS2.map((t,i)=>`<path class="hr" pathLength="1" d="${dd(t.pts)}" stroke="${t.c}" stroke-width="2.2" ${ns} style="animation-delay:${(0.3+i*0.22).toFixed(2)}s"/>`).join("");
+ const pk=GEO.peaks.filter(p=>["Western Hill","Tiger Hill","Bukit Bendera"].includes(p[0])).map(([n,e,x,y])=>`<path d="M${x},${y-55}L${x+48},${y+30}H${x-48}Z" fill="#7a6650"/>`).join("");
  const inv=1/k;
- g.innerHTML=`<g transform="translate(${tx.toFixed(2)},${ty.toFixed(2)}) scale(${k.toFixed(5)})">${hill}
-  <path id="trackReal" d="M${railPts.map(p=>p.join(",")).join("L")}" fill="none" stroke="#1d221e" stroke-width="2.4" ${ns}/>
-  <path d="M${railPts.map(p=>p.join(",")).join("L")}" fill="none" stroke="#f6f1e6" stroke-width="1.2" stroke-dasharray="1 3" ${ns}/>
-  ${halo}${lines}
-  <circle class="us" cx="-62" cy="-406" r="${(3.5*inv).toFixed(1)}" fill="#e8913a" stroke="#fff" stroke-width="1.5" ${ns}/>
-  <g><g transform="scale(${(inv*0.55).toFixed(2)})"><rect x="-10" y="-6.5" width="20" height="10" rx="2.5" fill="#c0392b" stroke="#fff" stroke-width="1"/><rect x="-7" y="-4.5" width="4" height="3.5" rx=".8" fill="#fde9c9"/><rect x="-1.5" y="-4.5" width="4" height="3.5" rx=".8" fill="#fde9c9"/><rect x="4" y="-4.5" width="4" height="3.5" rx=".8" fill="#fde9c9"/></g>
-   <animateMotion dur="14s" repeatCount="indefinite" rotate="auto-reverse" keyPoints="0;1;1;0;0" keyTimes="0;.42;.5;.92;1" calcMode="linear"><mpath href="#trackReal"/></animateMotion></g>
- </g>`}
+ g.innerHTML=`<g class="mapcard" style="cursor:pointer">
+  <rect x="${CX0+2}" y="${CY0+3}" width="${CX1-CX0}" height="${CY1-CY0}" rx="7" fill="#000" opacity=".18"/>
+  <rect x="${CX0}" y="${CY0}" width="${CX1-CX0}" height="${CY1-CY0}" rx="7" fill="#fffdf8" opacity=".96"/>
+  <rect x="${CX0}" y="${CY0}" width="${CX1-CX0}" height="${CY1-CY0}" rx="7" fill="#e8efdf" opacity=".55"/>
+  <text x="${CX0+8}" y="${CY0+13}" font-size="7.2" font-weight="700" letter-spacing=".6" fill="#1f3d2b" font-family="Inter,sans-serif">TRAIL MAP · 10 ROUTES</text>
+  <text x="${CX1-8}" y="${CY0+13}" font-size="7" font-weight="700" fill="#1f3d2b" text-anchor="end" font-family="Inter,sans-serif">▲N</text>
+  <clipPath id="cardClip"><rect x="${CX0}" y="${CY0+17}" width="${CX1-CX0}" height="${CY1-CY0-17}" rx="7"/></clipPath>
+  <g clip-path="url(#cardClip)"><g transform="translate(${tx.toFixed(2)},${ty.toFixed(2)}) scale(${k.toFixed(5)})">${roads}${pk}
+   <path id="trackReal" d="M${railPts.map(p=>p.join(",")).join("L")}" fill="none" stroke="#1d221e" stroke-width="2" ${ns}/>
+   ${lines}
+   <circle class="us" cx="-62" cy="-406" r="${(3*inv).toFixed(1)}" fill="#e8913a" stroke="#fff" stroke-width="1.2" ${ns}/>
+   <g><g transform="scale(${(inv*0.42).toFixed(2)})"><rect x="-10" y="-6.5" width="20" height="10" rx="2.5" fill="#c0392b" stroke="#fff" stroke-width="1.2"/><rect x="-7" y="-4.5" width="4" height="3.5" rx=".8" fill="#fde9c9"/><rect x="-1.5" y="-4.5" width="4" height="3.5" rx=".8" fill="#fde9c9"/><rect x="4" y="-4.5" width="4" height="3.5" rx=".8" fill="#fde9c9"/></g>
+    <animateMotion dur="14s" repeatCount="indefinite" rotate="auto-reverse" keyPoints="0;1;1;0;0" keyTimes="0;.42;.5;.92;1" calcMode="linear"><mpath href="#trackReal"/></animateMotion></g>
+  </g></g></g>`;
+ g.querySelector(".mapcard").addEventListener("click",()=>{go("map");setMapMode("trail")})}
 
 function renderHero(){const h=new Date().getHours();const [g,s1,s2,cel]=h<5?["Good night, stargazer","#0e1a2b","#2b3d5a","moon"]:h<12?["Good morning, hiker","#f6c99a","#f3e4c2","sun"]:h<17?["Good afternoon, hiker","#8fc3e6","#dbeef7","sun"]:h<19?["Good evening, hiker","#f08a5d","#f7c59f","sunset"]:["Good night, stargazer","#0e1a2b","#2b3d5a","moon"];
  $("#greet").textContent=g;$("#sky1").setAttribute("stop-color",s1);$("#sky2").setAttribute("stop-color",s2);
