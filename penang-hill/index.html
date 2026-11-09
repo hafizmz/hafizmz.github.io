@@ -194,9 +194,9 @@ path.sel{stroke-dasharray:14 8;animation:march 1s linear infinite}
 .vtick{color:var(--nature);font-weight:700;margin-left:4px}
 #langBtn{border:1px solid rgba(246,241,230,.5);background:none;color:var(--cream);border-radius:8px;padding:4px 8px;font:700 11.5px Inter,sans-serif;cursor:pointer;margin-left:6px}
 .hero2{position:relative;height:clamp(285px,55vw,440px);overflow:hidden;background:#2c5a3c}
-.herocard{position:absolute;left:14px;top:12px;width:clamp(150px,42%,300px);cursor:pointer;z-index:2;border:4px solid #7a5532;border-radius:10px;background:#7a5532;box-shadow:0 6px 14px rgba(0,0,0,.25)}.herocard:before,.herocard:after{content:'';position:absolute;top:100%;width:7px;height:clamp(22px,4vw,46px);background:linear-gradient(90deg,#5e4027,#7a5532);border-radius:0 0 2px 2px}.herocard:before{left:18%}.herocard:after{right:18%}.herocard svg{border-radius:6px}.herocard:active{transform:scale(.98)}
+.herocard{position:absolute;left:14px;bottom:calc(clamp(22px,4vw,46px) + 4px);width:clamp(150px,42%,300px);cursor:pointer;z-index:2;border:4px solid #7a5532;border-radius:10px;background:#7a5532;box-shadow:0 6px 14px rgba(0,0,0,.25)}.herocard:before,.herocard:after{content:'';position:absolute;top:100%;width:7px;height:clamp(22px,4vw,46px);background:linear-gradient(90deg,#5e4027,#7a5532);border-radius:0 0 2px 2px}.herocard:before{left:18%}.herocard:after{right:18%}.herocard svg{border-radius:6px}.herocard:active{transform:scale(.98)}
 .hero2 .scene{position:absolute;inset:0;width:100%;height:100%}.hero2txt{pointer-events:none}
-.hero2txt{position:absolute;left:0;right:0;bottom:0;padding:0 18px 18px;color:var(--cream)}
+.hero2txt{position:absolute;left:0;right:0;top:0;padding:16px 18px 0;color:var(--cream);z-index:1}
 .hero2txt .greet{font:600 12px Inter,sans-serif;letter-spacing:.6px;text-transform:uppercase;opacity:.85}
 .hero2txt h2{color:var(--cream);font-size:27px;line-height:1.15;margin:4px 0 6px;text-shadow:0 2px 12px rgba(0,0,0,.25)}
 .hero2txt p{margin:0;font-size:13px;opacity:.9}
@@ -296,7 +296,7 @@ path.sel{stroke-dasharray:14 8;animation:march 1s linear infinite}
     <svg class="scene" viewBox="0 0 400 230" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
       <defs>
         <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop id="sky1" offset="0"/><stop id="sky2" offset="1"/></linearGradient>
-        <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset=".35" stop-color="#1f3d2b" stop-opacity="0"/><stop offset="1" stop-color="#1f3d2b" stop-opacity=".92"/></linearGradient>
+        <linearGradient id="fade" x1="0" y1="1" x2="0" y2="0"><stop offset=".35" stop-color="#1f3d2b" stop-opacity="0"/><stop offset="1" stop-color="#1f3d2b" stop-opacity=".92"/></linearGradient>
       </defs>
       <rect width="400" height="230" fill="url(#sky)"/>
       <g id="celestial"></g>
