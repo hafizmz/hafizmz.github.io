@@ -192,7 +192,7 @@ path.sel{stroke-dasharray:14 8;animation:march 1s linear infinite}
 .vtick{color:var(--nature);font-weight:700;margin-left:4px}
 #langBtn{border:1px solid rgba(246,241,230,.5);background:none;color:var(--cream);border-radius:8px;padding:4px 8px;font:700 11.5px Inter,sans-serif;cursor:pointer;margin-left:6px}
 .hero2{position:relative;height:clamp(285px,55vw,440px);overflow:hidden;background:#2c5a3c}
-.herocard{position:absolute;left:14px;top:14px;width:clamp(150px,42%,300px);cursor:pointer;z-index:2}.herocard:active{transform:scale(.98)}
+.herocard{position:absolute;left:14px;top:12px;width:clamp(150px,42%,300px);cursor:pointer;z-index:2;border:4px solid #7a5532;border-radius:10px;background:#7a5532;box-shadow:0 6px 14px rgba(0,0,0,.25)}.herocard:before,.herocard:after{content:'';position:absolute;top:100%;width:7px;height:clamp(22px,4vw,46px);background:linear-gradient(90deg,#5e4027,#7a5532);border-radius:0 0 2px 2px}.herocard:before{left:18%}.herocard:after{right:18%}.herocard svg{border-radius:6px}.herocard:active{transform:scale(.98)}
 .hero2 .scene{position:absolute;inset:0;width:100%;height:100%}.hero2txt{pointer-events:none}
 .hero2txt{position:absolute;left:0;right:0;bottom:0;padding:0 18px 18px;color:var(--cream)}
 .hero2txt .greet{font:600 12px Inter,sans-serif;letter-spacing:.6px;text-transform:uppercase;opacity:.85}
@@ -272,13 +272,13 @@ path.sel{stroke-dasharray:14 8;animation:march 1s linear infinite}
         <animateTransform attributeName="transform" type="translate" values="0 0;40 -8;80 2" dur="26s" repeatCount="indefinite"/></g>
       <path d="M0 150 L40 118 L70 130 L120 92 L160 112 L205 70 L250 104 L290 84 L340 110 L400 90 L400 230 L0 230Z" fill="#7fa86b" opacity=".55"/>
       <path d="M0 175 L50 140 L95 158 L150 124 L200 142 L260 108 L305 128 L350 112 L400 132 L400 230 L0 230Z" fill="#4f8a5a"/>
-      <path d="M0 230 L0 200 L60 182 L120 196 L180 160 L240 128 L300 104 L350 116 L400 108 L400 230Z" fill="#2f6040"/>
+      <path d="M0 230 L0 200 L60 182 L120 194 L180 158 L230 124 L262 101 L278 99 L320 118 L360 112 L400 122 L400 230Z" fill="#2f6040"/>
       <g fill="#24503a">
-        <circle cx="30" cy="196" r="9"/><circle cx="44" cy="192" r="11"/><circle cx="350" cy="118" r="8"/><circle cx="364" cy="114" r="10"/><circle cx="380" cy="116" r="7"/><circle cx="210" cy="150" r="7"/><circle cx="222" cy="146" r="9"/>
+        <circle cx="30" cy="196" r="9"/><circle cx="44" cy="192" r="11"/><circle cx="372" cy="118" r="8"/><circle cx="386" cy="114" r="10"/><circle cx="398" cy="118" r="7"/><circle cx="210" cy="150" r="7"/><circle cx="222" cy="146" r="9"/>
       </g>
-      <path id="track" d="M150 232 L318 108" stroke="#f6f1e6" stroke-width="2.2" opacity=".85"/>
-      <path d="M150 232 L318 108" stroke="#f6f1e6" stroke-width="7" stroke-dasharray="1.2 6" opacity=".5"/>
-      <rect x="312" y="100" width="16" height="10" rx="1.5" fill="#f6f1e6"/><path d="M310 100 L320 94 L330 100Z" fill="#b4553a"/>
+      <path id="track" d="M341 236 L270 98" stroke="#f6f1e6" stroke-width="2.2" opacity=".85"/>
+      <path d="M341 236 L270 98" stroke="#f6f1e6" stroke-width="7" stroke-dasharray="1.2 6" opacity=".5"/>
+      <rect x="262" y="89" width="16" height="10" rx="1.5" fill="#f6f1e6"/><path d="M260 89 L270 83 L280 89Z" fill="#b4553a"/><circle cx="270" cy="99" r="3" fill="#e8913a" stroke="#fff" stroke-width="1"/>
       <g id="train"><rect x="-10" y="-6.5" width="20" height="10" rx="2.5" fill="#c0392b"/><rect x="-7" y="-4.5" width="4" height="3.5" rx=".8" fill="#fde9c9"/><rect x="-1.5" y="-4.5" width="4" height="3.5" rx=".8" fill="#fde9c9"/><rect x="4" y="-4.5" width="4" height="3.5" rx=".8" fill="#fde9c9"/>
         <animateMotion dur="16s" repeatCount="indefinite" rotate="auto" keyPoints="0;1;1;0;0" keyTimes="0;.42;.5;.92;1" calcMode="linear"><mpath href="#track"/></animateMotion></g>
       <rect width="400" height="230" fill="url(#fade)"/>
@@ -1031,14 +1031,13 @@ function renderHeroMap(){const g=$("#heroCard");if(!g||typeof TRAILS2==="undefin
  const pk=GEO.peaks.filter(p=>["Western Hill","Tiger Hill","Bukit Bendera"].includes(p[0])).map(([n,e,x,y])=>`<path d="M${x},${y-55}L${x+48},${y+30}H${x-48}Z" fill="#7a6650"/>`).join("");
  const inv=1/k;
  g.innerHTML=`<svg viewBox="${CX0} ${CY0} ${CX1-CX0+3} ${CY1-CY0+4}" width="100%" style="display:block" role="img" aria-label="Trail map of the 10 routes. Tap to open"><g class="mapcard">
-  <rect x="${CX0+2}" y="${CY0+3}" width="${CX1-CX0}" height="${CY1-CY0}" rx="7" fill="#000" opacity=".18"/>
-  <rect x="${CX0}" y="${CY0}" width="${CX1-CX0}" height="${CY1-CY0}" rx="7" fill="#fffdf8" opacity=".96"/>
-  <rect x="${CX0}" y="${CY0}" width="${CX1-CX0}" height="${CY1-CY0}" rx="7" fill="#e8efdf" opacity=".55"/>
+  <rect x="${CX0}" y="${CY0}" width="${CX1-CX0}" height="${CY1-CY0}" rx="7" fill="#fbf6ea"/>
+  <rect x="${CX0}" y="${CY0}" width="${CX1-CX0}" height="${CY1-CY0}" rx="7" fill="#e6eedb" opacity=".6"/>
   <text x="${CX0+8}" y="${CY0+13}" font-size="7.2" font-weight="700" letter-spacing=".6" fill="#1f3d2b" font-family="Inter,sans-serif">TRAIL MAP · 10 ROUTES</text>
   <text x="${CX1-8}" y="${CY0+13}" font-size="7" font-weight="700" fill="#1f3d2b" text-anchor="end" font-family="Inter,sans-serif">▲N</text>
   <clipPath id="cardClip"><rect x="${CX0}" y="${CY0+17}" width="${CX1-CX0}" height="${CY1-CY0-17}" rx="7"/></clipPath>
   <g clip-path="url(#cardClip)"><g transform="translate(${tx.toFixed(2)},${ty.toFixed(2)}) scale(${k.toFixed(5)})">${roads}${pk}
-   <path d="M${railPts.map(p=>p.join(",")).join("L")}" fill="none" stroke="#1d221e" stroke-width="2" ${ns}/>
+   <path d="M${railPts.map(p=>p.join(",")).join("L")}" fill="none" stroke="#5e4027" stroke-width="4" stroke-dasharray="1 2.5" ${ns}/><path d="M${railPts.map(p=>p.join(",")).join("L")}" fill="none" stroke="#5e4027" stroke-width="1.6" ${ns}/>
    ${lines}
    <circle class="us" cx="-62" cy="-406" r="${(3*inv).toFixed(1)}" fill="#e8913a" stroke="#fff" stroke-width="1.2" ${ns}/>
 
