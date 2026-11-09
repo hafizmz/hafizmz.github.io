@@ -270,6 +270,20 @@ path.sel{stroke-dasharray:14 8;animation:march 1s linear infinite}
 .toast{display:none;gap:10px}.toast.show{display:flex}
 .toast .tbody{flex:1;min-width:0}
 .tcard.dusk{background:linear-gradient(150deg,#ece9f2,#dcd8e6);border-color:#cbc5d9}.tcard.dusk .lbl{color:#5a4f7a}
+
+/* Beta sign-up gate */
+#gate{position:fixed;inset:0;z-index:80;background:linear-gradient(170deg,#1f3d2b,#2f5a3e 60%,#e9e1cf 60.2%);display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}
+#gate .gbox{background:var(--paper);border-radius:20px;max-width:400px;width:100%;padding:22px 20px;box-shadow:0 18px 50px rgba(0,0,0,.3);text-align:center}
+#gate h2{font:700 22px ui-serif,Georgia,serif;color:var(--forest);margin:8px 0 6px}
+#gate p{font-size:14px;color:var(--muted);margin:0 0 14px}
+#gate label{display:block;text-align:left;font:600 12.5px Inter;color:var(--ink);margin:10px 0 4px}
+#gate input[type=email],#gate input[type=text]{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;padding:12px;font:15px Inter;background:#fff}
+#gate .chk{display:flex;gap:8px;align-items:flex-start;text-align:left;font-size:12.5px;color:var(--muted);margin:12px 0 4px}
+#gate .chk input{margin-top:2px;width:18px;height:18px;flex:none}
+#gate button{width:100%;margin-top:14px;border:0;border-radius:12px;padding:13px;background:var(--forest);color:var(--cream);font:700 15px Inter;cursor:pointer}
+#gate button:disabled{opacity:.5}
+#gate .gerr{color:#b23a2a;font-size:12.5px;min-height:16px;margin-top:6px}
+#gate .small{font-size:11.5px;margin:12px 0 0}
 </style>
 </head>
 <body>
@@ -1243,6 +1257,33 @@ const setLangTo=l=>{SET.lang=l;saveSet();location.reload()};
 langBtn.onclick=()=>setLangTo(LANG==="ms"?"en":"ms");
 $("#setLang").checked=LANG==="ms";$("#setLang").onchange=e=>setLangTo(e.target.checked?"ms":"en");
 
+
+/* ===== BETA SIGN-UP: email required once, sent to the developer ===== */
+const BETA={endpoint:"https://formsubmit.co/ajax/hafiz.zin@gmail.com",key:"phBeta",queue:"phBetaQ"};
+function betaSend(){let q=store.get(BETA.queue,null);if(!q||!navigator.onLine)return;
+ fetch(BETA.endpoint,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},
+  body:JSON.stringify({_subject:"New Penang Hill beta tester",_template:"table",_captcha:"false",email:q.email,name:q.name||"-",language:q.lang,joined:q.joined,device:navigator.userAgent})})
+ .then(r=>r.ok&&store.set(BETA.queue,null)).catch(()=>{})}
+window.addEventListener("online",betaSend);
+(function(){if(store.get(BETA.key,null)){betaSend();return}
+ const g=document.createElement("div");g.id="gate";
+ g.innerHTML=`<form class="gbox" novalidate>${dusky(84,"full")}<h2>Join the beta</h2><p>Penang Hill Trail Guide is in testing. Leave your email to get in, and we'll let you know about updates.</p>
+  <label for="gName">Name (optional)</label><input id="gName" type="text" autocomplete="name">
+  <label for="gEmail">Email</label><input id="gEmail" type="email" autocomplete="email" inputmode="email" required>
+  <div class="chk"><input id="gOk" type="checkbox"><label for="gOk" style="margin:0;font-weight:400;color:inherit">I agree to be contacted about the beta. My email is only used for this and is never shared.</label></div>
+  <div class="gerr" id="gErr"></div><button type="submit" id="gGo">Start exploring</button>
+  <p class="small">You only need to do this once on each phone. To remove your email, contact the developer from the Safety page.</p></form>`;
+ document.body.appendChild(g);document.body.style.overflow="hidden";
+ g.querySelector("form").onsubmit=e=>{e.preventDefault();const em=$("#gEmail").value.trim(),nm=$("#gName").value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){$("#gErr").textContent=(LANG==="ms"?trText:String)("Please enter a valid email address.");return}
+  if(!$("#gOk").checked){$("#gErr").textContent=(LANG==="ms"?trText:String)("Please tick the box to continue.");return}
+  const rec={email:em,name:nm,lang:LANG,joined:new Date().toISOString()};store.set(BETA.key,rec);store.set(BETA.queue,rec);betaSend();
+  g.remove();document.body.style.overflow=""}})();
+Object.assign(MS,{"Join the beta":"Sertai beta","Penang Hill Trail Guide is in testing. Leave your email to get in, and we'll let you know about updates.":"Panduan Denai Bukit Bendera sedang diuji. Tinggalkan e-mel anda untuk masuk, dan kami akan maklumkan tentang kemas kini.",
+ "Name (optional)":"Nama (pilihan)","Email":"E-mel","I agree to be contacted about the beta. My email is only used for this and is never shared.":"Saya bersetuju dihubungi tentang beta. E-mel saya hanya digunakan untuk tujuan ini dan tidak akan dikongsi.",
+ "Start exploring":"Mula meneroka","You only need to do this once on each phone. To remove your email, contact the developer from the Safety page.":"Anda hanya perlu buat sekali bagi setiap telefon. Untuk memadam e-mel anda, hubungi pembangun melalui halaman Keselamatan.",
+ "Please enter a valid email address.":"Sila masukkan alamat e-mel yang sah.","Please tick the box to continue.":"Sila tanda kotak untuk teruskan."});
+if(LANG==="ms"&&$("#gate"))trTree($("#gate"));
 </script>
 </body>
 </html>
