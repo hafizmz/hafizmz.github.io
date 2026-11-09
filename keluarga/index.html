@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive">
-<title>Salasilah Keluarga Mohd Zin &amp; Azizah</title>
+<title>Salasilah Keluarga Saleh</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Naskh+Arabic:wght@500;700&family=Amiri:wght@400&display=swap" rel="stylesheet">
 <style>
@@ -166,6 +166,9 @@ nav button[aria-selected=true]{border-bottom-color:var(--gold);color:var(--accen
 .help h2::before{content:"✦ ";color:var(--gold)}
 footer.foot{max-width:1100px;margin:0 auto;padding:0 20px 40px;text-align:center;color:var(--muted);font-size:.85rem}
 footer.foot .credit{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);color:var(--ink)}
+.older{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--paper);border:1px dashed var(--gold);border-radius:var(--r);padding:12px 16px;margin:0 0 14px}
+.older-txt{flex:1 1 320px;color:var(--muted);font-size:.95rem}
+.older-h{color:var(--accent);font-weight:700;margin-bottom:2px}
 footer.foot .jawi{font-family:Amiri,"Noto Naskh Arabic",serif;color:var(--gold);font-size:1.2rem;direction:rtl}
 #gate{background:var(--emerald-deep)!important;background-image:radial-gradient(ellipse at center, rgba(10,63,48,.3) 0%, rgba(10,63,48,.88) 75%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23d9b25f' stroke-width='1'%3E%3Crect x='16' y='16' width='24' height='24'/%3E%3Crect x='16' y='16' width='24' height='24' transform='rotate(45 28 28)'/%3E%3Ccircle cx='28' cy='28' r='5'/%3E%3Cpath d='M0 0L11 11M56 0L45 11M0 56L11 45M56 56L45 45M28 0V11M28 56V45M0 28H11M56 28H45'/%3E%3C/g%3E%3C/svg%3E")!important;background-size:auto,56px 56px!important}
 #gateForm{border-radius:180px 180px 16px 16px!important;padding:56px 28px 26px!important;text-align:center;border:2px solid var(--gold)!important;box-shadow:0 0 0 6px rgba(217,178,95,.18)}
@@ -201,6 +204,7 @@ footer.foot .jawi{font-family:Amiri,"Noto Naskh Arabic",serif;color:var(--gold);
       <button class="btn" id="expandAll" data-t="expandAll"></button>
       <button class="btn" id="collapseAll" data-t="collapseAll"></button>
     </div>
+    <div id="older"></div>
     <div class="legend" id="legend"></div>
     <div class="tree" id="tree"><div class="empty" data-t="loading"></div></div>
   </section>
@@ -225,7 +229,7 @@ footer.foot .jawi{font-family:Amiri,"Noto Naskh Arabic",serif;color:var(--gold);
 <div id="gate" style="position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:20px">
   <form id="gateForm" style="background:var(--paper);max-width:360px;width:100%">
     <div class="jawi" lang="ms-Arab" style="font-family:'Noto Naskh Arabic',Amiri,serif;font-weight:700;color:var(--gold);font-size:2rem;line-height:1.3">سلسيله کلوارݢ</div>
-    <h1 style="font-size:1.4rem;margin-bottom:4px">Keluarga Mohd Zin &amp; Azizah</h1>
+    <h1 style="font-size:1.4rem;margin-bottom:4px">Keluarga Saleh</h1>
     <p class="sub" style="margin:0 0 14px">Masukkan kata laluan keluarga<br>Enter the family password</p>
     <input id="pw" type="password" autocomplete="current-password" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);text-align:center" autofocus>
     <div id="gateErr" class="err"></div>
@@ -239,12 +243,12 @@ footer.foot .jawi{font-family:Amiri,"Noto Naskh Arabic",serif;color:var(--gold);
 
 <script>
 let SNAPSHOT = {};
-const ENC = {"s":"xRb1pq/XhKXlKvukGiasxA==","i":"Thq5IgSNJB9HWiMS","n":310000,"c":"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"};
+const ENC = {"s":"GQdT3jH0iPJRlZsdXHJTTA==","i":"sK/jPjatnWkhFHGU","n":310000,"c":"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"};
 const SNAPSHOT_DATE = "9 Nov 2026";
 
 const T = {
  ms:{
-  ayah:"“…dan Kami jadikan kamu berbangsa-bangsa dan bersuku-suku supaya kamu saling mengenali.” (Al-Hujurat 49:13)", title:"Salasilah Keluarga", subtitle:"Keluarga Mohd Zin & Azizah", credit:"Hubungi: Hafiz · WhatsApp @hafimoz",
+  ayah:"“…dan Kami jadikan kamu berbangsa-bangsa dan bersuku-suku supaya kamu saling mengenali.” (Al-Hujurat 49:13)", title:"Salasilah Keluarga", subtitle:"Keluarga Saleh", credit:"Hubungi: Hafiz · WhatsApp @hafimoz",
   tabTree:"Salasilah", tabGaps:"Bantu isi", tabSugs:"Cadangan", tabHelp:"Cara membantu",
   search:"Cari nama…", expandAll:"Buka semua", collapseAll:"Tutup semua", loading:"Sedang memuatkan…",
   people:"orang", generations:"generasi", toCheck:"perlu disemak", pending:"cadangan menunggu",
@@ -254,6 +258,7 @@ const T = {
   spouse:"Suami / isteri", otherParent:"Ibu / bapa yang seorang lagi", otherParentHint:"jika ada lebih dari seorang isteri/suami",
   notes:"Catatan", isDeceased:"Sudah meninggal dunia", needsCheck:"Perlu disemak (tidak pasti)",
   parentOf:"Anak kepada", childrenOf:"Anak-anak", noChildren:"Belum ada anak disenaraikan.",
+  olderTitle:"Menyusur ke generasi lebih tua", olderBody:"Siapakah ibu bapa {n}? Jika anda tahu nama mereka, atau datuk nenek sebelumnya, bantu kami menyusur galur ke atas.", olderBtn:"↑ Tambah ibu/bapa {n}", gapNoParent:"Ibu/bapa belum disenaraikan",
   addChild:"↓ Tambah anak", addSibling:"↔ Tambah adik-beradik", addParent:"↑ Tambah ibu/bapa", addSiblingTo:"Tambah adik-beradik kepada", addParentTo:"Tambah ibu/bapa kepada", sugParent:"Tambah ibu/bapa kepada", editInfo:"Betulkan / tambah maklumat", del:"Padam",
   yourName:"Nama anda & hubungan", yourNameHint:"cth. 'Aisyah, menantu'",
   save:"Simpan", send:"Hantar cadangan", cancel:"Batal",
@@ -279,7 +284,7 @@ const T = {
   required:"Sila isi nama panggilan atau nama sebenar.", requiredYou:"Sila isi nama anda.", saveErr:"Tidak dapat disimpan. Cuba lagi.",
   nothingChanged:"Tiada perubahan.",
   help:`<h2>Kenapa salasilah ini?</h2>
-<p>Salasilah ini bermula daripada keluarga Mohd Zin &amp; Azizah, dan akan terus berkembang apabila keluarga bertambah: menantu, cucu, cicit dan seterusnya. Ia warisan dan penyambung silaturahim untuk generasi akan datang.</p>
+<p>Salasilah ini menghimpunkan keturunan Saleh, bapa kepada Mohd Zin, dan akan terus berkembang ke dua arah: ke bawah apabila keluarga bertambah (menantu, cucu, cicit), dan ke atas apabila kita menyusur galur ke generasi yang lebih tua. Ia warisan dan penyambung silaturahim untuk generasi akan datang.</p>
 <p>Azizah ialah anak Kassim &amp; Mariam, dalam salasilah besar keturunan Haji Taha &amp; Zainab: <a href="https://hafizmz.github.io/salasilah/" target="_blank" rel="noopener">hafizmz.github.io/salasilah</a>.</p>
 <h2>Hubungi</h2>
 <p>Untuk sebarang pertanyaan atau maklumat, boleh hubungi <b>Hafiz (anak Azizah)</b> melalui WhatsApp <b>@hafimoz</b>.</p>
@@ -304,7 +309,7 @@ const T = {
 <p>Anda boleh tambah gambar seseorang, alamat rumah lama, dan gambar rumah jika rumah itu di Perlis. Jika butang muat naik tiada, hantar gambar melalui WhatsApp kepada Hafiz (anak Azizah).</p>`
  },
  en:{
-  ayah:"“…and made you into peoples and tribes so that you may know one another.” (Al-Hujurat 49:13)", title:"Family Tree", subtitle:"The family of Mohd Zin & Azizah", credit:"Contact: Hafiz · WhatsApp @hafimoz",
+  ayah:"“…and made you into peoples and tribes so that you may know one another.” (Al-Hujurat 49:13)", title:"Family Tree", subtitle:"The family of Saleh", credit:"Contact: Hafiz · WhatsApp @hafimoz",
   tabTree:"Tree", tabGaps:"Help fill gaps", tabSugs:"Suggestions", tabHelp:"How to help",
   search:"Search names…", expandAll:"Expand all", collapseAll:"Collapse all", loading:"Loading…",
   people:"people", generations:"generations", toCheck:"to check", pending:"pending suggestions",
@@ -314,6 +319,7 @@ const T = {
   spouse:"Husband / wife", otherParent:"Other parent", otherParentHint:"if there was more than one spouse",
   notes:"Notes", isDeceased:"Has passed away", needsCheck:"Needs checking (not sure)",
   parentOf:"Child of", childrenOf:"Children", noChildren:"No children listed yet.",
+  olderTitle:"Trace back to older generations", olderBody:"Who were {n}'s parents? If you know their names, or the grandparents before them, help us trace the line further back.", olderBtn:"↑ Add {n}'s parent", gapNoParent:"Parents not yet listed",
   addChild:"↓ Add child", addSibling:"↔ Add brother/sister", addParent:"↑ Add parent", addSiblingTo:"Add a brother/sister to", addParentTo:"Add a parent to", sugParent:"Add parent to", editInfo:"Correct / add details", del:"Delete",
   yourName:"Your name & relation", yourNameHint:"e.g. 'Aisyah, daughter-in-law'",
   save:"Save", send:"Send suggestion", cancel:"Cancel",
@@ -339,7 +345,7 @@ const T = {
   required:"Please enter a nickname or real name.", requiredYou:"Please enter your name.", saveErr:"Couldn't save. Please try again.",
   nothingChanged:"Nothing changed.",
   help:`<h2>Why this tree?</h2>
-<p>This tree starts with the family of Mohd Zin &amp; Azizah and keeps growing as the family does: spouses, grandchildren, great-grandchildren and beyond. It is a legacy that keeps the bonds of kinship alive for generations to come.</p>
+<p>This tree gathers the descendants of Saleh, father of Mohd Zin, and grows both ways: downward as the family grows (spouses, grandchildren, great-grandchildren), and upward as we trace the line back to older generations. It is a legacy that keeps the bonds of kinship alive for generations to come.</p>
 <p>Azizah is the daughter of Kassim &amp; Mariam, in the wider tree of Haji Taha &amp; Zainab's descendants: <a href="https://hafizmz.github.io/salasilah/" target="_blank" rel="noopener">hafizmz.github.io/salasilah</a>.</p>
 <h2>Contact</h2>
 <p>For any questions or information, contact <b>Hafiz (son of Azizah)</b> on WhatsApp at <b>@hafimoz</b>.</p>
@@ -450,7 +456,7 @@ function applyLang(){
 
 function renderAll(){
   IDX = index();
-  renderBanner(); renderStats(); renderLegend(); renderTree(); renderGaps(); renderSugs();
+  renderBanner(); renderStats(); renderOlder(); renderLegend(); renderTree(); renderGaps(); renderSugs();
   if(state.openId) openPerson(state.openId, true);
 }
 
@@ -478,6 +484,14 @@ function renderStats(){
   const badge = $("#sugBadge"); badge.hidden = !pend; badge.textContent = pend;
 }
 
+function renderOlder(){
+  const box=$("#older"); if(!box) return;
+  const r = IDX.roots.length===1 ? IDX.roots[0] : null;
+  if(!r || state.mode==="loading"){ rc(box); return; }
+  rc(box, el("div",{class:"older"},
+    el("div",{class:"older-txt"}, el("div",{class:"older-h",text:"✦ "+t("olderTitle")}), el("div",{text:t("olderBody",{n:label(r)})})),
+    el("button",{class:"btn primary",text:t("olderBtn",{n:label(r)}),onclick:()=>openForm("parent",r)})));
+}
 function renderLegend(){
   const maxGen = Math.max(0,...Object.values(IDX.gen));
   const L = $("#legend"); rc(L);
@@ -540,6 +554,7 @@ function renderGaps(){
     if(str(p.name).trim()==="?" ) reasons.push(t("gapUnknown"));
     if(p.check) reasons.push(t("gapCheck"));
     if(g<=1 && nk===0) reasons.push(t("gapNoKids"));
+    if(!p.parent || !state.people[p.parent]) reasons.push(t("gapNoParent"));
     if(reasons.length) cards.push({id,g,reasons});
   }
   cards.sort((a,b)=>a.g-b.g || pathText(a.id).localeCompare(pathText(b.id)));
@@ -799,7 +814,7 @@ async function submitForm(f,type,targetId,direct){
 
 function sugTitle(type){ return type==="add" ? t("sugAdd") : type==="parent" ? t("sugParent") : t("sugEdit"); }
 function sugMessage(s){
-  const L=[ (lang==="ms"?"Salasilah Mohd Zin & Azizah — cadangan":"Mohd Zin & Azizah family tree — suggestion"),
+  const L=[ (lang==="ms"?"Salasilah Keluarga Saleh — cadangan":"Saleh family tree — suggestion"),
     sugTitle(s.type)+": "+s.targetLabel ];
   for(const k of FIELDS){ const v=s.data[k]; if(PHOTO.has(k)) continue; if(k in s.data && v!=="" && !(v===false && s.type==="add")) L.push(fieldName(k)+": "+fmtVal(k,v)); }
   L.push(t("from")+": "+s.byName);
