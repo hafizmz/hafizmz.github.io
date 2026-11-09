@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Salasilah Keluarga Mohd Zin &amp; Azizah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Naskh+Arabic:wght@500;700&family=Amiri:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f1e7; --paper:#fffdf8; --ink:#2b2620; --muted:#6f665a; --line:#e2d8c6;
+  --accent:#1f5e3b; --accent-ink:#fff; --warn:#a4501b; --warn-bg:#fbeadb;
+  --g1:#1f6b2e; --g2:#7fae73; --g3:#6c8ebf; --g4:#d79b00; --g5:#9a9184; --g6:#b9b1a4;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#191713; --paper:#22201b; --ink:#efe8dc; --muted:#a99f90; --line:#3a352d;
+    --accent:#5fb07f; --accent-ink:#10140f; --warn:#f0a874; --warn-bg:#3a2a1d; }
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,sans-serif;font-size:17px;line-height:1.45}
+button,input,select,textarea{font:inherit;color:inherit}
+header{padding:22px 20px 10px;max-width:1100px;margin:0 auto;display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+h1{font-family:Fraunces,Georgia,serif;font-weight:650;font-size:clamp(1.5rem,4vw,2.1rem);margin:0;letter-spacing:-.01em}
+.sub{color:var(--muted);margin-top:2px}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--paper)}
+.lang button{border:0;background:none;padding:6px 12px;cursor:pointer}
+.lang button[aria-pressed=true]{background:var(--accent);color:var(--accent-ink)}
+nav{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;gap:6px;border-bottom:1px solid var(--line);overflow-x:auto}
+nav button{border:0;background:none;padding:10px 14px;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;color:var(--muted)}
+nav button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--accent);font-weight:700}
+.badge{display:inline-block;min-width:1.4em;padding:0 6px;border-radius:999px;background:var(--warn);color:#fff;font-size:.78rem;margin-left:4px;text-align:center}
+main{max-width:1100px;margin:0 auto;padding:16px 20px 80px}
+.banner{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:var(--r);padding:10px 14px;margin-bottom:14px;color:var(--muted);font-size:.93rem}
+.banner.warn{border-left-color:var(--warn)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.toolbar input[type=search]{flex:1 1 240px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--paper)}
+.btn{border:1px solid var(--line);background:var(--paper);border-radius:var(--r);padding:8px 14px;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+.btn.danger{color:var(--warn);border-color:var(--warn)}
+.btn.small{padding:4px 10px;font-size:.88rem}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:8px 12px;font-size:.9rem;color:var(--muted)}
+.stat b{display:block;font-size:1.25rem;color:var(--ink);font-family:Fraunces,Georgia,serif}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin:-4px 0 12px}
+.legend span.realname::before{display:none}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;background:var(--c);vertical-align:-1px}
+.tree{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:8px 6px}
+.node>.row{display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:8px;min-height:40px}
+.node>.row:hover{background:color-mix(in srgb,var(--line) 45%,transparent)}
+.kids{margin-left:20px;border-left:1.5px dashed var(--line);padding-left:6px}
+.tog{width:30px;height:30px;border:0;background:none;cursor:pointer;color:var(--muted);flex:none;border-radius:6px;font-size:.9rem}
+.tog:disabled{visibility:hidden}
+.dot{width:10px;height:10px;border-radius:3px;flex:none}
+.name{border:0;background:none;padding:2px 4px;cursor:pointer;text-align:left;font-weight:700;border-radius:6px}
+.name:hover{text-decoration:underline}
+.nick,.spouse{color:var(--muted);font-size:.92rem}
+.pill{font-size:.74rem;padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.pill.check{background:var(--warn-bg);color:var(--warn);border-color:transparent}
+.realname{font-size:.92rem;color:var(--ink)}
+.avatar{width:28px;height:28px;border-radius:50%;object-fit:cover;flex:none;border:1px solid var(--line)}
+.portrait{width:120px;height:120px;border-radius:14px;object-fit:cover;border:1px solid var(--line);display:block;margin:10px 0}
+.house{width:100%;max-height:260px;border-radius:10px;object-fit:cover;border:1px solid var(--line);margin-top:8px;display:block}
+.homebox{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:12px 0}
+.homebox a{color:var(--accent)}
+.homebox h3{margin:0 0 6px;font-size:1rem}
+.upl{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.upl img{width:64px;height:64px;border-radius:8px;object-fit:cover;border:1px solid var(--line)}
+.upl .st{font-size:.85rem;color:var(--muted)}
+.sugimg{width:56px;height:56px;border-radius:8px;object-fit:cover;vertical-align:middle;border:1px solid var(--line)}
+.realname.unconf{color:var(--muted);opacity:.65;font-style:italic}
+.cnt{margin-left:auto;color:var(--muted);font-size:.82rem;white-space:nowrap;padding-right:4px}
+mark{background:#ffe08a;color:#2b2620;border-radius:3px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.card h3{margin:0 0 4px;font-size:1rem}
+.path{color:var(--muted);font-size:.85rem}
+.empty{color:var(--muted);padding:20px;text-align:center}
+.sug .diff{margin:8px 0;font-size:.92rem}
+.sug .diff div{padding:2px 0}
+.sug .diff s{color:var(--muted)}
+.sug .meta{color:var(--muted);font-size:.85rem}
+.status{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.status.pending{color:var(--warn)} .status.approved{color:var(--accent)} .status.rejected{color:var(--muted)}
+.help h2{font-family:Fraunces,Georgia,serif;font-size:1.25rem;margin:18px 0 6px}
+.help ol,.help ul{padding-left:1.3em}
+.help li{margin:4px 0}
+/* drawer */
+.scrim{position:fixed;inset:0;background:rgba(20,16,10,.38);display:none;z-index:20}
+.scrim.open{display:block}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(460px,100%);background:var(--paper);z-index:21;transform:translateX(105%);transition:transform .2s ease;overflow-y:auto;box-shadow:-6px 0 24px rgba(0,0,0,.15);padding:18px 20px 40px}
+.drawer.open{transform:none}
+@media (max-width:640px){
+  .drawer{top:auto;bottom:0;height:88%;width:100%;transform:translateY(105%);border-radius:16px 16px 0 0}
+}
+.drawer h2{font-family:Fraunces,Georgia,serif;font-size:1.5rem;margin:0}
+.close{float:right;border:0;background:none;font-size:1.6rem;cursor:pointer;line-height:1;color:var(--muted)}
+dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:14px 0}
+dt{color:var(--muted)} dd{margin:0}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.childlist{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:3px 10px;cursor:pointer;font-size:.92rem}
+form label{display:block;margin:10px 0 3px;font-weight:700;font-size:.93rem}
+form .hint{font-weight:400;color:var(--muted);font-size:.84rem}
+form input[type=text],form input[type=number],form select,form textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+form textarea{min-height:70px;resize:vertical}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.inline{display:flex;align-items:center;gap:8px;margin-top:12px}
+.privacy{font-size:.84rem;color:var(--muted);background:var(--bg);border-radius:8px;padding:8px 10px;margin-top:14px}
+.err{color:var(--warn);font-size:.9rem;margin-top:8px}
+pre.msg{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;font-size:.88rem}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:999px;z-index:40;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+[hidden]{display:none!important}
+
+/* ===== Malay–Islamic theme ===== */
+:root{
+  --bg:#f4eddc; --paper:#fffbf1; --ink:#1d2a23; --muted:#6b6450; --line:#e2d3b0;
+  --accent:#0d5a43; --accent-ink:#fff8e6; --gold:#b8892e; --gold-soft:#e9d8a9; --emerald-deep:#0a3f30;
+  --warn:#a4501b; --warn-bg:#f8e6d2;
+  --g1:#0a3f30; --g2:#2f7d5f; --g3:#b8892e; --g4:#8c4a2f; --g5:#5f6f8c; --g6:#9a9184;
+  --r:12px;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0d1612; --paper:#14201b; --ink:#f1e9d6; --muted:#b2a78c; --line:#2c3a32;
+    --accent:#3fae86; --accent-ink:#06120d; --gold:#d9b25f; --gold-soft:#3a3320; --emerald-deep:#071f18;
+    --warn:#f0a874; --warn-bg:#3a2a1d; --g1:#3fae86; --g2:#7cc9a6; --g3:#d9b25f; --g4:#d58a63; --g5:#9fb0cf; }
+}
+body{background-color:var(--bg);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23b8892e' stroke-width='1' stroke-opacity='0.16'%3E%3Crect x='16' y='16' width='24' height='24'/%3E%3Crect x='16' y='16' width='24' height='24' transform='rotate(45 28 28)'/%3E%3Ccircle cx='28' cy='28' r='5'/%3E%3Cpath d='M0 0L11 11M56 0L45 11M0 56L11 45M56 56L45 45M28 0V11M28 56V45M0 28H11M56 28H45'/%3E%3C/g%3E%3C/svg%3E");background-size:56px 56px;background-attachment:fixed}
+.hero{display:block;max-width:none;padding:0;margin:0;background:var(--emerald-deep);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23d9b25f' stroke-width='1'%3E%3Crect x='16' y='16' width='24' height='24'/%3E%3Crect x='16' y='16' width='24' height='24' transform='rotate(45 28 28)'/%3E%3Ccircle cx='28' cy='28' r='5'/%3E%3Cpath d='M0 0L11 11M56 0L45 11M0 56L11 45M56 56L45 45M28 0V11M28 56V45M0 28H11M56 28H45'/%3E%3C/g%3E%3C/svg%3E");background-size:56px 56px;color:#f6ecd2;position:relative}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center, rgba(10,63,48,.55) 0%, rgba(10,63,48,.92) 70%);pointer-events:none}
+.hero-in{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:26px 20px 24px;text-align:center}
+.hero .lang{position:absolute;top:16px;right:20px}
+@media (max-width:640px){ .hero-in{padding-top:52px} .hero .lang{top:12px;right:12px} }
+.hero .bism{font-family:Amiri,"Noto Naskh Arabic",serif;color:#d9b25f;font-size:1.15rem;direction:rtl;margin-bottom:4px;opacity:.95}
+.hero .jawi{font-family:"Noto Naskh Arabic",Amiri,serif;font-weight:700;color:#e8c675;font-size:clamp(2rem,6vw,3rem);line-height:1.3;direction:rtl}
+.hero h1{color:#fff8e6;font-weight:500;font-size:clamp(1.25rem,3.2vw,1.7rem);letter-spacing:.02em}
+.hero .sub{color:#d6cba9}
+.hero .lang{background:rgba(255,248,230,.08);border-color:rgba(217,178,95,.6)}
+.hero .lang button{color:#f6ecd2}
+.hero .lang button[aria-pressed=true]{background:#d9b25f;color:#0a3f30;font-weight:700}
+.rebung{height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Cpath d='M0 0H28L14 14Z' fill='%23b8892e'/%3E%3Cpath d='M7 0H21L14 7Z' fill='%230b4a38'/%3E%3C/svg%3E") repeat-x;background-size:28px 14px;background-color:var(--emerald-deep)}
+.goldline{height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0}
+nav{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--paper) 85%,transparent);max-width:none;justify-content:safe center}
+nav button{font-weight:700;letter-spacing:.01em}
+nav button[aria-selected=true]{border-bottom-color:var(--gold);color:var(--accent)}
+.stat{border-top:3px solid var(--gold);text-align:center;min-width:110px}
+.stat b{color:var(--accent)}
+.tree{position:relative;border:1px solid var(--line);border-top:3px solid var(--gold);box-shadow:0 1px 0 var(--gold-soft) inset;padding:12px 8px}
+.tree::before,.tree::after{content:"✦";position:absolute;top:-14px;color:var(--gold);background:var(--bg);padding:0 6px;font-size:.95rem}
+.tree::before{left:18px} .tree::after{right:18px}
+.dot{width:12px;height:12px;border-radius:0;clip-path:polygon(50% 0,61% 25%,85% 15%,75% 39%,100% 50%,75% 61%,85% 85%,61% 75%,50% 100%,39% 75%,15% 85%,25% 61%,0 50%,25% 39%,15% 15%,39% 25%)}
+.kids{border-left:1.5px solid color-mix(in srgb,var(--gold) 45%,transparent)}
+.card{border-top:3px solid var(--gold)}
+.btn.primary{background:var(--accent);border-color:var(--accent)}
+.btn.primary:hover{box-shadow:0 0 0 2px var(--gold-soft)}
+.drawer{border-left:3px solid var(--gold)}
+.drawer::before{content:"";display:block;height:10px;margin:-18px -20px 14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Cpath d='M0 0H28L14 14Z' fill='%23b8892e'/%3E%3Cpath d='M7 0H21L14 7Z' fill='%230b4a38'/%3E%3C/svg%3E") repeat-x;background-size:28px 14px;background-color:var(--emerald-deep)}
+@media (max-width:640px){ .drawer{border-left:0;border-top:3px solid var(--gold)} }
+.portrait{border-radius:60px 60px 12px 12px;border:2px solid var(--gold)}
+.avatar{border:1.5px solid var(--gold)}
+.homebox{border-top:3px solid var(--gold)}
+.help h2{color:var(--accent)}
+.help h2::before{content:"✦ ";color:var(--gold)}
+footer.foot{max-width:1100px;margin:0 auto;padding:0 20px 40px;text-align:center;color:var(--muted);font-size:.85rem}
+footer.foot .credit{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);color:var(--ink)}
+footer.foot .jawi{font-family:Amiri,"Noto Naskh Arabic",serif;color:var(--gold);font-size:1.2rem;direction:rtl}
+#gate{background:var(--emerald-deep)!important;background-image:radial-gradient(ellipse at center, rgba(10,63,48,.3) 0%, rgba(10,63,48,.88) 75%),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23d9b25f' stroke-width='1'%3E%3Crect x='16' y='16' width='24' height='24'/%3E%3Crect x='16' y='16' width='24' height='24' transform='rotate(45 28 28)'/%3E%3Ccircle cx='28' cy='28' r='5'/%3E%3Cpath d='M0 0L11 11M56 0L45 11M0 56L11 45M56 56L45 45M28 0V11M28 56V45M0 28H11M56 28H45'/%3E%3C/g%3E%3C/svg%3E")!important;background-size:auto,56px 56px!important}
+#gateForm{border-radius:180px 180px 16px 16px!important;padding:56px 28px 26px!important;text-align:center;border:2px solid var(--gold)!important;box-shadow:0 0 0 6px rgba(217,178,95,.18)}
+#gateForm h1{color:var(--accent)}
+</style>
+</head>
+<body>
+<header class="hero"><div class="hero-in">
+  <div>
+    <div class="bism" lang="ar">بسم الله الرحمن الرحيم</div>
+    <div class="jawi" lang="ms-Arab">سلسيله کلوارݢ</div>
+    <h1 data-t="title"></h1>
+    <div class="sub" data-t="subtitle"></div>
+  </div>
+  <div class="lang" role="group" aria-label="Language">
+    <button data-lang="ms">BM</button><button data-lang="en">EN</button>
+  </div>
+</div></header>
+<div class="rebung" aria-hidden="true"></div>
+<nav role="tablist">
+  <button role="tab" data-tab="tree" data-t="tabTree"></button>
+  <button role="tab" data-tab="gaps" data-t="tabGaps"></button>
+  <button role="tab" data-tab="sugs"><span data-t="tabSugs"></span><span id="sugBadge" class="badge" hidden></span></button>
+  <button role="tab" data-tab="help" data-t="tabHelp"></button>
+</nav>
+<main>
+  <div id="banner" class="banner" hidden></div>
+
+  <section id="tab-tree">
+    <div class="stats" id="stats"></div>
+    <div class="toolbar">
+      <input type="search" id="q" autocomplete="off">
+      <button class="btn" id="expandAll" data-t="expandAll"></button>
+      <button class="btn" id="collapseAll" data-t="collapseAll"></button>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="tree" id="tree"><div class="empty" data-t="loading"></div></div>
+  </section>
+
+  <section id="tab-gaps" hidden>
+    <p data-t="gapsIntro"></p>
+    <div class="grid" id="gaps"></div>
+  </section>
+
+  <section id="tab-sugs" hidden>
+    <p id="sugIntro"></p>
+    <div class="toolbar" id="ownerTools" hidden>
+      <button class="btn" id="copyCsv" data-t="copyCsv"></button>
+    </div>
+    <div class="grid" id="sugs"></div>
+  </section>
+
+  <section id="tab-help" class="help" hidden></section>
+</main>
+<footer class="foot"><div class="jawi" lang="ar">وَجَعَلْنَاكُمْ شُعُوبًا وَقَبَائِلَ لِتَعَارَفُوا</div><div data-t="ayah"></div><div class="credit" data-t="credit"></div></footer>
+
+<div id="gate" style="position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:20px">
+  <form id="gateForm" style="background:var(--paper);max-width:360px;width:100%">
+    <div class="jawi" lang="ms-Arab" style="font-family:'Noto Naskh Arabic',Amiri,serif;font-weight:700;color:var(--gold);font-size:2rem;line-height:1.3">سلسيله کلوارݢ</div>
+    <h1 style="font-size:1.4rem;margin-bottom:4px">Keluarga Mohd Zin &amp; Azizah</h1>
+    <p class="sub" style="margin:0 0 14px">Masukkan kata laluan keluarga<br>Enter the family password</p>
+    <input id="pw" type="password" autocomplete="current-password" style="width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);text-align:center" autofocus>
+    <div id="gateErr" class="err"></div>
+    <button class="btn primary" style="margin-top:12px;width:100%">Buka / Open</button>
+    <p class="sub" style="font-size:.84rem;margin:12px 0 0">Tiada kata laluan? Hubungi Hafiz, WhatsApp @hafimoz.</p>
+  </form>
+</div>
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-modal="true" role="dialog"></aside>
+<div class="toast" id="toast"></div>
+
+<script>
+let SNAPSHOT = {};
+const ENC = {"s":"cg9CmCOEHSWhgoNrO8humw==","i":"CjLKxD8MWx9rje+u","n":310000,"c":"1NV50DHwwYBkHq2iowS/LtRCvm0wXYfMpj3shAMlnGcVkR6bEsHkeYN43PuH6beURB+iHOWGSXmCoiZl7S303mfKtr9vsFWN/5pfvJ/4qFvtNxrfmPlNsk2wq2FcZOc/QeBxoEK/X1r9BeCzrCuoRO95ZYMceYzILLV0B204mmAkRmCBP6lVs7nQSn4fVmM4S+AnpdyyCvnmD3OKhMERplGajHaooG+0T5+tzeJP3PlBD+iDlBfFr6e6zmiVqsYHyoBjluUpVjb2LBF+I6EyyOyQgeAerNRx72NajWyXMEj32BExuofwDVRxkUTrcfa+UxPmZyWCnbxZf4OBGcWjoM9aCSPePJCHcTdmBQjjY4NzWN7NWxP9IxUdHFZ3gsMJ3x01oK3kVma/SHeHxRBIoaZSN9bkyt1OODmGoSb5HvRaDOwQpqXDid2ATURnPVtboxUSSZLTdaIuKs2+zctHLx4fq2TqPgLSYaSuZDF0hLFd5yzy7Sd+IV5G7lcwkFcIbsZXjDLJObeMwBEm3rUyNegGVT7w6yCGIXzYifDjuQAqQJasu41bcanONQx/q5ZJxIxuahGREkAIunEDYL2N1l76NwZ3qogSibACTMBLpxkEZW8R2Djh1CAgtMflbmcc2jk4b/608ZhfyS/EAcOB8HqAIOFy8ux5H9P51+ieHbcf1khgasKLtoorJqzdsaylb6iLopfQ+m7EnEHXOTLzvCWgK8n4ICVkoTDjh27VMdHuK02atF2Sihid1RgRcpwsPJOKi3xMPqIDf0C3tIPSZP6r63CIMpd3oi4n1w7DxmEOjFE5Q84Hfrueus+A/CGjpxp4KroJ9IsYSyBX70TFm2l0f66QR7auOAppPX9I1tZBywW5w7D34yMlrPJdSw9/9kflg+wO5UX0xghuhNBvo0Y196x0csmQCe1+jvf4RXUGuki63+E5nECLhmNfrxagFt5N4qtI8109244Hf4en+WMP6qSnkONHbSwG2bYnvHaDEOmNnCTyOpzzqAdOp1axO1JJzjoETYKZaNughaj+yquLXZyhIih4yZF085RplT14Fm5Gnu1SFJF34jNGIM/mFqIovmGdTlnxBy7jtKP1tqOW8bqAVb6uKL0FyM4d88e0TXhN/NbkJn00KvNmEgYqH29rr+FtRhlMytaL0+uHT+2REhhUNhEEuJFLPYJJJty/E1jKpmxAkCQYZcsmPWup3YmW0xwEO4waNP7+rMZ37fQhHCeMIfGx8lqXKff+1PgizC+q7HCyogp8n3CF0zR2ikF1Sz8ZIq7x+xZdJ5UnurnOXBdYBDL9GOc8uNHKMUOkthgNsZ++HbrtM/uWNSZbEduWJaC7IYbwe9k5drTYpq9lKRMEqwAYdPWv9BfyrCYIErPirU8UZZEjHqz1AFvGTZ91OYYvUCijJCAN/otXc34yWWwsxwgat8GwkcoUnVJJKTKJI+aUMYcbB/qU4SKG9hsqhLdrt6gUwCtswMXDwBMThgJcKqjWHVwlhd7pCt3SR/rmwqovSSY3M4L17quJQ8CZH1akfrG+TIFKXBh180Zl1m60VkwUn3N2In6TpmjUhZPNKTtLz1LIYe8d+GDA0UXrlkT0kw0leEAYomOVLkrawHyQ2jkttjEvFf3CdHIEmWsIx3OahbwiED6E6a4FhJeYkHB7A9+vzQiA/n8/EJAiP0nEaxfJSW9xf2AorfAkFEfJn2uhqNugMvl3kLxVyvyyxGwgVhCMbYGwx5EnmC1ngVrC8NNfpX1QZbeIPOu9EazZbAGKeUJQH+BX5ZP2p0j7q/Q3AplT8SjPF4Ni1mGQR9dJGa1nXwdfMICaQqpjVk64Z9+NXCOmLDQGATlPGjtDuNuYx6h6h4Lxqys5SYvX0VaoaSmhpQCbDhiAMzHw+cOYEV8FvfrkDpVrvDrbg/Bx8WOzNtfvG9Nr5oVJM11cOqxUEbnnynU3Y9XxUODxZg2oxXZbqx+DGgHSnxQJWsUZbGM="};
+const SNAPSHOT_DATE = "9 Nov 2026";
+
+const T = {
+ ms:{
+  ayah:"“…dan Kami jadikan kamu berbangsa-bangsa dan bersuku-suku supaya kamu saling mengenali.” (Al-Hujurat 49:13)", title:"Salasilah Keluarga", subtitle:"Keluarga Mohd Zin & Azizah", credit:"Hubungi: Hafiz · WhatsApp @hafimoz",
+  tabTree:"Salasilah", tabGaps:"Bantu isi", tabSugs:"Cadangan", tabHelp:"Cara membantu",
+  search:"Cari nama…", expandAll:"Buka semua", collapseAll:"Tutup semua", loading:"Sedang memuatkan…",
+  people:"orang", generations:"generasi", toCheck:"perlu disemak", pending:"cadangan menunggu",
+  gen:"Generasi", children:"anak", check:"perlu semak", deceased:"Allahyarham/ah",
+  name:"Nama sebenar", nick:"Nama panggilan", nameHint:"nama penuh, bin/binti jika tahu", realUnknown:"nama sebenar?", nameConfirmed:"Nama sebenar sudah betul (disahkan)", unconfirmed:"belum disahkan", confirmedStat:"nama sebenar disahkan", greyNote:"Nama kelabu = nama sebenar belum disahkan", gender:"Jantina", male:"Lelaki", female:"Perempuan", unknown:"—",
+  order:"Anak ke-", born:"Tahun lahir", bornHint:"anggaran pun boleh, cth. 'sekitar 1950'",
+  spouse:"Suami / isteri", otherParent:"Ibu / bapa yang seorang lagi", otherParentHint:"jika ada lebih dari seorang isteri/suami",
+  notes:"Catatan", isDeceased:"Sudah meninggal dunia", needsCheck:"Perlu disemak (tidak pasti)",
+  parentOf:"Anak kepada", childrenOf:"Anak-anak", noChildren:"Belum ada anak disenaraikan.",
+  addChild:"+ Tambah anak", editInfo:"Betulkan / tambah maklumat", del:"Padam",
+  yourName:"Nama anda & hubungan", yourNameHint:"cth. 'Aisyah, menantu'",
+  save:"Simpan", send:"Hantar cadangan", cancel:"Batal",
+  privacy:"Jangan masukkan no. IC atau no. telefon. Untuk alamat, masukkan rumah lama / rumah pusaka sahaja, bukan alamat tempat tinggal sekarang. Pastikan tuan punya gambar bersetuju.", photo:"Gambar", housePhoto:"Gambar rumah", pastAddress:"Alamat rumah lama", pastAddressHint:"rumah lama / rumah pusaka, bukan alamat sekarang", inPerlis:"Rumah ini di Perlis", oldHome:"Rumah lama", inPerlisPill:"Perlis", onMap:"Lihat di peta", choosePhoto:"Pilih gambar", removePhoto:"Buang", uploading:"Sedang memuat naik…", uploadErr:"Gambar tidak dapat dimuat naik. Cuba gambar lain.", noUpload:"Ada gambar? Hantar melalui WhatsApp kepada Hafiz (anak Azizah), @hafimoz.", newPhoto:"gambar baharu", wait:"Tunggu gambar selesai dimuat naik.",
+  addChildTo:"Tambah anak kepada", editPerson:"Betulkan maklumat",
+  saved:"Disimpan", sent:"Cadangan dihantar. Terima kasih!", copied:"Disalin",
+  noWrite:"Anda boleh lihat salasilah ini. Untuk menambah atau membetulkan, isi borang dan hantar melalui WhatsApp kepada penyelenggara.",
+  msgTitle:"Hantar cadangan ini", msgHint:"Salin mesej di bawah atau hantar terus melalui WhatsApp kepada Hafiz (anak Azizah), @hafimoz.",
+  copy:"Salin mesej", whatsapp:"Hantar melalui WhatsApp",
+  gapsIntro:"Tempat-tempat yang masih kosong atau perlu disemak. Kalau anda tahu, klik nama dan tambah maklumat.",
+  gapNoKids:"Belum ada anak disenaraikan", gapCheck:"Perlu disemak", gapUnknown:"Nama belum diketahui",
+  sugOwner:"Semak cadangan daripada ahli keluarga. 'Terima' akan terus mengemas kini salasilah.",
+  sugEditor:"Cadangan yang dihantar. Hafiz akan menyemak dan mengesahkannya.",
+  sugNone:"Tiada cadangan lagi.", approve:"Terima", reject:"Tolak",
+  st_pending:"Menunggu", st_approved:"Diterima", st_rejected:"Ditolak",
+  sugAdd:"Tambah anak kepada", sugEdit:"Betulkan", from:"Daripada",
+  copyCsv:"Salin semua sebagai CSV",
+  snapshotBanner:"Salinan bertarikh {d}. Untuk menambah atau membetulkan, klik nama dan hantar melalui WhatsApp.",
+  slowBanner:"Data langsung belum dapat dicapai. Memaparkan salinan bertarikh {d}.",
+  ownerBanner:"Anda penyelenggara: perubahan anda disimpan terus.",
+  editorBanner:"Cadangan anda akan disemak oleh Hafiz sebelum dimasukkan.",
+  confirmDel:"Padam {n}? Anak-anaknya akan dipindahkan ke bawah induknya.", yes:"Ya, padam",
+  required:"Sila isi nama panggilan atau nama sebenar.", requiredYou:"Sila isi nama anda.", saveErr:"Tidak dapat disimpan. Cuba lagi.",
+  nothingChanged:"Tiada perubahan.",
+  help:`<h2>Kenapa salasilah ini?</h2>
+<p>Salasilah ini bermula daripada keluarga Mohd Zin &amp; Azizah, dan akan terus berkembang apabila keluarga bertambah: menantu, cucu, cicit dan seterusnya. Ia warisan dan penyambung silaturahim untuk generasi akan datang.</p>
+<p>Azizah ialah anak Kassim &amp; Mariam, dalam salasilah besar keturunan Haji Taha &amp; Zainab: <a href="https://hafizmz.github.io/salasilah/" target="_blank" rel="noopener">hafizmz.github.io/salasilah</a>.</p>
+<h2>Hubungi</h2>
+<p>Untuk sebarang pertanyaan atau maklumat, boleh hubungi <b>Hafiz (anak Azizah)</b> melalui WhatsApp <b>@hafimoz</b>.</p>
+<h2>Cara membantu</h2>
+<ol>
+<li>Cari nama ibu, bapa atau datuk nenek anda di tab <b>Salasilah</b>.</li>
+<li>Klik nama itu. Tekan <b>+ Tambah anak</b> untuk menambah anak, atau <b>Betulkan / tambah maklumat</b> untuk membetulkan ejaan, nama panggilan, pasangan, tahun lahir dan sebagainya.</li>
+<li>Tulis nama anda dan hubungan anda supaya Hafiz tahu siapa yang menghantar.</li>
+<li>Hantar. Jika butang <b>Hantar melalui WhatsApp</b> keluar, tekan dan hantar mesej itu kepada Hafiz.</li>
+</ol>
+<h2>Apa yang paling diperlukan</h2>
+<ul>
+<li>Anak-anak dan cucu-cucu yang belum disenaraikan (lihat tab <b>Bantu isi</b>).</li>
+<li>Nama penuh (bin/binti) dan nama panggilan.</li>
+<li>Suami/isteri, urutan anak (anak ke berapa), dan tahun lahir jika tahu.</li>
+<li>Siapa yang sudah meninggal dunia.</li>
+<li>Nama yang berwarna <span style="color:var(--muted);font-style:italic">kelabu</span> ialah nama sebenar yang belum disahkan. Jika anda tahu nama sebenar, sila betulkan.</li>
+</ul>
+<h2>Privasi</h2>
+<p>Jangan masukkan no. kad pengenalan atau no. telefon. Alamat yang dimasukkan hanyalah rumah lama atau rumah pusaka, bukan alamat tempat tinggal sekarang. Kongsi gambar hanya jika tuan punya gambar bersetuju.</p>
+<h2>Gambar &amp; rumah lama</h2>
+<p>Anda boleh tambah gambar seseorang, alamat rumah lama, dan gambar rumah jika rumah itu di Perlis. Jika butang muat naik tiada, hantar gambar melalui WhatsApp kepada Hafiz (anak Azizah).</p>`
+ },
+ en:{
+  ayah:"“…and made you into peoples and tribes so that you may know one another.” (Al-Hujurat 49:13)", title:"Family Tree", subtitle:"The family of Mohd Zin & Azizah", credit:"Contact: Hafiz · WhatsApp @hafimoz",
+  tabTree:"Tree", tabGaps:"Help fill gaps", tabSugs:"Suggestions", tabHelp:"How to help",
+  search:"Search names…", expandAll:"Expand all", collapseAll:"Collapse all", loading:"Loading…",
+  people:"people", generations:"generations", toCheck:"to check", pending:"pending suggestions",
+  gen:"Generation", children:"children", check:"to check", deceased:"Deceased",
+  name:"Real name", nick:"Nickname", nameHint:"full name, bin/binti if known", realUnknown:"real name?", nameConfirmed:"Real name is correct (confirmed)", unconfirmed:"not confirmed", confirmedStat:"real names confirmed", greyNote:"Grey name = real name not yet confirmed", gender:"Gender", male:"Male", female:"Female", unknown:"—",
+  order:"Birth order", born:"Year born", bornHint:"an estimate is fine, e.g. 'around 1950'",
+  spouse:"Husband / wife", otherParent:"Other parent", otherParentHint:"if there was more than one spouse",
+  notes:"Notes", isDeceased:"Has passed away", needsCheck:"Needs checking (not sure)",
+  parentOf:"Child of", childrenOf:"Children", noChildren:"No children listed yet.",
+  addChild:"+ Add child", editInfo:"Correct / add details", del:"Delete",
+  yourName:"Your name & relation", yourNameHint:"e.g. 'Aisyah, daughter-in-law'",
+  save:"Save", send:"Send suggestion", cancel:"Cancel",
+  privacy:"Don't enter IC or phone numbers. For addresses, only enter old / ancestral homes, not where anyone lives now. Make sure the person in a photo is happy for it to be shared.", photo:"Photo", housePhoto:"Photo of the house", pastAddress:"Past home address", pastAddressHint:"old / ancestral home, not a current address", inPerlis:"This home is in Perlis", oldHome:"Past home", inPerlisPill:"Perlis", onMap:"View on map", choosePhoto:"Choose photo", removePhoto:"Remove", uploading:"Uploading…", uploadErr:"Couldn't upload the photo. Try another one.", noUpload:"Have a photo? Send it on WhatsApp to Hafiz (son of Azizah), @hafimoz.", newPhoto:"new photo", wait:"Please wait for the photo to finish uploading.",
+  addChildTo:"Add a child to", editPerson:"Correct details",
+  saved:"Saved", sent:"Suggestion sent. Thank you!", copied:"Copied",
+  noWrite:"You can browse this tree. To add or correct someone, fill in the form and send it to the maintainer by WhatsApp.",
+  msgTitle:"Send this suggestion", msgHint:"Copy the message below or send it straight to Hafiz (son of Azizah) on WhatsApp, @hafimoz.",
+  copy:"Copy message", whatsapp:"Send on WhatsApp",
+  gapsIntro:"Places that are still empty or need checking. If you know, click the name and add details.",
+  gapNoKids:"No children listed yet", gapCheck:"Needs checking", gapUnknown:"Name not known yet",
+  sugOwner:"Review suggestions from family. 'Approve' updates the tree straight away.",
+  sugEditor:"Suggestions sent. Hafiz will review and confirm them.",
+  sugNone:"No suggestions yet.", approve:"Approve", reject:"Reject",
+  st_pending:"Pending", st_approved:"Approved", st_rejected:"Rejected",
+  sugAdd:"Add child to", sugEdit:"Correct", from:"From",
+  copyCsv:"Copy everything as CSV",
+  snapshotBanner:"Copy dated {d}. To add or correct someone, click their name and send it on WhatsApp.",
+  slowBanner:"Live data can't be reached yet. Showing the copy dated {d}.",
+  ownerBanner:"You're the maintainer: your changes save directly.",
+  editorBanner:"Your suggestions will be reviewed by Hafiz before they're added.",
+  confirmDel:"Delete {n}? Their children will move up to their parent.", yes:"Yes, delete",
+  required:"Please enter a nickname or real name.", requiredYou:"Please enter your name.", saveErr:"Couldn't save. Please try again.",
+  nothingChanged:"Nothing changed.",
+  help:`<h2>Why this tree?</h2>
+<p>This tree starts with the family of Mohd Zin &amp; Azizah and keeps growing as the family does: spouses, grandchildren, great-grandchildren and beyond. It is a legacy that keeps the bonds of kinship alive for generations to come.</p>
+<p>Azizah is the daughter of Kassim &amp; Mariam, in the wider tree of Haji Taha &amp; Zainab's descendants: <a href="https://hafizmz.github.io/salasilah/" target="_blank" rel="noopener">hafizmz.github.io/salasilah</a>.</p>
+<h2>Contact</h2>
+<p>For any questions or information, contact <b>Hafiz (son of Azizah)</b> on WhatsApp at <b>@hafimoz</b>.</p>
+<h2>How to help</h2>
+<ol>
+<li>Find your parent's or grandparent's name in the <b>Tree</b> tab.</li>
+<li>Click the name. Press <b>+ Add child</b> to add a child, or <b>Correct / add details</b> to fix spelling, nicknames, spouse, year born and so on.</li>
+<li>Write your name and how you're related so Hafiz knows who sent it.</li>
+<li>Send it. If a <b>Send on WhatsApp</b> button appears, press it and send the message to Hafiz.</li>
+</ol>
+<h2>What's most needed</h2>
+<ul>
+<li>Children and grandchildren not yet listed (see the <b>Help fill gaps</b> tab).</li>
+<li>Full names (bin/binti) and nicknames.</li>
+<li>Husbands/wives, birth order, and year born if known.</li>
+<li>Who has passed away.</li>
+<li>Names in <span style="color:var(--muted);font-style:italic">grey</span> are real names not yet confirmed. If you know the real name, please correct it.</li>
+</ul>
+<h2>Privacy</h2>
+<p>Don't enter IC or phone numbers. Only enter old or ancestral home addresses, not where anyone lives now. Only share a photo if the person in it agrees.</p>
+<h2>Photos &amp; past homes</h2>
+<p>You can add a photo of a person, their past home address, and a photo of the house if it's in Perlis. If there's no upload button, send the photo on WhatsApp to Hafiz (son of Azizah).</p>`
+ }
+};
+
+let lang = "ms";
+try{ lang = localStorage.getItem("salasilah-lang") || "ms"; }catch(e){}
+const t = (k, vars) => { let s = (T[lang][k] ?? T.ms[k] ?? k); if(vars) for(const v in vars) s = s.replace("{"+v+"}", vars[v]); return s; };
+
+const GENCOL = ["var(--g1)","var(--g2)","var(--g3)","var(--g4)","var(--g5)","var(--g6)"];
+const FIELDS = ["nick","name","nameConfirmed","gender","order","born","deceased","spouse","otherParent","photo","pastAddress","inPerlis","housePhoto","notes","check"];
+const PHOTO = new Set(["photo","housePhoto"]);
+
+const state = {
+  people: {},            // id -> data
+  live: false,           // true when data comes from db
+  mode: "loading",       // owner | editor | readonly
+  sugs: [],
+  expanded: new Set(),
+  q: "",
+  tab: "tree",
+  openId: null,
+};
+let db = null, user = null, myId = null, assets = null;
+const blob = id => "/_blob/"+id;
+function imgEl(id,cls,alt){ const i=el("img",{class:cls,src:blob(id),alt:alt||"",loading:"lazy"}); i.onerror=()=>{ i.style.visibility="hidden"; }; return i; }
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const rc = (node,...kids) => node.replaceChildren(...kids.flat().filter(k=>k!=null && k!==false));
+function el(tag, attrs={}, ...kids){
+  const n = document.createElement(tag);
+  for(const k in attrs){
+    const v = attrs[k];
+    if(k==="class") n.className = v;
+    else if(k==="text") n.textContent = v;
+    else if(k.startsWith("on")) n.addEventListener(k.slice(2), v);
+    else if(v===true) n.setAttribute(k,"");
+    else if(v!==false && v!=null) n.setAttribute(k, v);
+  }
+  for(const c of kids.flat()) if(c!=null && c!==false) n.append(c.nodeType ? c : document.createTextNode(c));
+  return n;
+}
+function toast(msg){ const x=$("#toast"); x.textContent=msg; x.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>x.classList.remove("show"),2200); }
+function str(v){ return v==null ? "" : String(v); }
+
+function index(){
+  const kids = {}, roots = [];
+  for(const id in state.people){
+    const p = state.people[id]; const par = p.parent || "";
+    if(par && state.people[par]) (kids[par] ||= []).push(id); else roots.push(id);
+  }
+  const sortF = (a,b)=> (Number(state.people[a].order)||999)-(Number(state.people[b].order)||999) || str(state.people[a].name).localeCompare(str(state.people[b].name));
+  for(const k in kids) kids[k].sort(sortF);
+  roots.sort(sortF);
+  const gen = {};
+  const walk = (id,g)=>{ gen[id]=g; (kids[id]||[]).forEach(c=>walk(c,g+1)); };
+  roots.forEach(r=>walk(r,1));
+  return {kids, roots, gen};
+}
+let IDX = {kids:{},roots:[],gen:{}};
+
+function lineage(id){
+  const out=[]; let cur=id, guard=0;
+  while(cur && state.people[cur] && guard++<40){ out.unshift(cur); cur = state.people[cur].parent; }
+  return out;
+}
+const BOOL = new Set(["deceased","check","nameConfirmed","inPerlis"]);
+function realNameEl(p,q,always){
+  const nm = str(p.name), prim = str(p.nick)||nm;
+  if(p.nameConfirmed && nm && (always || nm!==prim)) return el("span",{class:"realname"}, highlight(nm,q||""));
+  if(p.nameConfirmed) return null;
+  if(nm && (always || nm!==prim)) return el("span",{class:"realname unconf",title:t("unconfirmed")}, highlight(nm,q||""));
+  return el("span",{class:"realname unconf",title:t("unconfirmed"),text:t("realUnknown")});
+}
+function label(id){ const p=state.people[id]; if(!p) return "?"; return str(p.nick)||str(p.name)||"?"; }
+function pathText(id){ return lineage(id).map(label).join(" › "); }
+
+/* ---------- rendering ---------- */
+function applyLang(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-t]").forEach(n=> n.textContent = t(n.dataset.t));
+  document.querySelectorAll(".lang button").forEach(b=> b.setAttribute("aria-pressed", b.dataset.lang===lang));
+  $("#q").placeholder = t("search");
+  $("#tab-help").innerHTML = t("help");
+  renderAll();
+}
+
+function renderAll(){
+  IDX = index();
+  renderBanner(); renderStats(); renderLegend(); renderTree(); renderGaps(); renderSugs();
+  if(state.openId) openPerson(state.openId, true);
+}
+
+function renderBanner(){
+  const b = $("#banner"); b.classList.remove("warn"); b.hidden = false;
+  if(state.mode==="loading"){ b.hidden = true; return; }
+  if(!state.live){ b.textContent = t(state.slow ? "slowBanner":"snapshotBanner",{d:SNAPSHOT_DATE}); b.classList.add("warn"); return; }
+  if(state.mode==="owner") b.textContent = t("ownerBanner");
+  else if(state.mode==="editor") b.textContent = t("editorBanner");
+  else { b.textContent = t("noWrite"); }
+}
+
+function renderStats(){
+  const ids = Object.keys(state.people);
+  const maxGen = Math.max(0,...Object.values(IDX.gen));
+  const chk = ids.filter(i=>state.people[i].check).length;
+  const pend = state.sugs.filter(s=>s.status==="pending").length;
+  const s = $("#stats"); s.replaceChildren(...[
+    el("div",{class:"stat"}, el("b",{text:ids.length}), t("people")),
+    el("div",{class:"stat"}, el("b",{text:maxGen}), t("generations")),
+    el("div",{class:"stat"}, el("b",{text:chk}), t("toCheck")),
+    el("div",{class:"stat"}, el("b",{text:ids.filter(i=>state.people[i].nameConfirmed).length+" / "+ids.length}), t("confirmedStat")),
+    state.mode!=="readonly" && state.live ? el("div",{class:"stat"}, el("b",{text:pend}), t("pending")) : null
+  ].filter(Boolean));
+  const badge = $("#sugBadge"); badge.hidden = !pend; badge.textContent = pend;
+}
+
+function renderLegend(){
+  const maxGen = Math.max(0,...Object.values(IDX.gen));
+  const L = $("#legend"); rc(L);
+  L.append(el("span",{class:"realname unconf",style:"font-size:.82rem",text:t("greyNote")}));
+  for(let g=1; g<=maxGen; g++){ const s=el("span",{text:t("gen")+" "+g}); s.style.setProperty("--c",GENCOL[Math.min(g-1,GENCOL.length-1)]); L.append(s); }
+}
+
+function matches(id,q){
+  const p=state.people[id]; return (str(p.name)+" "+str(p.nick)+" "+str(p.spouse)).toLowerCase().includes(q);
+}
+function highlight(text,q){
+  if(!q) return document.createTextNode(text);
+  const i = text.toLowerCase().indexOf(q); if(i<0) return document.createTextNode(text);
+  const f=document.createDocumentFragment();
+  f.append(text.slice(0,i), el("mark",{text:text.slice(i,i+q.length)}), text.slice(i+q.length));
+  return f;
+}
+
+function renderTree(){
+  const box = $("#tree");
+  const ids = Object.keys(state.people);
+  if(!ids.length){ rc(box,el("div",{class:"empty",text: state.mode==="loading" ? t("loading") : t("sugNone")})); return; }
+  const q = state.q.trim().toLowerCase();
+  let visible = null;
+  if(q){
+    visible = new Set();
+    for(const id of ids) if(matches(id,q)) lineage(id).forEach(a=>visible.add(a));
+  }
+  const build = id => {
+    if(visible && !visible.has(id)) return null;
+    const p = state.people[id], kids = IDX.kids[id]||[], g = IDX.gen[id]||1;
+    const open = q ? true : state.expanded.has(id);
+    const row = el("div",{class:"row"},
+      el("button",{class:"tog", disabled: !kids.length, "aria-label":"toggle", "aria-expanded": String(open),
+        onclick:()=>{ state.expanded.has(id)?state.expanded.delete(id):state.expanded.add(id); renderTree(); }, text: kids.length ? (open?"▾":"▸") : ""}),
+      (()=>{ const d=el("span",{class:"dot"}); d.style.background=GENCOL[Math.min(g-1,GENCOL.length-1)]; return d; })(),
+      p.photo ? imgEl(p.photo,"avatar") : null,
+      el("button",{class:"name", onclick:()=>openPerson(id)}, highlight(label(id), q)),
+      realNameEl(p,q),
+      p.spouse ? el("span",{class:"spouse"},"+ ", highlight(str(p.spouse),q)) : null,
+      p.otherParent ? el("span",{class:"pill",text:(lang==="ms"?"ibu/bapa: ":"parent: ")+p.otherParent}) : null,
+      p.deceased ? el("span",{class:"pill",text:t("deceased")}) : null,
+      p.check ? el("span",{class:"pill check",text:t("check")}) : null,
+      kids.length ? el("span",{class:"cnt",text:kids.length+" "+t("children")}) : null
+    );
+    const n = el("div",{class:"node"}, row);
+    if(kids.length && open){ const k=el("div",{class:"kids"}); kids.forEach(c=>{ const b=build(c); if(b) k.append(b); }); n.append(k); }
+    return n;
+  };
+  rc(box,...IDX.roots.map(build).filter(Boolean));
+  if(q && !box.children.length) rc(box,el("div",{class:"empty",text:"—"}));
+}
+
+function renderGaps(){
+  const box = $("#gaps"); rc(box);
+  const cards = [];
+  for(const id in state.people){
+    const p = state.people[id], g = IDX.gen[id]||1, nk=(IDX.kids[id]||[]).length;
+    const reasons = [];
+    if(str(p.name).trim()==="?" ) reasons.push(t("gapUnknown"));
+    if(p.check) reasons.push(t("gapCheck"));
+    if(g<=1 && nk===0) reasons.push(t("gapNoKids"));
+    if(reasons.length) cards.push({id,g,reasons});
+  }
+  cards.sort((a,b)=>a.g-b.g || pathText(a.id).localeCompare(pathText(b.id)));
+  if(!cards.length){ box.append(el("div",{class:"empty",text:"✓"})); return; }
+  for(const c of cards){
+    box.append(el("div",{class:"card"},
+      el("h3",{}, el("button",{class:"name",style:"padding:0",onclick:()=>openPerson(c.id)}, label(c.id))),
+      el("div",{class:"path",text:pathText(c.id)}),
+      el("div",{style:"margin-top:6px;display:flex;gap:6px;flex-wrap:wrap"}, c.reasons.map(r=>el("span",{class:"pill check",text:r})))
+    ));
+  }
+}
+
+function fieldName(k){ return {photo:t("photo"),housePhoto:t("housePhoto"),pastAddress:t("pastAddress"),inPerlis:t("inPerlis"),nameConfirmed:t("nameConfirmed"),name:t("name"),nick:t("nick"),gender:t("gender"),order:t("order"),born:t("born"),deceased:t("isDeceased"),spouse:t("spouse"),otherParent:t("otherParent"),notes:t("notes"),check:t("needsCheck")}[k]||k; }
+function fmtVal(k,v){
+  if(PHOTO.has(k)) return v ? "📷 "+t("newPhoto") : "—";
+  if(k==="nameConfirmed") return v ? "✓" : "✗";
+  if(k==="gender") return v==="L"?t("male"):v==="P"?t("female"):t("unknown");
+  if(BOOL.has(k)) return v ? "✓" : "✗";
+  return str(v)||"—";
+}
+
+function renderSugs(){
+  const box = $("#sugs"); rc(box);
+  const intro = $("#sugIntro");
+  $("#ownerTools").hidden = state.mode!=="owner";
+  if(!state.live || state.mode==="readonly"){ intro.textContent = t("noWrite"); return; }
+  intro.textContent = state.mode==="owner" ? t("sugOwner") : t("sugEditor");
+  const list = [...state.sugs].sort((a,b)=> (a.status==="pending"?0:1)-(b.status==="pending"?0:1) || str(b.at).localeCompare(str(a.at)));
+  if(!list.length){ box.append(el("div",{class:"empty",text:t("sugNone")})); return; }
+  for(const s of list){
+    const tgt = state.people[s.target];
+    const head = s.type==="add" ? t("sugAdd")+": "+(tgt?pathText(s.target):s.targetLabel||"?") : t("sugEdit")+": "+(tgt?pathText(s.target):s.targetLabel||"?");
+    const diff = el("div",{class:"diff"});
+    const d = s.data||{};
+    for(const k of FIELDS){
+      if(!(k in d)) continue;
+      if(PHOTO.has(k)){ if(d[k]) diff.append(el("div",{}, el("b",{text:fieldName(k)+": "}), imgEl(d[k],"sugimg"))); continue; }
+      if(s.type==="edit" && tgt) diff.append(el("div",{}, el("b",{text:fieldName(k)+": "}), el("s",{text:fmtVal(k,tgt[k])}), " → ", fmtVal(k,d[k])));
+      else if(d[k]!=="" && d[k]!==false) diff.append(el("div",{}, el("b",{text:fieldName(k)+": "}), fmtVal(k,d[k])));
+    }
+    if(s.note) diff.append(el("div",{}, el("b",{text:t("notes")+": "}), s.note));
+    const card = el("div",{class:"card sug"},
+      el("div",{class:"status "+s.status,text:t("st_"+s.status)}),
+      el("h3",{text:head}), diff,
+      el("div",{class:"meta",text: t("from")+": "+(s.byName||"?")+" · "+str(s.at).slice(0,10)})
+    );
+    if(state.mode==="owner" && s.status==="pending"){
+      card.append(el("div",{class:"actions"},
+        el("button",{class:"btn primary small",text:t("approve"),onclick:e=>approve(s,e.target)}),
+        el("button",{class:"btn small",text:t("reject"),onclick:e=>setSugStatus(s,"rejected",e.target)})
+      ));
+    }
+    box.append(card);
+  }
+}
+
+/* ---------- drawer ---------- */
+function showDrawer(){ $("#drawer").classList.add("open"); $("#scrim").classList.add("open"); }
+function closeDrawer(){ $("#drawer").classList.remove("open"); $("#scrim").classList.remove("open"); state.openId=null; }
+$("#scrim").onclick = closeDrawer;
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeDrawer(); });
+
+function openPerson(id, refresh){
+  const p = state.people[id]; if(!p){ if(refresh) closeDrawer(); return; }
+  if(refresh && $("#drawer").dataset.view!=="person") return;
+  state.openId = id;
+  const D = $("#drawer"); D.dataset.view="person";
+  const kids = IDX.kids[id]||[];
+  const par = p.parent && state.people[p.parent] ? p.parent : null;
+  const dl = el("dl",{});
+  const add=(k,v)=>{ if(v!=null && v!=="" ) dl.append(el("dt",{text:k}), el("dd",{text:v})); };
+  add(t("gen"), IDX.gen[id]);
+  add(t("gender"), p.gender ? fmtVal("gender",p.gender) : "");
+  add(t("order"), p.order);
+  add(t("spouse"), p.spouse);
+  add(t("otherParent"), p.otherParent);
+  add(t("born"), p.born);
+  if(p.deceased) add(t("deceased"), "✓");
+  add(t("notes"), p.notes);
+  const home = (p.pastAddress || p.housePhoto) ? el("div",{class:"homebox"},
+    el("h3",{text:t("oldHome")}),
+    p.pastAddress ? el("div",{text:p.pastAddress}) : null,
+    el("div",{style:"display:flex;gap:8px;align-items:center;margin-top:6px;flex-wrap:wrap"},
+      p.inPerlis ? el("span",{class:"pill",text:t("inPerlisPill")}) : null,
+      p.pastAddress ? el("a",{href:"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(p.pastAddress+(p.inPerlis?", Perlis":"")),target:"_blank",rel:"noopener",text:t("onMap")}) : null),
+    p.housePhoto ? imgEl(p.housePhoto,"house",t("housePhoto")) : null) : null;
+  rc(D,
+    el("button",{class:"close","aria-label":"close",onclick:closeDrawer,text:"×"}),
+    el("div",{class:"path",text:pathText(id)}),
+    p.photo ? imgEl(p.photo,"portrait",label(id)) : null,
+    el("h2",{text:label(id)}),
+    el("div",{style:"margin-top:4px"}, el("span",{class:"path",text:t("name")+": "}), realNameEl(p,"",true), p.nameConfirmed ? null : el("span",{class:"pill",style:"margin-left:6px",text:t("unconfirmed")})),
+    p.check ? el("span",{class:"pill check",text:t("check")}) : null,
+    dl,
+    home,
+    par ? el("div",{}, el("b",{text:t("parentOf")+": "}), el("button",{class:"chip",onclick:()=>openPerson(par),text:label(par)})) : null,
+    el("h3",{text:t("childrenOf")+" ("+kids.length+")",style:"margin:16px 0 8px"}),
+    kids.length ? el("div",{class:"childlist"}, kids.map(c=>el("button",{class:"chip",onclick:()=>openPerson(c),text:label(c)}))) : el("div",{class:"path",text:t("noChildren")}),
+    el("div",{class:"actions"},
+      el("button",{class:"btn primary",text:t("addChild"),onclick:()=>openForm("add",id)}),
+      el("button",{class:"btn",text:t("editInfo"),onclick:()=>openForm("edit",id)}),
+      state.mode==="owner" && state.live ? el("button",{class:"btn danger",text:t("del"),onclick:()=>confirmDelete(id)}) : null
+    )
+  );
+  showDrawer();
+}
+
+function confirmDelete(id){
+  const D=$("#drawer"); D.dataset.view="confirm";
+  rc(D,
+    el("button",{class:"close",onclick:closeDrawer,text:"×"}),
+    el("h2",{text:t("del")}),
+    el("p",{text:t("confirmDel",{n:label(id)})}),
+    el("div",{class:"actions"},
+      el("button",{class:"btn danger",text:t("yes"),onclick:async e=>{
+        e.target.disabled=true;
+        try{
+          const p=state.people[id];
+          for(const c of (IDX.kids[id]||[])){ await db.doc("people/"+c).update({parent:p.parent||""}); }
+          await db.doc("people/"+id).delete();
+          closeDrawer(); toast(t("saved"));
+        }catch(err){ e.target.disabled=false; toast(t("saveErr")); }
+      }}),
+      el("button",{class:"btn",text:t("cancel"),onclick:()=>openPerson(id)})
+    ));
+}
+
+function openForm(type, targetId){
+  const D = $("#drawer"); D.dataset.view="form";
+  const p = type==="edit" ? state.people[targetId] : {};
+  const nextOrder = type==="add" ? ((IDX.kids[targetId]||[]).reduce((m,c)=>Math.max(m,Number(state.people[c].order)||0),0)+1) : p.order;
+  const direct = state.mode==="owner" && state.live;
+  const inp = (k, extra={}) => el("input",{type:"text",name:k,value:str(type==="edit"?p[k]:""),...extra});
+  const f = el("form",{},
+    el("label",{text:t("nick")+" *"}), inp("nick"),
+    el("label",{},t("name")," ",el("span",{class:"hint",text:"("+t("nameHint")+")"})), inp("name",{oninput:e=>{ e.target.form.elements.nameConfirmed.checked = true; }}),
+    el("div",{class:"inline"}, el("input",{type:"checkbox",name:"nameConfirmed",id:"f-nc",checked:!!(type==="edit"&&p.nameConfirmed)}), el("label",{for:"f-nc",style:"margin:0;font-weight:400",text:t("nameConfirmed")})),
+    el("div",{class:"row2"},
+      el("div",{}, el("label",{text:t("gender")}),
+        (()=>{ const s=el("select",{name:"gender"}, el("option",{value:"",text:t("unknown")}), el("option",{value:"L",text:t("male")}), el("option",{value:"P",text:t("female")})); s.value=str(p.gender); return s; })()),
+      el("div",{}, el("label",{text:t("order")}), el("input",{type:"number",name:"order",min:"1",value:str(nextOrder)}))
+    ),
+    el("label",{},t("born")," ",el("span",{class:"hint",text:"("+t("bornHint")+")"})), inp("born"),
+    el("label",{text:t("spouse")}), inp("spouse"),
+    el("label",{},t("otherParent")," ",el("span",{class:"hint",text:"("+t("otherParentHint")+")"})), inp("otherParent"),
+    el("label",{text:t("photo")}), photoField("photo", type==="edit"?p.photo:""),
+    el("label",{},t("pastAddress")," ",el("span",{class:"hint",text:"("+t("pastAddressHint")+")"})), el("textarea",{name:"pastAddress",style:"min-height:56px"}, str(type==="edit"?p.pastAddress:"")),
+    el("div",{class:"inline"}, el("input",{type:"checkbox",name:"inPerlis",id:"f-pl",checked:!!(type==="edit"&&p.inPerlis),onchange:e=>{ e.target.form.querySelector("#house-wrap").hidden=!e.target.checked; }}), el("label",{for:"f-pl",style:"margin:0;font-weight:400",text:t("inPerlis")})),
+    (()=>{ const w=el("div",{id:"house-wrap"}, el("label",{text:t("housePhoto")}), photoField("housePhoto", type==="edit"?p.housePhoto:"")); w.hidden=!(type==="edit"&&p.inPerlis); return w; })(),
+    el("label",{text:t("notes")}), el("textarea",{name:"notes"}, str(type==="edit"?p.notes:"")),
+    el("div",{class:"inline"}, el("input",{type:"checkbox",name:"deceased",id:"f-dec",checked:!!(type==="edit"&&p.deceased)}), el("label",{for:"f-dec",style:"margin:0;font-weight:400",text:t("isDeceased")})),
+    el("div",{class:"inline"}, el("input",{type:"checkbox",name:"check",id:"f-chk",checked:!!(type==="edit"&&p.check)}), el("label",{for:"f-chk",style:"margin:0;font-weight:400",text:t("needsCheck")})),
+    direct ? null : el("label",{},t("yourName")+" * ",el("span",{class:"hint",text:"("+t("yourNameHint")+")"})),
+    direct ? null : el("input",{type:"text",name:"byName",value:(()=>{try{return localStorage.getItem("salasilah-by")||""}catch(e){return ""}})()}),
+    el("div",{class:"privacy",text:t("privacy")}),
+    el("div",{class:"err",id:"ferr"}),
+    el("div",{class:"actions"},
+      el("button",{class:"btn primary",type:"submit",text: direct ? t("save") : t("send")}),
+      el("button",{class:"btn",type:"button",text:t("cancel"),onclick:()=>openPerson(targetId)})
+    )
+  );
+  f.addEventListener("submit", e=>{ e.preventDefault(); submitForm(f,type,targetId,direct); });
+  rc(D,
+    el("button",{class:"close",onclick:closeDrawer,text:"×"}),
+    el("div",{class:"path",text:pathText(targetId)}),
+    el("h2",{text: type==="add" ? t("addChildTo")+" "+label(targetId) : t("editPerson")}),
+    f
+  );
+  showDrawer();
+  f.querySelector("[name=name]").focus();
+}
+
+async function shrink(file){
+  try{
+    const bmp = await createImageBitmap(file);
+    const s = Math.min(1, 1400/Math.max(bmp.width,bmp.height));
+    const c = document.createElement("canvas"); c.width=Math.round(bmp.width*s); c.height=Math.round(bmp.height*s);
+    c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);
+    const b = await new Promise(r=>c.toBlob(r,"image/jpeg",0.85));
+    return b || file;
+  }catch(e){ return file; }
+}
+function photoField(name, cur){
+  const hidden = el("input",{type:"hidden",name,value:str(cur)});
+  const wrap = el("div",{class:"upl"}, hidden);
+  const prev = el("span",{});
+  const st = el("span",{class:"st"});
+  const showPrev = id => { rc(prev, id ? imgEl(id,"") : null); rm.hidden = !id; };
+  const rm = el("button",{type:"button",class:"btn small",text:t("removePhoto"),onclick:()=>{ hidden.value=""; showPrev(""); }});
+  if(!assets){
+    wrap.append(prev, rm, el("span",{class:"st",text:t("noUpload")}));
+    showPrev(str(cur)); return wrap;
+  }
+  const fi = el("input",{type:"file",accept:"image/*",style:"display:none"});
+  const pick = el("button",{type:"button",class:"btn small",text:t("choosePhoto"),onclick:()=>fi.click()});
+  fi.onchange = async ()=>{
+    const file = fi.files && fi.files[0]; if(!file) return;
+    wrap.dataset.busy="1"; st.textContent=t("uploading"); pick.disabled=true;
+    try{
+      const b = await shrink(file);
+      const typ = b.type && /^image\/(jpeg|png|gif|webp)$/.test(b.type) ? b.type : "image/jpeg";
+      const r = await assets.upload(b,{type:typ});
+      hidden.value = r.id; showPrev(r.id); st.textContent="";
+    }catch(e){ st.textContent=t("uploadErr"); }
+    delete wrap.dataset.busy; pick.disabled=false; fi.value="";
+  };
+  wrap.append(prev, pick, rm, fi, st);
+  showPrev(str(cur));
+  return wrap;
+}
+
+function readForm(f){
+  const g = n => f.elements[n];
+  return {
+    name: g("name").value.trim(), nick: g("nick").value.trim(), gender: g("gender").value,
+    order: g("order").value ? Number(g("order").value) : "", born: g("born").value.trim(),
+    spouse: g("spouse").value.trim(), otherParent: g("otherParent").value.trim(), notes: g("notes").value.trim(),
+    deceased: g("deceased").checked, check: g("check").checked, nameConfirmed: g("nameConfirmed").checked,
+    photo: g("photo").value, pastAddress: g("pastAddress").value.trim(), inPerlis: g("inPerlis").checked, housePhoto: g("inPerlis").checked ? g("housePhoto").value : ""
+  };
+}
+
+async function submitForm(f,type,targetId,direct){
+  const err = f.querySelector("#ferr"); err.textContent="";
+  const v = readForm(f);
+  if(!v.name && !v.nick){ err.textContent=t("required"); return; }
+  if(f.querySelector(".upl[data-busy]")){ err.textContent=t("wait"); return; }
+  let data = v;
+  if(type==="edit"){
+    const cur = state.people[targetId]; data = {};
+    for(const k of FIELDS){ if(str(cur[k])!==str(v[k]) && !BOOL.has(k) || (BOOL.has(k) && !!cur[k]!==!!v[k])) data[k]=v[k]; }
+    if(!Object.keys(data).length){ err.textContent=t("nothingChanged"); return; }
+  }
+  const btn = f.querySelector("button[type=submit]"); btn.disabled = true;
+  if(direct){
+    try{
+      if(type==="add"){ const ref = db.collection("people").doc(); await ref.set({...data, parent:targetId}); state.expanded.add(targetId); }
+      else await db.doc("people/"+targetId).update(data);
+      toast(t("saved")); openPerson(targetId);
+    }catch(e){ btn.disabled=false; err.textContent=t("saveErr"); }
+    return;
+  }
+  const byName = f.elements.byName.value.trim();
+  if(!byName){ btn.disabled=false; err.textContent=t("requiredYou"); return; }
+  try{ localStorage.setItem("salasilah-by", byName); }catch(e){}
+  const sug = { type, target:targetId, targetLabel:pathText(targetId), data, byName, by: myId||"", status:"pending", at:new Date().toISOString() };
+  if(state.live && state.mode==="editor"){
+    try{ await db.collection("suggestions").add(sug); toast(t("sent")); openPerson(targetId); return; }
+    catch(e){ /* fall through to message */ }
+  }
+  showMessage(sug, targetId);
+}
+
+function sugMessage(s){
+  const L=[ (lang==="ms"?"Salasilah Mohd Zin & Azizah — cadangan":"Mohd Zin & Azizah family tree — suggestion"),
+    (s.type==="add"?t("sugAdd"):t("sugEdit"))+": "+s.targetLabel ];
+  for(const k of FIELDS){ const v=s.data[k]; if(PHOTO.has(k)) continue; if(k in s.data && v!=="" && !(v===false && s.type==="add")) L.push(fieldName(k)+": "+fmtVal(k,v)); }
+  L.push(t("from")+": "+s.byName);
+  return L.join("\n");
+}
+function showMessage(s,targetId){
+  const D=$("#drawer"); D.dataset.view="msg";
+  const msg = sugMessage(s);
+  rc(D,
+    el("button",{class:"close",onclick:closeDrawer,text:"×"}),
+    el("h2",{text:t("msgTitle")}),
+    el("p",{class:"path",text:t("msgHint")}),
+    el("pre",{class:"msg",text:msg}),
+    el("div",{class:"actions"},
+      el("a",{class:"btn primary",href:"https://wa.me/?text="+encodeURIComponent(msg),target:"_blank",rel:"noopener",text:t("whatsapp"),style:"text-decoration:none"}),
+      el("button",{class:"btn",text:t("copy"),onclick:async()=>{ try{ await navigator.clipboard.writeText(msg); toast(t("copied")); }catch(e){ const r=document.createRange(); r.selectNodeContents(D.querySelector("pre")); const sel=getSelection(); sel.removeAllRanges(); sel.addRange(r); } }}),
+      el("button",{class:"btn",text:t("cancel"),onclick:()=>openPerson(targetId)})
+    ));
+}
+
+async function approve(s, btn){
+  btn.disabled = true;
+  try{
+    if(s.type==="add"){
+      if(!state.people[s.target]) throw new Error("parent missing");
+      await db.collection("people").doc().set({ name:"",nick:"",gender:"",order:"",born:"",spouse:"",otherParent:"",notes:"",deceased:false,check:false,nameConfirmed:false,photo:"",pastAddress:"",inPerlis:false,housePhoto:"", ...s.data, parent:s.target });
+    } else {
+      if(!state.people[s.target]) throw new Error("person missing");
+      await db.doc("people/"+s.target).update(s.data);
+    }
+    await db.doc("suggestions/"+s.id).update({status:"approved"});
+    toast(t("saved"));
+  }catch(e){ btn.disabled=false; toast(t("saveErr")); }
+}
+async function setSugStatus(s,status,btn){
+  btn.disabled=true;
+  try{ await db.doc("suggestions/"+s.id).update({status}); }catch(e){ btn.disabled=false; toast(t("saveErr")); }
+}
+
+$("#copyCsv").onclick = async ()=>{
+  const cols=["id","generation","path",...FIELDS,"parent"];
+  const esc=v=>{ v=str(v); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; };
+  const rows=[cols.join(",")];
+  const order=[]; const walk=id=>{ order.push(id); (IDX.kids[id]||[]).forEach(walk); }; IDX.roots.forEach(walk);
+  for(const id of order){ const p=state.people[id]; rows.push([id,IDX.gen[id],pathText(id),...FIELDS.map(k=>p[k]),p.parent].map(esc).join(",")); }
+  try{ await navigator.clipboard.writeText(rows.join("\n")); toast(t("copied")); }catch(e){ toast(t("saveErr")); }
+};
+
+/* ---------- tabs, search, lang ---------- */
+function setTab(tab){
+  state.tab=tab;
+  document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected", b.dataset.tab===tab));
+  ["tree","gaps","sugs","help"].forEach(x=> $("#tab-"+x).hidden = x!==tab);
+}
+document.querySelectorAll("nav button").forEach(b=> b.onclick=()=>setTab(b.dataset.tab));
+document.querySelectorAll(".lang button").forEach(b=> b.onclick=()=>{ lang=b.dataset.lang; try{localStorage.setItem("salasilah-lang",lang)}catch(e){}; applyLang(); });
+let qT; $("#q").addEventListener("input",e=>{ clearTimeout(qT); qT=setTimeout(()=>{ state.q=e.target.value; renderTree(); },150); });
+$("#expandAll").onclick=()=>{ Object.keys(IDX.kids).forEach(id=>state.expanded.add(id)); renderTree(); };
+$("#collapseAll").onclick=()=>{ state.expanded.clear(); IDX.roots.forEach(r=>state.expanded.add(r)); renderTree(); };
+
+/* ---------- data ---------- */
+function useSnapshot(){
+  state.people = JSON.parse(JSON.stringify(SNAPSHOT)); state.live=false;
+}
+function initExpanded(){
+  IDX = index();
+  IDX.roots.forEach(r=>state.expanded.add(r));
+}
+
+async function start(){
+  setTab("tree");
+  useSnapshot(); initExpanded(); state.mode="loading"; applyLang();
+
+  if(typeof claude==="undefined"){ document.querySelector('nav [data-tab="sugs"]').hidden=true; state.mode="readonly"; renderAll(); return; }
+  [db, user, assets] = await Promise.all([claude.use("db"), claude.use("user"), claude.use("assets")]).catch(()=>[null,null,null]);
+  const isOwner = user?.isOwner?.() ?? false;
+  const canEdit = user?.canEdit?.() ?? false;
+  try{ myId = user ? await user.id() : null; }catch(e){ myId=null; }
+
+  if(!db){ state.mode="readonly"; renderAll(); return; }
+  state.mode = isOwner ? "owner" : canEdit ? "editor" : "readonly";
+
+  const timer = setTimeout(()=>{ if(!state.live){ state.slow=true; renderBanner(); } },10000);
+  db.collection("people").onSnapshot(snap=>{
+    if(snap.empty && snap.metadata.fromCache) return;
+    if(snap.empty){ clearTimeout(timer); state.live=false; renderAll(); return; }
+    clearTimeout(timer); state.slow=false;
+    const ppl={}; snap.docs.forEach(d=>{ ppl[d.id]=d.data(); });
+    const first = !state.live; state.people=ppl; state.live=true;
+    if(first){ state.expanded.clear(); initExpanded(); }
+    renderAll();
+  }, err=>{ clearTimeout(timer); state.live=false; renderAll(); });
+
+  if(state.mode!=="readonly"){
+    db.collection("suggestions").onSnapshot(snap=>{
+      state.sugs = snap.docs.map(d=>({id:d.id, ...d.data()}));
+      renderStats(); renderSugs();
+    }, ()=>{});
+  }
+}
+async function unlock(pw){
+  const b64 = s => Uint8Array.from(atob(s), c=>c.charCodeAt(0));
+  const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
+  const key = await crypto.subtle.deriveKey({name:"PBKDF2",salt:b64(ENC.s),iterations:ENC.n,hash:"SHA-256"}, base, {name:"AES-GCM",length:256}, false, ["decrypt"]);
+  const pt = await crypto.subtle.decrypt({name:"AES-GCM",iv:b64(ENC.i)}, key, b64(ENC.c));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+async function tryOpen(pw, quiet){
+  try{ SNAPSHOT = await unlock(pw); try{ sessionStorage.setItem("salasilah-pw", pw); }catch(e){}
+    $("#gate").remove(); start(); return true;
+  }catch(e){ if(!quiet) $("#gateErr").textContent = "Kata laluan salah / Wrong password"; return false; }
+}
+$("#gateForm").addEventListener("submit", async e=>{ e.preventDefault(); const b=e.target.querySelector("button"); b.disabled=true; $("#gateErr").textContent=""; await tryOpen($("#pw").value); b.disabled=false; });
+(async()=>{ let saved=null; try{ saved=sessionStorage.getItem("salasilah-pw"); }catch(e){} if(saved) await tryOpen(saved,true); })();
+
+</script>
+</body>
+</html>
