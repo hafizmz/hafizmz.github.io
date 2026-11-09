@@ -26,7 +26,9 @@ body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.45 Inter,syst
 a{color:var(--moss)}
 header{background:var(--forest);color:var(--cream);padding:calc(14px + env(safe-area-inset-top)) 16px 14px;position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:8px}
 header h1{font:700 19px ui-serif,Georgia,'Times New Roman',serif;margin:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#back{display:none;background:none;border:0;color:var(--cream);font-size:28px;cursor:pointer;width:44px;height:44px;margin:-10px 0 -10px -10px;line-height:1}
+#back,#homeBtn{display:none;flex:none;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);color:var(--cream);font:600 13.5px Inter,sans-serif;cursor:pointer;height:34px;padding:0 12px;border-radius:17px;margin:-6px 0;line-height:1;white-space:nowrap}
+#back:active,#homeBtn:active{background:rgba(255,255,255,.28)}
+nav.bottom button.on{position:relative}nav.bottom button.on:before{content:"";position:absolute;top:0;left:28%;right:28%;height:3px;border-radius:0 0 3px 3px;background:var(--forest)}
 main{max-width:820px;margin:0 auto;padding:0 0 calc(90px + env(safe-area-inset-bottom))}
 .view{display:none}.view.on{display:block}
 .pad{padding:16px}
@@ -271,7 +273,7 @@ path.sel{stroke-dasharray:14 8;animation:march 1s linear infinite}
 </style>
 </head>
 <body>
-<header><button id="back" aria-label="Back">‹</button><h1 id="title">Penang Hill Trail Guide</h1><span id="netBadge" class="netb"></span></header>
+<header><button id="back" aria-label="Back">‹ Back</button><h1 id="title">Penang Hill Trail Guide</h1><button id="homeBtn" aria-label="Home">🏠 Home</button><span id="netBadge" class="netb"></span></header>
 <main>
 
 <!-- HOME -->
@@ -448,7 +450,7 @@ path.sel{stroke-dasharray:14 8;animation:march 1s linear infinite}
 </main>
 
 <nav class="bottom" id="nav">
-  <button data-v="home" class="on"><span>🥾</span>Routes</button>
+  <button data-v="home" class="on"><span>🏠</span>Home</button>
   <button data-v="discover"><span>✨</span>Discover</button>
   <button data-v="map"><span>🗺️</span>Map</button>
   <button data-v="library"><span>📚</span>Library</button>
@@ -1036,7 +1038,7 @@ function renderRouteCards(){$("#routeCards").innerHTML=ROUTES.map(r=>{const t=r.
   <div class="bd"><h3>${r.name}</h3><div class="muted" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.sub}</div><div class="stats"><span><b>${fmt(r.km," km")}</b></span><span><b>${fmt(r.min," min")}</b></span><span>${r.level}</span></div></div></div>`}).join("");
  $("#routeCards").onclick=e=>{const c=e.target.closest(".rcard");if(c)openRoute(c.dataset.id)}}
 
-function renderHeroMap(){const g=$("#heroCard");if(!g||typeof TRAILS2==="undefined")return;
+function renderHeroMap(){const g=$("#heroCard");if(!g||typeof TRAILS2==="undefined")return;setTimeout(()=>{try{const a=$("#track").ownerSVGElement,b=g.querySelector("svg");b.setCurrentTime(a.getCurrentTime())}catch(_){}},0);
  const all=TRAILS2.flatMap(t=>t.pts);const xs=all.map(p=>p[0]),ys=all.map(p=>p[1]);
  const bx0=Math.min(...xs),bx1=Math.max(...xs),by0=Math.min(...ys),by1=Math.max(...ys);
  const CX0=0,CX1=160,CY0=0,CY1=104;           // the map card
@@ -1053,11 +1055,17 @@ function renderHeroMap(){const g=$("#heroCard");if(!g||typeof TRAILS2==="undefin
   <rect x="${CX0}" y="${CY0}" width="${CX1-CX0}" height="${CY1-CY0}" rx="7" fill="#fbf6ea"/>
   <rect x="${CX0}" y="${CY0}" width="${CX1-CX0}" height="${CY1-CY0}" rx="7" fill="#e6eedb" opacity=".6"/>
   <text x="${CX0+8}" y="${CY0+13}" font-size="7.2" font-weight="700" letter-spacing=".6" fill="#1f3d2b" font-family="Inter,sans-serif">TRAIL MAP · 10 ROUTES</text>
+  <circle cx="${CX0+10}" cy="${CY1-9}" r="2.6" fill="#2f7de1" stroke="#fff" stroke-width=".8"/><text x="${CX0+15}" y="${CY1-6.6}" font-size="6.2" font-weight="600" fill="#1f3d2b" font-family="Inter,sans-serif">Live train</text>
   <text x="${CX1-8}" y="${CY0+13}" font-size="7" font-weight="700" fill="#1f3d2b" text-anchor="end" font-family="Inter,sans-serif">▲N</text>
   <clipPath id="cardClip"><rect x="${CX0}" y="${CY0+17}" width="${CX1-CX0}" height="${CY1-CY0-17}" rx="7"/></clipPath>
   <g clip-path="url(#cardClip)"><g transform="translate(${tx.toFixed(2)},${ty.toFixed(2)}) scale(${k.toFixed(5)})">${roads}${pk}
    <path d="M${railPts.map(p=>p.join(",")).join("L")}" fill="none" stroke="#5e4027" stroke-width="4" stroke-dasharray="1 2.5" ${ns}/><path d="M${railPts.map(p=>p.join(",")).join("L")}" fill="none" stroke="#5e4027" stroke-width="1.6" ${ns}/>
    ${lines}
+   <path id="gpsRail" d="M${railPts.map(p=>p.join(",")).join("L")}" fill="none" stroke="none"/>
+   <path d="M${railPts.map(p=>p.join(",")).join("L")}" fill="none" stroke="#2f7de1" stroke-width="2.4" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1" ${ns}><animate attributeName="stroke-dashoffset" dur="16s" repeatCount="indefinite" values="1;0;0;1;1" keyTimes="0;.42;.5;.92;1"/></path>
+   <g><circle r="${(9*inv).toFixed(1)}" fill="#2f7de1" opacity=".25"><animate attributeName="r" dur="1.6s" repeatCount="indefinite" values="${(3*inv).toFixed(1)};${(11*inv).toFixed(1)}"/><animate attributeName="opacity" dur="1.6s" repeatCount="indefinite" values=".45;0"/></circle>
+    <circle r="${(3.4*inv).toFixed(1)}" fill="#2f7de1" stroke="#fff" stroke-width="1.4" ${ns}/>
+    <animateMotion dur="16s" repeatCount="indefinite" keyPoints="0;1;1;0;0" keyTimes="0;.42;.5;.92;1" calcMode="linear"><mpath href="#gpsRail"/></animateMotion></g>
    <circle class="us" cx="-62" cy="-406" r="${(3*inv).toFixed(1)}" fill="#e8913a" stroke="#fff" stroke-width="1.2" ${ns}/>
 
   </g></g></g></svg>`;
@@ -1096,7 +1104,7 @@ document.querySelector(".feat").onclick=e=>{const d=e.target.closest("[data-go]"
  if(k==="map"||k==="near"||k==="rec")document.querySelector(`.qa button[data-qa="${k}"]`).click();
  else if(k==="prog")$("#progCard").scrollIntoView({behavior:"smooth",block:"center"});
  else if(k==="lang")$("#langBtn").click();else if(k==="about")go("about")};
-Object.assign(MS_HOME,{"UNESCO Biosphere Reserve · 130-million-year-old rainforest":"Rizab Biosfera UNESCO · hutan hujan berusia 130 juta tahun",
+Object.assign(MS_HOME,{"Home":"Utama","🏠 Home":"🏠 Utama","‹ Back":"‹ Kembali","Live train":"Kereta api langsung","UNESCO Biosphere Reserve · 130-million-year-old rainforest":"Rizab Biosfera UNESCO · hutan hujan berusia 130 juta tahun",
  "🌏 UNESCO Biosphere Reserve · since #":"🌏 Rizab Biosfera UNESCO · sejak #","A living rainforest, from hilltop to sea":"Hutan hujan yang hidup, dari puncak ke laut",
  "On # September #, UNESCO named Penang Hill Malaysia's third Biosphere Reserve, after Tasik Chini and the Crocker Range. It protects an ancient rainforest while people continue to live, work and play around it.":"Pada # September #, UNESCO mengiktiraf Bukit Bendera sebagai Rizab Biosfera ketiga Malaysia, selepas Tasik Chini dan Banjaran Crocker. Ia melindungi hutan hujan purba sambil masyarakat terus hidup, bekerja dan beriadah di sekitarnya.",
  "about ¼ of Penang Island":"kira-kira ¼ Pulau Pinang","# M yrs":"# juta thn","age of the rainforest":"usia hutan hujan","species found in one survey":"spesies dalam satu kajian",
@@ -1204,8 +1212,9 @@ let prev="home",curRoute=null,fromHash=false;
 function go(v,title){const h=v==="route"?"route-"+curRoute:v;if(!fromHash&&location.hash.slice(1)!==h){try{location.hash=h}catch(_){}}const cur=document.querySelector(".view.on")?.id.slice(2);if(v==="route"&&cur!=="route")prev=cur;
  document.querySelectorAll(".view").forEach(x=>x.classList.toggle("on",x.id==="v-"+v));
  document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v||(v==="route"&&b.dataset.v==="home")));
- $("#back").style.display=v==="route"?"block":"none";$("#title").textContent=title||"Penang Hill Trail Guide";if(v!=="library")window.scrollTo(0,0)}
+ $("#back").style.display=v==="route"?"block":"none";$("#homeBtn").style.display=v==="home"?"none":"block";$("#title").textContent=title||"Penang Hill Trail Guide";if(v!=="library")window.scrollTo(0,0)}
 $("#nav").onclick=e=>{const b=e.target.closest("button");if(!b)return;go(b.dataset.v);if(b.dataset.v==="map"&&!selTrail&&$("#m-trail").style.display!=="none")requestAnimationFrame(startView)};
+$("#homeBtn").onclick=()=>go("home");
 $("#back").onclick=()=>{if(history.length>1)history.back();else go(prev)};
 function routeFromHash(){const h=location.hash.slice(1)||"home";fromHash=true;
  try{if(h.startsWith("route-"))openRoute(h.slice(6));else if(["home","discover","map","library","about"].includes(h))go(h);}finally{fromHash=false}}
