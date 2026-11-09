@@ -225,6 +225,23 @@ path.sel{stroke-dasharray:14 8;animation:march 1s linear infinite}
 .allroutes summary{cursor:pointer;color:var(--moss);font:600 13px Inter,sans-serif;padding:6px 0}
 .stats2>div{flex:0 0 42%!important;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px}
 .stats2 b{display:block;font:600 22px ui-serif,Georgia,serif;color:var(--forest)}.stats2 span{font-size:12px;color:var(--muted)}
+
+.unesco{margin-top:14px;border-radius:18px;padding:16px;background:linear-gradient(160deg,#0e4d6e,#1f3d2b);color:#f6f1e6;position:relative;overflow:hidden}
+.unesco:after{content:"🌏";position:absolute;right:-14px;top:-14px;font-size:110px;opacity:.12}
+.unesco .ulbl{font:700 10.5px Inter,sans-serif;letter-spacing:.7px;text-transform:uppercase;color:#bfe3f0}
+.unesco h3{font:700 21px ui-serif,Georgia,serif;margin:6px 0 6px;color:#fff}
+.unesco p{margin:0;font-size:13.5px;opacity:.92;line-height:1.5}
+.ustats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:12px 0 10px}
+.ustats div{background:rgba(255,255,255,.1);border-radius:12px;padding:8px 6px;text-align:center}
+.ustats b{display:block;font:700 16px ui-serif,Georgia,serif;color:#fff}.ustats span{font-size:10.5px;opacity:.85}
+.zones{display:flex;gap:4px;margin-bottom:12px}
+.z{flex:1;border-radius:10px;padding:7px 8px;font-size:10.5px}.z b{display:block;font-size:12px}.z span{opacity:.85}
+.z1{background:#2f7a4a}.z2{background:rgba(127,168,107,.55)}.z3{background:rgba(232,145,58,.45)}
+.ubtns{display:flex;gap:8px;flex-wrap:wrap}.unesco .btn{background:#f6f1e6;color:#1f3d2b}.unesco .btn.ghost{background:none;color:#f6f1e6;border-color:rgba(246,241,230,.6);text-decoration:none}
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media(max-width:380px){.feat{grid-template-columns:repeat(2,1fr)}}
+.feat div{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:11px 9px;cursor:pointer}
+.feat span{font-size:20px}.feat b{display:block;font-size:12.5px;margin-top:4px}.feat em{display:block;font-style:normal;font-size:11px;color:var(--muted);margin-top:1px}
 </style>
 </head>
 <body>
@@ -262,7 +279,7 @@ path.sel{stroke-dasharray:14 8;animation:march 1s linear infinite}
     <div class="hero2txt">
       <div class="greet" id="greet">Good morning, hiker</div>
       <h2>Walk the hill. Read its stories.</h2>
-      <p>Penang Hill · Bukit Bendera · UNESCO Biosphere Reserve</p>
+      <p>UNESCO Biosphere Reserve · 130-million-year-old rainforest</p>
     </div>
   </div>
   <div class="qa">
@@ -274,10 +291,27 @@ path.sel{stroke-dasharray:14 8;animation:march 1s linear infinite}
   <div class="pad" style="padding-top:4px">
     <div class="sec" style="margin-top:8px"><h2 style="margin:0">Today on the hill</h2><span class="muted" id="todayDate"></span></div>
     <div class="hscroll" id="today"></div>
+    <div class="unesco" id="unescoCard">
+      <div class="ulbl">🌏 UNESCO Biosphere Reserve · since 2021</div>
+      <h3>A living rainforest, from hilltop to sea</h3>
+      <p>On 15 September 2021, UNESCO named Penang Hill Malaysia's third Biosphere Reserve, after Tasik Chini and the Crocker Range. It protects an ancient rainforest while people continue to live, work and play around it.</p>
+      <div class="ustats"><div><b>12,481 ha</b><span>about ¼ of Penang Island</span></div><div><b>130 M yrs</b><span>age of the rainforest</span></div><div><b>1,400+</b><span>species found in one survey</span></div></div>
+      <div class="zones"><div class="z z1"><b>Core</b><span>Protected forest</span></div><div class="z z2"><b>Buffer</b><span>Research & eco-tourism</span></div><div class="z z3"><b>Transition</b><span>Where people live & work</span></div></div>
+      <div class="ubtns"><button class="btn" id="uNature">🌿 Meet the wildlife</button><a class="btn ghost" href="#" data-lib="phbr">About the reserve</a></div>
+    </div>
+    <div class="sec"><h2 style="margin:0">Built for the trail</h2></div>
+    <div class="feat">
+      <div data-go="map"><span>🗺️</span><b>True-scale map</b><em>Works offline</em></div>
+      <div data-go="near"><span>🔔</span><b>Stop alerts</b><em>Stories pop up as you walk</em></div>
+      <div data-go="rec"><span>⏺️</span><b>Record & share</b><em>GPS track, SOS location</em></div>
+      <div data-go="prog"><span>🏆</span><b>Badges</b><em>Collect all 24 stops</em></div>
+      <div data-go="lang"><span>🌐</span><b>English & BM</b><em>Tap BM / EN anytime</em></div>
+      <div data-go="about"><span>🔒</span><b>Private</b><em>No ads, no tracking</em></div>
+    </div>
     <div class="themes2">
-      <div class="theme" data-k="history"><div class="ic">🏛️</div><b>History</b><span>Timeline & bungalows</span></div>
       <div class="theme" data-k="nature"><div class="ic">🌿</div><b>Nature</b><span>Field guide</span></div>
       <div class="theme" data-k="arts"><div class="ic">🎨</div><b>Arts</b><span>Culture & galleries</span></div>
+      <div class="theme" data-k="history"><div class="ic">🏛️</div><b>History</b><span>Timeline & bungalows</span></div>
     </div>
     <div class="sec"><h2 style="margin:0">Pick a route</h2><span class="muted" id="routeCount"></span></div>
     <div class="hscroll" id="routeCards"></div>
@@ -307,9 +341,9 @@ path.sel{stroke-dasharray:14 8;animation:march 1s linear infinite}
 <!-- DISCOVER -->
 <div class="view" id="v-discover"><div class="pad">
   <div class="seg" id="seg">
-    <button data-k="history" class="on">🏛️ History</button>
-    <button data-k="nature">🌿 Nature</button>
+    <button data-k="nature" class="on">🌿 Nature</button>
     <button data-k="arts">🎨 Arts</button>
+    <button data-k="history">🏛️ History</button>
   </div>
   <div id="discoverBody"></div>
 </div></div>
@@ -381,7 +415,7 @@ path.sel{stroke-dasharray:14 8;animation:march 1s linear infinite}
     <li><b>First route</b>: your photos and checkpoints</li>
     <li>Interactive trail map + GPX loader ✅</li><li>Stop alerts, visited stops & badges ✅</li><li>True-scale map from OpenStreetMap ✅</li><li>Real GPS lines for each route</li>
     <li>More routes, GPS "you are here", Bahasa Malaysia</li></ol></div>
-  <p class="muted">Beta 1.1. All text is written for this guide from the sources in the Library. Books and articles belong to their authors. Map data © OpenStreetMap contributors. Font: Inter (SIL Open Font License). <a href="privacy.html">Privacy</a></p>
+  <p class="muted">Beta 1.2. All text is written for this guide from the sources in the Library. Books and articles belong to their authors. Map data © OpenStreetMap contributors. Font: Inter (SIL Open Font License). <a href="privacy.html">Privacy</a></p>
 </div></div>
 </main>
 
@@ -455,7 +489,7 @@ const ROUTES=[
   note:"Steep steps nearly all the way, past Middle Station with its old train on display. About 2.4 km measured on the map, climbing roughly 600 m from the Lower Station.",src:["wk_heritage","wk_bypathb","onpenang"],
   tips:["Start early. It gets hot and humid later in the day.","There are toilets at Middle Station.","Take the funicular down to save your knees."]},
  {id:"moniot",trail:"moniot",name:"Moniot Road Trail",sub:"Built 1825, one of the oldest tracks on the hill",c:"#8a5a2b",km:1.5,min:null,level:"Moderate",start:"Moon Gate / Botanic Gardens side",
-  note:"Named after J.M. Moniot, Surveyor-General of the Straits Settlements. It was built by convict labourers of Indian descent from British Bencoolen, and declared a Heritage Trail in 1995. Many hikers come up from Moon Gate on this route.",src:["phc_trails","wiki"],
+  note:"Named after J.M. Moniot, Surveyor-General of the Straits Settlements. It was built by convict labourers of Indian descent brought from Bencoolen (Sumatra), and declared a Heritage Trail in 1995. Many hikers come up from Moon Gate on this route.",src:["phc_trails","wiki"],
   tips:["Download an offline map first (OsmAnd or MAPS.ME). There are many junctions.","Maps are posted at the bypass junctions."]},
  {id:"jeep",trail:"jeep",name:"Jeep Track from Botanic Gardens",sub:"Paved road climb, the classic workout",c:"#7a4a3a",km:4.8,min:150,level:"Challenging",start:"Penang Botanic Gardens",
   note:"Only authorised vehicles can drive it, but hikers can walk it. It arrives near The Habitat and the Bellevue Hotel. About 4.8 km one way, measured on the map.",src:["wk_botanic"],
@@ -532,11 +566,11 @@ function openRoute(id){const r=ROUTES.find(x=>x.id===id);if(!r)return;curRoute=i
 
 /* ===== DISCOVER: HISTORY ===== */
 const TIMELINE=[
- ["1786","Francis Light founds the British settlement on Penang, at what is now George Town.",["greathill"]],
+ ["1786","Penang opens as a trading port, at what is now George Town.",["greathill"]],
  ["1788","Light cuts a horse track from the Botanic Gardens waterfall to the top and clears land for strawberries. That's where the name Strawberry Hill comes from.",["wiki"]],
  ["c.1789","Bel Retiro is built as the Governor's residence. The flagstaff outside, used to signal to Fort Cornwallis, gives the hill its name: Flagstaff Hill, or Bukit Bendera.",["wiki","tye"]],
  ["1803","A convalescent bungalow goes up on the summit, an early sign of the hill's role as a cool place to recover.",["wiki"]],
- ["1825","Moniot Road is completed. It was built by convict labourers of Indian descent from British Bencoolen, and is one of the oldest tracks on the hill.",["phc_trails"]],
+ ["1825","Moniot Road is completed. It was built by convict labourers of Indian descent brought from Bencoolen (Sumatra), and is one of the oldest tracks on the hill.",["phc_trails"]],
  ["1894","A post office opens on the hill.",["wiki"]],
  ["1895","The Crag Hotel opens, run by the Sarkies Brothers, who also ran the E&O Hotel. It closed during World War II.",["wiki"]],
  ["1897","The first attempt at a mountain railway fails. A second line (1901–05) has technical faults.",["wiki"]],
@@ -552,7 +586,7 @@ const TIMELINE=[
  ["2024","PHC launches the Penang Hill Hiking Trails app with live navigation and AED locations.",["app_official"]]
 ];
 const BUNGALOWS=`<div class="card"><h3>🏡 The bungalows</h3>
- <p style="font-size:14px;margin:6px 0 0">There are 52 bungalows on the hill, built by British officials and later by wealthy Chinese tycoons as sanatoriums, retreats and homes. Bel Retiro is the most prestigious and is still a government retreat. Others still standing include the Convalescent Bungalow, Grace Dieu, Fairmont and Moy Craig, which is often called the most beautiful.</p>
+ <p style="font-size:14px;margin:6px 0 0">There are 52 bungalows on the hill, built over two centuries by officials, merchants and families as sanatoriums, retreats and homes. Bel Retiro is the most prestigious and is still a government retreat. Others still standing include the Convalescent Bungalow, Grace Dieu, Fairmont and Moy Craig, which is often called the most beautiful.</p>
  <p style="font-size:14px;margin:8px 0 0">The hill also had a darker side. In colonial times there was racial segregation, and non-Europeans were not allowed to live above Viaduct Station.</p>
  ${srcLinks(["gibby_bungalows","tye","pmonthly"])}</div>`;
 function historyHTML(){return `<h2>A timeline of the hill</h2><div class="tl">${TIMELINE.map(([y,t,s])=>`<div class="ev"><div class="yr">${y}</div><div class="card"><div style="font-size:14px">${t}</div>${srcLinks(s)}</div></div>`).join("")}</div>
@@ -592,7 +626,7 @@ const SPECIES=[
  {g:"plant",e:"🌳",n:"Damar Minyak",d:"A native conifer whose resin was used for varnish and incense.",t:[],s:["phbr_nature","phbr"]},
  {g:"plant",e:"🌸",n:"Tiger Orchid",d:"Thought to be the world's largest orchid, with stems around 3 m tall.",t:[],s:["phbr_nature"]},
  {g:"plant",e:"🍄",n:"Glowing mushroom (Mycena chlorophos)",d:"A fungus that gives off a pale green glow. Look on night walks.",t:[],s:["phbr_nature"]},
- {g:"plant",e:"🌳",n:"Angsana trees",d:"The British planted them along paths for shade and as landmarks.",t:[],s:["star2023"]}
+ {g:"plant",e:"🌳",n:"Angsana trees",d:"Planted along the paths long ago for shade and as landmarks.",t:[],s:["star2023"]}
 ];
 const GROUPS={all:"All",mammal:"🐒 Mammals",bird:"🐦 Birds",reptile:"🐍 Reptiles",small:"🦋 Small creatures",plant:"🌿 Plants & fungi"};
 let spG="all";
@@ -620,13 +654,13 @@ function artsHTML(){return `<h2>Arts & culture</h2>
  <div class="card"><h3>🛕🕌 Two faiths on Gun Hill</h3>
   <p style="font-size:14px;margin:6px 0 0">The Sri Aruloli Thirumurugan Temple and the Penang Hill Mosque stand side by side at the summit, a small picture of Penang's mix of cultures. Remove your shoes and dress modestly if you go in.</p>${srcLinks(["komoot"])}</div>
  <div class="card"><h3>🏛️ Architecture on the trail</h3>
-  <p style="font-size:14px;margin:6px 0 0">Look out for the colonial bungalows (verandahs, timber, tiled floors), the Art Deco lines of Edgecliff, and old ruins like Mon Sejour and the Crag Hotel on the longer hikes.</p>${srcLinks(["gibby_bungalows","wk_tiger"])}</div>
+  <p style="font-size:14px;margin:6px 0 0">Look out for the old hill bungalows (verandahs, timber, tiled floors), the Art Deco lines of Edgecliff, and old ruins like Mon Sejour and the Crag Hotel on the longer hikes.</p>${srcLinks(["gibby_bungalows","wk_tiger"])}</div>
  <div class="card"><h3>🍢 Living crafts</h3>
   <p style="font-size:14px;margin:6px 0 0">Try henna body art at stop 10, and kacang putih (roasted nuts and crackers sold in paper cones) at stop 11. Both are everyday Malaysian traditions.</p></div>
  <div class="card"><h3>✍️ Stories still to be written</h3>
   <p style="font-size:14px;margin:6px 0 0">Historian Enzo Sim has called for more folk tales, ghost stories, poems and songs about the hill before the oral history is lost. This guide could collect them.</p>${srcLinks(["greathill"])}</div>`}
 
-let dk="history";
+let dk="nature";
 function renderDiscover(){$("#discoverBody").innerHTML=dk==="history"?historyHTML():dk==="nature"?natureHTML():artsHTML();
  document.querySelectorAll("#seg button").forEach(b=>b.classList.toggle("on",b.dataset.k===dk));
  const ch=$("#spChips");if(ch)ch.onclick=e=>{const g=e.target.closest(".chip")?.dataset.g;if(!g)return;spG=g;ch.querySelectorAll(".chip").forEach(c=>c.classList.toggle("on",c.dataset.g===g));$("#spList").innerHTML=spList()};}
@@ -640,7 +674,7 @@ const STOPS=[
  {n:"2",name:"Astaka (Cliff Cafe)",cat:"food",t:5,x:47,y:36.3,d:"Hilltop food court with views. Hikers coming up the Heritage Trail often end here.",s:["wk_bypathb","tye"]},
  {n:"3",name:"EL Walk",cat:"view",t:2,x:47,y:39.1,d:"Short walkway near the Upper Station, marked as its own route on the sign."},
  {n:"4",name:"Skywalk",cat:"view",t:2,x:51.6,y:44.4,d:"Viewing walkway over George Town and across to the mainland.",s:["komoot"]},
- {n:"5",name:"David Brown's Restaurant",cat:"food",t:5,x:53.6,y:39.6,d:"Colonial-style restaurant and tea terrace.",lens:{history:"Named after David Brown, who received Strawberry Hill from Francis Light and built one of the first houses on the hill."},s:["wiki"]},
+ {n:"5",name:"David Brown's Restaurant",cat:"food",t:5,x:53.6,y:39.6,d:"Heritage-style restaurant and tea terrace.",lens:{history:"Named after David Brown, who received Strawberry Hill from Francis Light and built one of the first houses on the hill."},s:["wiki"]},
  {n:"6",name:"Penang Hill Gallery @ Edgecliff",cat:"arts",t:5,x:62.8,y:43.2,fee:true,d:"The hill's museum, in a restored 1937 Art Deco bungalow.",lens:{arts:"Sections on the time tunnel, biodiversity, heritage, the funicular and culture. Closed Tuesdays; adult entry RM10.",history:"Originally named Braeside, built by architect J.C. Miller."},s:["edgecliff","railreview"]},
  {n:"7",name:"Kota Penang Hill",cat:"fun",t:5,x:54.5,y:46.9,d:"Attraction on the Upper Station square."},
  {n:"8a",name:"Skydeck (East)",cat:"view",t:3,x:57.6,y:44.6,d:"Lookout over the eastern slope towards George Town."},
@@ -648,7 +682,7 @@ const STOPS=[
  {n:"9",name:"Little Village",cat:"fun",t:3,x:58,y:41.3,fee:true,d:"Paid attraction just east of the Upper Station."},
  {n:"10",name:"Henna Art & Spa",cat:"arts",t:5,x:62.1,y:34.9,d:"Try henna body art, a tradition at Malay and Indian weddings and festivals."},
  {n:"11",name:"Kacang Putih Penang Hill",cat:"food",t:5,x:56.6,y:34.5,d:"A traditional Indian-Malaysian snack of roasted nuts and crackers in a paper cone."},
- {n:"12",name:"NatureWalks",cat:"nature",t:5,x:52.2,y:32.6,d:"Base of a local group that runs guided nature and heritage walks.",lens:{nature:"Guides point out details like the Angsana trees, which the British planted for shade and as landmarks."},s:["star2023"]},
+ {n:"12",name:"NatureWalks",cat:"nature",t:5,x:52.2,y:32.6,d:"Base of a local group that runs guided nature and heritage walks.",lens:{nature:"Guides point out details like the old Angsana trees, planted along the paths for shade and as landmarks."},s:["star2023"]},
  {n:"13",name:"Earthquake & Typhoon Pavilion",cat:"fun",t:8,x:55.4,y:27,fee:true,d:"Simulator attraction about natural disasters."},
  {n:"14",name:"Toy Museum & 5D",cat:"fun",t:9,x:52.9,y:21.5,fee:true,d:"Toy collection plus a 5D cinema."},
  {n:"15",name:"Bellevue Hotel",cat:"history",t:15,x:60.2,y:19,d:"A long-standing hotel on the hill where you can stay overnight.",lens:{history:"It appears on historic maps of Flagstaff Hill alongside Bel Retiro and the Crag Hotel."},s:["wiki"]},
@@ -657,7 +691,7 @@ const STOPS=[
  {n:"18",name:"32-Pounder Cannon",cat:"history",t:10,x:46.6,y:23.5,d:"An old muzzle-loading cannon that fired a 32-pound ball, on the rise known as Gun Hill."},
  {n:"19",name:"Penang Hill Mosque",cat:"arts",t:12,x:44.3,y:26.9,d:"Masjid Bukit Bendera, the summit mosque beside the Hindu temple.",s:["komoot"]},
  {n:"20",name:"Gate House Bel Retiro",cat:"history",t:12,x:40.4,y:33.9,d:"Gateway to the oldest and most prestigious bungalow on the hill.",lens:{history:"Built around 1789 for the Governor. Its flagstaff signalled to Fort Cornwallis in town, which gave the hill its name, Bukit Bendera ('flag hill'). It's still an official retreat and was a favourite of Tunku Abdul Rahman. View it from the gate only."},s:["wiki","tye"]},
- {n:"21",name:"Victorian Post Box",cat:"history",t:10,x:32.3,y:37.1,d:"A red cast-iron pillar box from the colonial postal service.",lens:{history:"A post office opened on the hill in 1894. The British flag was raised on Flagstaff Hill to signal that mail had arrived."},s:["wiki","tye"]},
+ {n:"21",name:"Victorian Post Box",cat:"history",t:10,x:32.3,y:37.1,d:"A red cast-iron pillar box from the old postal service.",lens:{history:"A post office opened on the hill in 1894. A flag was raised on Flagstaff Hill to signal that mail had arrived."},s:["wiki","tye"]},
  {n:"22",name:"Hillside Retreat",cat:"nature",t:30,x:31.9,y:47,d:"Forest campsite on Nature Walk Trails 3 and 4."},
  {n:"23",name:"Monkey Cup Garden",cat:"nature",t:30,x:15,y:44.8,fee:true,d:"Garden of pitcher plants ('monkey cups').",lens:{nature:"Several pitcher species grow wild on the hill. The slender pitcher traps insects, while the flask-shaped one also digests fallen leaves. It's also a starting point for longer western hikes."},s:["phbr_nature"]}
 ];
@@ -939,11 +973,13 @@ renderProgress();
 
 /* ===== FRONT PAGE ===== */
 const FACTS=[
+ ["The Penang Hill Biosphere Reserve runs from hill to ocean and covers about a quarter of Penang Island.","phbr"],
+ ["Penang Hill is Malaysia's third UNESCO Biosphere Reserve, after Tasik Chini and the Crocker Range.","phbr"],
  ["The funicular line is 2,007 m long. It first opened to the public on 21 October 1923.","wiki"],
- ["Bukit Bendera means 'Flag Hill': Bel Retiro's flagstaff once signalled to Fort Cornwallis in town.","wiki"],
+ ["Bukit Bendera means 'Flag Hill', after a signal flagstaff that once stood near the summit.","wiki"],
  ["Strawberry Hill is named after the strawberries Francis Light planted here in 1788.","wiki"],
  ["The Penang Hill vampire crab lives nowhere else on Earth. It was only described in 2016.","phbr_nature"],
- ["The summit is about 5 °C cooler than George Town, which is why the British built a hill station here.","wiki"],
+ ["The summit is about 5 °C cooler than George Town: a natural escape from the lowland heat.","wiki"],
  ["In the 2017 BioBlitz, 117 scientists logged over 1,400 species, including 4 likely new to science.","bioblitz"],
  ["Moniot Road was built in 1825 by convict labourers brought from Bencoolen.","phc_trails"],
  ["There are 52 bungalows on the hill. Bel Retiro, built around 1789, is the oldest.","gibby_bungalows"],
@@ -999,6 +1035,34 @@ const MS_HOME={"Good morning, hiker":"Selamat pagi, pendaki","Good afternoon, hi
  "UNESCO named Penang Hill a Biosphere Reserve on # September #. It covers # ha.":"UNESCO mengiktiraf Bukit Bendera sebagai Rizab Biosfera pada # September #. Keluasannya # ha.",
  "The hill in numbers ":"Bukit dalam angka "};
 renderHero();renderToday();renderRouteCards();
+$("#uNature").onclick=()=>{dk="nature";spG="all";renderDiscover();go("discover")};
+document.querySelector(".feat").onclick=e=>{const d=e.target.closest("[data-go]");if(!d)return;const k=d.dataset.go;
+ if(k==="map"||k==="near"||k==="rec")document.querySelector(`.qa button[data-qa="${k}"]`).click();
+ else if(k==="prog")$("#progCard").scrollIntoView({behavior:"smooth",block:"center"});
+ else if(k==="lang")$("#langBtn").click();else if(k==="about")go("about")};
+Object.assign(MS_HOME,{"UNESCO Biosphere Reserve · 130-million-year-old rainforest":"Rizab Biosfera UNESCO · hutan hujan berusia 130 juta tahun",
+ "🌏 UNESCO Biosphere Reserve · since #":"🌏 Rizab Biosfera UNESCO · sejak #","A living rainforest, from hilltop to sea":"Hutan hujan yang hidup, dari puncak ke laut",
+ "On # September #, UNESCO named Penang Hill Malaysia's third Biosphere Reserve, after Tasik Chini and the Crocker Range. It protects an ancient rainforest while people continue to live, work and play around it.":"Pada # September #, UNESCO mengiktiraf Bukit Bendera sebagai Rizab Biosfera ketiga Malaysia, selepas Tasik Chini dan Banjaran Crocker. Ia melindungi hutan hujan purba sambil masyarakat terus hidup, bekerja dan beriadah di sekitarnya.",
+ "about ¼ of Penang Island":"kira-kira ¼ Pulau Pinang","# M yrs":"# juta thn","age of the rainforest":"usia hutan hujan","species found in one survey":"spesies dalam satu kajian",
+ "Core":"Teras","Protected forest":"Hutan dilindungi","Buffer":"Penampan","Research & eco-tourism":"Penyelidikan & eko-pelancongan","Transition":"Peralihan","Where people live & work":"Tempat masyarakat hidup & bekerja",
+ "🌿 Meet the wildlife":"🌿 Kenali hidupan liar","About the reserve":"Tentang rizab","Built for the trail":"Dibina untuk denai",
+ "True-scale map":"Peta berskala sebenar","Works offline":"Berfungsi tanpa internet","Stop alerts":"Makluman hentian","Stories pop up as you walk":"Kisah muncul ketika berjalan",
+ "Record & share":"Rakam & kongsi","GPS track, SOS location":"Jejak GPS, lokasi SOS","Badges":"Lencana","Collect all # stops":"Kumpul kesemua # hentian","English & BM":"Inggeris & BM","Tap BM / EN anytime":"Tekan BM / EN bila-bila masa",
+ "Private":"Privasi terjamin","No ads, no tracking":"Tiada iklan, tiada penjejakan",
+ "The Penang Hill Biosphere Reserve runs from hill to ocean and covers about a quarter of Penang Island.":"Rizab Biosfera Bukit Bendera merentang dari bukit ke lautan dan meliputi kira-kira suku Pulau Pinang.",
+ "Penang Hill is Malaysia's third UNESCO Biosphere Reserve, after Tasik Chini and the Crocker Range.":"Bukit Bendera ialah Rizab Biosfera UNESCO ketiga Malaysia, selepas Tasik Chini dan Banjaran Crocker.",
+ "The summit is about # °C cooler than George Town: a natural escape from the lowland heat.":"Puncaknya kira-kira # °C lebih sejuk daripada George Town, tempat melarikan diri daripada bahang tanah rendah.",
+ "Bukit Bendera means 'Flag Hill', after a signal flagstaff that once stood near the summit.":"Nama Bukit Bendera berasal daripada tiang bendera isyarat yang pernah berdiri berhampiran puncak.",
+ "Penang opens as a trading port, at what is now George Town.":"Pulau Pinang dibuka sebagai pelabuhan dagang, di tapak George Town hari ini.",
+ "Heritage-style restaurant and tea terrace.":"Restoran dan teres minum teh bergaya warisan.","A red cast-iron pillar box from the old postal service.":"Peti surat besi tuang merah daripada perkhidmatan pos lama.",
+ "A post office opened on the hill in #. A flag was raised on Flagstaff Hill to signal that mail had arrived.":"Pejabat pos dibuka di bukit pada #. Bendera dinaikkan di Bukit Bendera sebagai isyarat surat telah tiba.",
+ "Planted along the paths long ago for shade and as landmarks.":"Ditanam di sepanjang laluan sejak dahulu sebagai teduhan dan penanda arah.",
+ "Guides point out details like the old Angsana trees, planted along the paths for shade and as landmarks.":"Pemandu menunjukkan butiran seperti pokok Angsana lama, yang ditanam di sepanjang laluan sebagai teduhan dan penanda arah.",
+ "Look out for the old hill bungalows (verandahs, timber, tiled floors), the Art Deco lines of Edgecliff, and old ruins like Mon Sejour and the Crag Hotel on the longer hikes.":"Perhatikan banglo lama di bukit (beranda, kayu, lantai jubin), garisan Art Deco Edgecliff, dan runtuhan lama seperti Mon Sejour dan Hotel Crag dalam pendakian jauh.",
+ "There are # bungalows on the hill, built over two centuries by officials, merchants and families as sanatoriums, retreats and homes. Bel Retiro is the most prestigious and is still a government retreat. Others still standing include the Convalescent Bungalow, Grace Dieu, Fairmont and Moy Craig, which is often called the most beautiful.":"Terdapat # banglo di bukit ini, dibina sepanjang dua abad oleh pegawai, saudagar dan keluarga sebagai sanatorium, rumah peranginan dan kediaman. Bel Retiro paling berprestij dan masih menjadi rumah peranginan kerajaan. Antara yang masih berdiri ialah Convalescent Bungalow, Grace Dieu, Fairmont dan Moy Craig, yang sering disebut paling cantik.",
+ "Named after J.M. Moniot, Surveyor-General of the Straits Settlements. It was built by convict labourers of Indian descent brought from Bencoolen (Sumatra), and declared a Heritage Trail in #. Many hikers come up from Moon Gate on this route.":"Dinamakan sempena J.M. Moniot, Ketua Juru Ukur Negeri-negeri Selat. Dibina oleh buruh banduan keturunan India yang dibawa dari Bencoolen (Sumatera), dan diisytiharkan Denai Warisan pada #. Ramai pendaki naik dari Moon Gate melalui laluan ini.",
+ "Moniot Road is completed. It was built by convict labourers of Indian descent brought from Bencoolen (Sumatra), and is one of the oldest tracks on the hill.":"Jalan Moniot siap dibina. Ia dibina oleh buruh banduan keturunan India yang dibawa dari Bencoolen (Sumatera), dan antara laluan tertua di bukit."});
+
 
 /* ===== LIBRARY ===== */
 const LIBCATS={official:{l:"Official",i:"🏛️"},trails:{l:"Trails & GPS",i:"🥾"},history:{l:"History",i:"📜"},nature:{l:"Nature",i:"🌿"},arts:{l:"Arts",i:"🎨"},apps:{l:"Apps",i:"📱"}};
