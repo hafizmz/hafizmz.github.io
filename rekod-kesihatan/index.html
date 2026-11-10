@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Rekod Kesihatan">
+<meta name="theme-color" content="#1f5fae">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%231f5fae'/%3E%3Cpath d='M50 80 C20 60 14 44 22 32 C30 20 45 22 50 34 C55 22 70 20 78 32 C86 44 80 60 50 80Z' fill='%23fff'/%3E%3C/svg%3E">
+<title>Rekod Kesihatan Mak &amp; Abah</title>
+<style>
+  :root{
+    --bg:#f6f4ef; --card:#fff; --ink:#1f2420; --muted:#6b706a; --line:#e3e0d8;
+    --accent:#2f6f5e; --accent-soft:#e3efe9;
+    --ok:#2f7a4f; --ok-bg:#e4f3ea; --warn:#a86a00; --warn-bg:#fdf1d8; --bad:#b3362c; --bad-bg:#fbe5e2; --low:#2c5fa8; --low-bg:#e3ecf9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:19px;line-height:1.45}
+  .wrap{max-width:760px;margin:0 auto;padding:16px 14px 60px}
+  h1{font-size:1.6rem;margin:4px 0 2px}
+  .sub{color:var(--muted);font-size:.92rem;margin:0 0 14px}
+  .people{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+  .pbtn{border:2px solid var(--line);background:var(--card);border-radius:999px;padding:12px 24px;font-size:1.15rem;font-weight:600;cursor:pointer;color:var(--ink)}
+  .pbtn{border-color:var(--pc,var(--line));color:var(--pc,var(--ink))}
+  .pbtn.on{background:var(--pc,var(--accent));border-color:var(--pc,var(--accent));color:#fff}
+  h1{color:var(--accent)}
+  .latest{background:var(--accent-soft);border-color:transparent}
+  .latest .tile{background:#fff}
+  body{transition:background .2s}
+  .people .pbtn{flex:1;padding:16px 10px;font-size:1.35rem;border-radius:14px}
+  .linkbtn{background:none;border:none;color:var(--accent);font-size:1rem;cursor:pointer;padding:6px 0;text-decoration:underline;font-family:inherit}
+  .whenline{font-size:1rem;color:var(--muted);margin-bottom:12px}
+  .latest{padding:12px 14px}
+  .latest .tile{text-align:center}
+  .foot{text-align:center;margin-top:10px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+  .card h2{font-size:1.1rem;margin:0 0 12px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .latest .tile{background:var(--bg);border-radius:12px;padding:10px 12px}
+  .tile .lbl{font-size:.8rem;color:var(--muted)}
+  .tile .val{font-size:1.5rem;font-weight:700;margin-top:2px}
+  .tile .unit{font-size:.8rem;color:var(--muted);font-weight:500}
+  .tile .when{font-size:.75rem;color:var(--muted);margin-top:2px}
+  fieldset{border:none;padding:0;margin:0 0 14px}
+  legend{font-weight:700;margin-bottom:6px;font-size:1rem}
+  legend small{font-weight:400;color:var(--muted)}
+  label{display:block;font-size:.95rem;color:var(--muted);margin-bottom:3px}
+  input,select,textarea{width:100%;font-size:1.3rem;padding:12px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-family:inherit}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
+  .row{display:flex;gap:10px}
+  .row > div{flex:1;min-width:0}
+  .bp-sep{align-self:flex-end;padding-bottom:12px;font-size:1.4rem;color:var(--muted);flex:0 0 auto !important}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:9px 14px;font-size:1rem;cursor:pointer;color:var(--ink)}
+  .chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+  .save{width:100%;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:18px;font-size:1.3rem;font-weight:700;cursor:pointer}
+  .save:disabled{opacity:.6;cursor:default}
+  .msg{margin-top:10px;font-size:.92rem;min-height:1.2em}
+  .msg.err{color:var(--bad)} .msg.good{color:var(--ok)}
+  .tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+  .tab{border:none;background:var(--bg);border-radius:8px;padding:7px 12px;font-size:.9rem;cursor:pointer;color:var(--ink)}
+  .tab.on{background:var(--accent);color:#fff}
+  svg.chart{width:100%;height:auto;display:block}
+  .empty{color:var(--muted);text-align:center;padding:18px 0;font-size:.95rem}
+  .day{font-weight:700;font-size:.9rem;color:var(--muted);margin:14px 0 6px;text-transform:uppercase;letter-spacing:.03em}
+  .entry{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--line)}
+  .entry .t{font-size:.9rem;color:var(--muted);width:52px;flex:0 0 52px;padding-top:3px}
+  .entry .vals{flex:1;display:flex;flex-wrap:wrap;gap:6px}
+  .entry .note{width:100%;font-size:.88rem;color:var(--muted)}
+  .badge{display:inline-flex;gap:4px;align-items:baseline;border-radius:8px;padding:4px 9px;font-size:.95rem;font-weight:600}
+  .badge small{font-weight:500;font-size:.75rem;opacity:.85}
+  .s-ok{background:var(--ok-bg);color:var(--ok)} .s-warn{background:var(--warn-bg);color:var(--warn)}
+  .s-bad{background:var(--bad-bg);color:var(--bad)} .s-low{background:var(--low-bg);color:var(--low)}
+  .s-none{background:var(--bg);color:var(--ink)}
+  .del{border:1.5px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;font-size:1.3rem;padding:6px 14px;border-radius:10px;min-width:48px;min-height:44px}
+  .del:hover{color:var(--bad)}
+  .legend{display:flex;gap:6px;flex-wrap:wrap;font-size:.8rem;margin-top:10px}
+  .tools{display:flex;gap:8px;flex-wrap:wrap}
+  .tbtn{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:8px 14px;font-size:.92rem;cursor:pointer;color:var(--ink)}
+  .note-small{font-size:.8rem;color:var(--muted);margin-top:10px}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
+  .modal.show{display:flex}
+  .modal .box{background:#fff;border-radius:14px;padding:18px;max-width:360px;width:100%}
+  .modal .acts{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+  .warnbar{background:var(--warn-bg);color:var(--warn);border-radius:10px;padding:8px 12px;font-size:.88rem;margin-bottom:12px;display:none}
+  @media (max-width:520px){ .grid{grid-template-columns:1fr 1fr;gap:8px} .tile .val{font-size:1.5rem} body{font-size:18px} .row{flex-wrap:wrap} .row > div{flex:1 1 40%} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 style="margin-bottom:12px">Rekod Kesihatan</h1>
+  <div class="warnbar" id="warnbar"></div>
+
+  <div class="people" id="people"></div>
+
+  <div class="card latest">
+    <div class="grid" id="latest"></div>
+  </div>
+
+  <div class="card">
+    <form id="form" autocomplete="off">
+      <div class="whenline">Masa: <span id="dtText">Sekarang</span> · <button type="button" class="linkbtn" id="dtToggle">Tukar</button></div>
+      <fieldset id="dtBox" style="display:none">
+        <input type="datetime-local" id="dt">
+      </fieldset>
+
+      <fieldset>
+        <legend>Tekanan darah <small>(mmHg)</small></legend>
+        <div class="row">
+          <div><label for="sys">Atas</label><input id="sys" type="number" inputmode="numeric" min="50" max="260" placeholder="120"></div>
+          <div class="bp-sep">/</div>
+          <div><label for="dia">Bawah</label><input id="dia" type="number" inputmode="numeric" min="30" max="160" placeholder="80"></div>
+          <div><label for="pulse">Nadi</label><input id="pulse" type="number" inputmode="numeric" min="30" max="200" placeholder="72"></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Gula dalam darah <small>(mmol/L)</small></legend>
+        <div class="row">
+          <div><input id="glu" type="number" inputmode="decimal" step="0.1" min="1" max="35" placeholder="5.6"></div>
+        </div>
+        <div class="chips" id="gluWhen"></div>
+      </fieldset>
+
+      <button type="button" class="linkbtn" id="noteToggle" style="margin-bottom:12px">+ Tambah catatan</button>
+      <fieldset id="noteBox" style="display:none">
+        <textarea id="note" rows="2" placeholder="cth: selepas makan ubat, rasa pening"></textarea>
+      </fieldset>
+
+      <button class="save" id="saveBtn" type="submit">Simpan bacaan</button>
+      <div class="msg" id="msg"></div>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Graf bacaan</h2>
+    <div class="tabs" id="chartTabs"></div>
+    <div id="chart"></div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+      <h2 style="margin:0">Senarai bacaan</h2>
+      <div class="tools">
+        <button class="tbtn" id="copyBtn" type="button">Salin jadual</button>
+        <button class="tbtn" id="dlBtn" type="button">Muat turun (Excel)</button>
+      </div>
+    </div>
+    <div class="legend">
+      <span class="badge s-ok">Normal</span><span class="badge s-warn">Agak tinggi</span><span class="badge s-bad">Tinggi</span><span class="badge s-low">Rendah</span>
+    </div>
+    <div id="history"></div>
+    <p class="note-small">Warna hanya panduan umum (tekanan darah ≥140/90 tinggi, &lt;90/60 rendah; gula &lt;4.0 rendah, berpuasa &gt;7.0 atau selepas makan &gt;10.0 tinggi). Ikut sasaran yang ditetapkan oleh doktor.</p>
+  </div>
+</div>
+
+<div class="foot wrap" style="padding-top:0">
+  <div class="card" style="text-align:center">
+    <h2 style="margin-bottom:6px">Rekod Excel (Google Sheets)</h2>
+    <div id="syncStatus" style="font-size:.9rem;color:var(--muted);margin-bottom:10px">Setiap bacaan terus disimpan dalam Google Sheets Hafiz.</div>
+    <div class="tools" style="justify-content:center">
+      <a class="tbtn" href="https://docs.google.com/spreadsheets/d/16u4dHu7xewSLdU7ph34gkGNsc4L6mr-fo2Fp3l7akjc/edit" target="_blank" rel="noopener" style="text-decoration:none">Buka Excel (Hafiz)</a>
+      <button type="button" class="tbtn" id="reloadBtn">Muat semula</button>
+    </div>
+  </div>
+
+<script>
+(function(){
+  // Simpanan: Google Apps Script (Google Sheets Hafiz). Kod rahsia datang dari pautan (#k=...).
+  const API="https://script.google.com/macros/s/AKfycbzIoaJi15Dt6nEEF82WpXbv_KxcpGwIYhp6RIUjMk69bAcBLJAHKSZ7roiSdWiyzJHPtQ/exec";
+  function readKey(){
+    let k="";
+    const m=location.hash.match(/k=([A-Za-z0-9_-]+)/); if(m) k=m[1];
+    try{ if(k) localStorage.setItem("hl_k",k); else k=localStorage.getItem("hl_k")||""; }catch(e){}
+    return k;
+  }
+  const KEY=readKey();
+  let extraPeople=[];
+  try{ extraPeople=JSON.parse(localStorage.getItem("hl_people")||"[]"); }catch(e){}
+  const state={people:["Abah","Mak"], entries:[]};
+  function refreshPeople(){
+    const set=["Abah","Mak"];
+    extraPeople.concat(state.entries.map(e=>e.p)).forEach(p=>{ if(p&&!set.includes(p)) set.push(p); });
+    state.people=set;
+  }
+  refreshPeople();
+  let current = state.people[0];
+  try { const p = localStorage.getItem("hl_person"); if(p && state.people.includes(p)) current = p; } catch(e){}
+  let gluWhen = "Berpuasa";
+  let chartMetric = "bp";
+  let loaded=false;
+
+  const $ = id => document.getElementById(id);
+  const WHENS = ["Berpuasa","Sebelum makan","Selepas makan","Sebelum tidur","Rawak"];
+  
+
+  // ---- status rules (general guide) ----
+  function bpStatus(s,d){
+    if(s==null||d==null) return "none";
+    if(s>=140||d>=90) return "bad";
+    if(s<90||d<60) return "low";
+    if(s>=130||d>=85) return "warn";
+    return "ok";
+  }
+  function gluStatus(g,w){
+    if(g==null) return "none";
+    if(g<4.0) return "low";
+    if(w==="Berpuasa"||w==="Sebelum makan"){ if(g>7.0) return g>10 ? "bad":"warn"; return "ok"; }
+    if(w==="Selepas makan"){ if(g>10.0) return g>13.9?"bad":"warn"; return "ok"; }
+    if(g>11.0) return "bad"; if(g>8.5) return "warn"; return "ok";
+  }
+  function tempStatus(t){
+    if(t==null) return "none";
+    if(t>=38.0) return "bad";
+    if(t>=37.5) return "warn";
+    if(t<35.5) return "low";
+    return "ok";
+  }
+
+  // ---- helpers ----
+  const pad = n => String(n).padStart(2,"0");
+  function nowLocal(){ const d=new Date(); return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+"T"+pad(d.getHours())+":"+pad(d.getMinutes()); }
+  function parseDT(s){ const [a,b]=s.split("T"); const [y,m,d]=a.split("-").map(Number); const [h,mi]=(b||"00:00").split(":").map(Number); return new Date(y,m-1,d,h,mi); }
+  const MONTHS=["Jan","Feb","Mac","Apr","Mei","Jun","Jul","Ogo","Sep","Okt","Nov","Dis"];
+  const DAYS=["Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","Sabtu"];
+  function fmtDay(s){ const d=parseDT(s); return DAYS[d.getDay()]+", "+d.getDate()+" "+MONTHS[d.getMonth()]+" "+d.getFullYear(); }
+  function fmtTime(s){ return s.split("T")[1]||""; }
+  function fmtShort(s){ const d=parseDT(s); return d.getDate()+" "+MONTHS[d.getMonth()]+" "+fmtTime(s); }
+  const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const num = v => { if(v===""||v==null) return null; const n=Number(v); return isFinite(n)?n:null; };
+  function mine(){ return state.entries.filter(e=>e.p===current).sort((a,b)=>b.t.localeCompare(a.t)); }
+
+  // ---- modal (no alert/confirm in frame) ----
+  function ask(text, withInput){
+    return new Promise(res=>{
+      $("modalText").textContent=text;
+      const inp=$("modalInput"); inp.style.display=withInput?"block":"none"; inp.value="";
+      $("modal").classList.add("show"); if(withInput) setTimeout(()=>inp.focus(),30);
+      const done=v=>{ $("modal").classList.remove("show"); $("modalOk").onclick=$("modalCancel").onclick=null; res(v); };
+      $("modalOk").onclick=()=>done(withInput?inp.value.trim():true);
+      $("modalCancel").onclick=()=>done(withInput?null:false);
+    });
+  }
+
+  // ---- render ----
+  const THEMES={abah:["#1f5fae","#e4eefa","#f2f6fc"],mak:["#c0333a","#fbe7e8","#fcf4f4"]};
+  const themeOf=p=>THEMES[String(p).trim().toLowerCase()]||["#2f6f5e","#e3efe9","#f6f4ef"];
+  function applyTheme(){
+    const [a,soft,bg]=themeOf(current), r=document.documentElement.style;
+    r.setProperty("--accent",a); r.setProperty("--accent-soft",soft); r.setProperty("--bg",bg);
+  }
+  function renderPeople(){
+    applyTheme();
+    const el=$("people");
+    el.innerHTML = state.people.map(p=>`<button type="button" class="pbtn ${p===current?"on":""}" style="--pc:${themeOf(p)[0]}" data-p="${esc(p)}">${esc(p)}</button>`).join("")
+;
+    el.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{ current=b.dataset.p; try{localStorage.setItem("hl_person",current)}catch(e){}; renderAll(); });
+  }
+  function bindAddPerson(){
+    $("addPerson").onclick=async()=>{
+      const name=await ask("Nama orang yang hendak ditambah:", true);
+      if(!name) return;
+      if(state.people.includes(name)){ current=name; renderAll(); return; }
+      extraPeople.push(name); try{localStorage.setItem("hl_people",JSON.stringify(extraPeople));}catch(e){} refreshPeople(); current=name; renderAll();
+    };
+  }
+
+  function renderLatest(){
+    const list=mine();
+    const bp=list.find(e=>e.sys!=null&&e.dia!=null);
+    const g=list.find(e=>e.glu!=null);
+    const tile=(lbl,val,unit,when,st)=>`<div class="tile"><div class="lbl">${lbl}</div><div class="val"><span class="badge s-${st}" style="font-size:inherit;padding:0 6px">${val}</span> <span class="unit">${unit}</span></div><div class="when">${when}</div></div>`;
+    $("latest").innerHTML =
+      tile("Tekanan darah terkini", bp?`${bp.sys}/${bp.dia}`:"—", "", bp?fmtShort(bp.t):"Belum ada", bp?bpStatus(bp.sys,bp.dia):"none") +
+      tile("Gula terkini", g?g.glu.toFixed(1):"—", "", g?fmtShort(g.t):"Belum ada", g?gluStatus(g.glu,g.gw):"none");
+  }
+
+  function renderWhen(){
+    $("gluWhen").innerHTML = WHENS.map(w=>`<button type="button" class="chip ${w===gluWhen?"on":""}" data-w="${w}">${w}</button>`).join("");
+    $("gluWhen").querySelectorAll(".chip").forEach(c=>c.onclick=()=>{ gluWhen=c.dataset.w; renderWhen(); });
+  }
+
+  function renderHistory(){
+    const list=mine();
+    if(!list.length){ $("history").innerHTML=`<div class="empty">Belum ada bacaan untuk ${esc(current)}. Masukkan bacaan pertama di atas.</div>`; return; }
+    let html="", lastDay="";
+    for(const e of list){
+      const day=fmtDay(e.t);
+      if(day!==lastDay){ html+=`<div class="day">${day}</div>`; lastDay=day; }
+      let v="";
+      if(e.sys!=null&&e.dia!=null) v+=`<span class="badge s-${bpStatus(e.sys,e.dia)}">${e.sys}/${e.dia} <small>mmHg</small></span>`;
+      if(e.pulse!=null) v+=`<span class="badge s-none">♥ ${e.pulse} <small>nadi</small></span>`;
+      if(e.glu!=null) v+=`<span class="badge s-${gluStatus(e.glu,e.gw)}">${e.glu.toFixed(1)} <small>mmol/L · ${esc(e.gw||"")}</small></span>`;
+      if(e.note) v+=`<div class="note">${esc(e.note)}</div>`;
+      html+=`<div class="entry"><div class="t">${fmtTime(e.t)}</div><div class="vals">${v}</div><button class="del" title="Padam" data-id="${esc(e.id)}">✕</button></div>`;
+    }
+    $("history").innerHTML=html;
+    $("history").querySelectorAll(".del").forEach(b=>b.onclick=async()=>{
+      const ok=await ask("Padam bacaan ini?", false);
+      if(!ok) return;
+      await api({action:"delete", id:b.dataset.id}, "Bacaan dipadam");
+    });
+  }
+
+  function renderChartTabs(){
+    const tabs=[["bp","Tekanan darah"],["glu","Gula"]];
+    $("chartTabs").innerHTML=tabs.map(([k,l])=>`<button type="button" class="tab ${k===chartMetric?"on":""}" data-k="${k}">${l}</button>`).join("");
+    $("chartTabs").querySelectorAll(".tab").forEach(b=>b.onclick=()=>{ chartMetric=b.dataset.k; renderChartTabs(); renderChart(); });
+  }
+
+  function renderChart(){
+    const list=mine().slice().reverse();
+    let series=[], band=null, unit="";
+    if(chartMetric==="bp"){
+      const pts=list.filter(e=>e.sys!=null&&e.dia!=null).slice(-30);
+      series=[{name:"Atas (sistolik)",color:"#b3362c",pts:pts.map(e=>({t:e.t,v:e.sys}))},{name:"Bawah (diastolik)",color:"#2c5fa8",pts:pts.map(e=>({t:e.t,v:e.dia}))}];
+      band=[[90,140,"rgba(179,54,44,.06)"],[60,90,"rgba(44,95,168,.06)"]]; unit="mmHg";
+    } else if(chartMetric==="glu"){
+      const pts=list.filter(e=>e.glu!=null).slice(-30);
+      series=[{name:"Gula",color:"#a86a00",pts:pts.map(e=>({t:e.t,v:e.glu}))}]; band=[[4,7,"rgba(47,122,79,.08)"]]; unit="mmol/L";
+    }
+    const n=series[0].pts.length;
+    if(n<2){ $("chart").innerHTML=`<div class="empty">Perlu sekurang-kurangnya 2 bacaan untuk tunjuk graf.</div>`; return; }
+    const W=640,H=240,L=44,R=12,T=14,B=34;
+    let all=series.flatMap(s=>s.pts.map(p=>p.v)); band.forEach(b=>all.push(b[0],b[1]));
+    let mn=Math.min(...all), mx=Math.max(...all); const padv=(mx-mn)*0.08||1; mn-=padv; mx+=padv;
+    const x=i=>L+(n===1?0:i*(W-L-R)/(n-1)), y=v=>T+(mx-v)*(H-T-B)/(mx-mn);
+    let svg=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${chartMetric} trend">`;
+    band.forEach(b=>{ svg+=`<rect x="${L}" y="${y(b[1])}" width="${W-L-R}" height="${y(b[0])-y(b[1])}" fill="${b[2]}"/>`; });
+    for(let k=0;k<=4;k++){ const v=mn+(mx-mn)*k/4; svg+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#ece9e2"/><text x="${L-6}" y="${y(v)+4}" font-size="11" text-anchor="end" fill="#6b706a">${chartMetric==="bp"?Math.round(v):v.toFixed(1)}</text>`; }
+    const pts0=series[0].pts, step=Math.max(1,Math.ceil(n/6));
+    pts0.forEach((p,i)=>{ if(i%step===0||i===n-1){ const d=parseDT(p.t); svg+=`<text x="${x(i)}" y="${H-12}" font-size="11" text-anchor="middle" fill="#6b706a">${d.getDate()} ${MONTHS[d.getMonth()]}</text>`; }});
+    series.forEach(s=>{
+      svg+=`<polyline fill="none" stroke="${s.color}" stroke-width="2.5" stroke-linejoin="round" points="${s.pts.map((p,i)=>x(i)+","+y(p.v)).join(" ")}"/>`;
+      s.pts.forEach((p,i)=>{ svg+=`<circle cx="${x(i)}" cy="${y(p.v)}" r="3.5" fill="#fff" stroke="${s.color}" stroke-width="2"><title>${fmtShort(p.t)}: ${p.v} ${unit}</title></circle>`; });
+    });
+    svg+=`</svg>`;
+    const leg=series.length>1?`<div class="legend">${series.map(s=>`<span style="color:${s.color};font-weight:600">● ${s.name}</span>`).join("")}<span style="color:var(--muted)">· ${n} bacaan terakhir, ${unit}</span></div>`:`<div class="legend" style="color:var(--muted)">${n} bacaan terakhir, ${unit}. Kawasan berlorek = julat normal umum.</div>`;
+    $("chart").innerHTML=svg+leg;
+  }
+
+  function renderAll(){ renderPeople(); renderLatest(); renderHistory(); renderChart(); }
+
+  // ---- simpan ke Google Sheets ----
+  let saving=false;
+  function setSync(t){ $("syncStatus").textContent=t; }
+  function applyEntries(list){
+    state.entries=(list||[]).filter(e=>e&&e.p&&e.t&&e.t.length>=16);
+    refreshPeople(); if(!state.people.includes(current)) current=state.people[0];
+    loaded=true; renderAll();
+  }
+  async function load(){
+    if(!KEY){ showWarn("Pautan tidak lengkap. Sila buka app melalui pautan penuh yang Hafiz beri."); return; }
+    if(API.indexOf("__")===0){ showWarn("App belum disambung ke Google Sheets."); return; }
+    $("history").innerHTML='<div class="empty">Memuatkan bacaan…</div>';
+    try{
+      const r=await fetch(API+"?k="+encodeURIComponent(KEY),{cache:"no-store"});
+      const j=await r.json();
+      if(!j.ok){ showWarn(j.error==="denied"?"Kod dalam pautan salah. Minta pautan baru daripada Hafiz.":"Gagal memuatkan: "+j.error); return; }
+      applyEntries(j.entries); setSync("Dikemaskini "+new Date().toLocaleTimeString("ms-MY",{hour:"2-digit",minute:"2-digit"}));
+      hideWarn();
+    }catch(err){ showWarn("Tiada sambungan internet, atau Google Sheets tidak dapat dicapai. Tekan 'Muat semula'."); $("history").innerHTML=""; }
+  }
+  async function api(body, okText){
+    if(!KEY||API.indexOf("__")===0){ setMsg("Tidak boleh simpan — pautan tidak lengkap.","err"); return false; }
+    saving=true; $("saveBtn").disabled=true; setMsg("Sedang simpan…","");
+    try{
+      const r=await fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(Object.assign({k:KEY},body))});
+      const j=await r.json();
+      if(!j.ok){ setMsg(j.error==="denied"?"Kod dalam pautan salah.":"Gagal simpan: "+(j.error||"ralat"),"err"); if(j.entries) applyEntries(j.entries); return false; }
+      applyEntries(j.entries);
+      setMsg(okText+" ✓","good"); setSync("Excel dikemaskini ✓ ("+new Date().toLocaleTimeString("ms-MY",{hour:"2-digit",minute:"2-digit"})+")");
+      return true;
+    }catch(err){
+      setMsg("Gagal simpan — semak internet dan cuba lagi. Bacaan belum disimpan.","err");
+      return false;
+    }finally{ saving=false; $("saveBtn").disabled=false; }
+  }
+  function showWarn(t){ const w=$("warnbar"); w.textContent=t; w.style.display="block"; }
+  function hideWarn(){ $("warnbar").style.display="none"; }
+  function setMsg(t,c){ const m=$("msg"); m.textContent=t; m.className="msg "+(c||""); }
+
+  $("form").addEventListener("submit", e=>{
+    if(!loaded){ e.preventDefault(); setMsg("Tunggu sebentar — bacaan sedang dimuatkan.","err"); return; }
+    e.preventDefault(); if(saving) return;
+    const sys=num($("sys").value), dia=num($("dia").value), pulse=num($("pulse").value), glu=num($("glu").value), note=$("note").value.trim();
+    const t=($("dt").dataset.set&&$("dt").value)||nowLocal();
+    if(sys==null&&dia==null&&glu==null&&pulse==null){ setMsg("Masukkan sekurang-kurangnya satu bacaan.","err"); return; }
+    if((sys==null)!==(dia==null)){ setMsg("Masukkan kedua-dua nombor tekanan darah (atas dan bawah).","err"); return; }
+    if(sys!=null&&(sys<50||sys>260||dia<30||dia>160||dia>=sys)){ setMsg("Sila semak semula nombor tekanan darah.","err"); return; }
+    if(glu!=null&&(glu<1||glu>35)){ setMsg("Bacaan gula pelik — guna mmol/L (cth: 5.6).","err"); return; }
+    const entry={p:current,t};
+    if(sys!=null){entry.sys=Math.round(sys);entry.dia=Math.round(dia);}
+    if(pulse!=null) entry.pulse=Math.round(pulse);
+    if(glu!=null){entry.glu=Math.round(glu*10)/10;entry.gw=gluWhen;}
+    if(note) entry.note=note.slice(0,300);
+    api({action:"add", entry}, "Disimpan untuk "+current).then(ok=>{
+      if(!ok) return;
+      ["sys","dia","pulse","glu","note"].forEach(id=>$(id).value="");
+      $("dt").dataset.set=""; $("dt").value=nowLocal(); $("dtText").textContent="Sekarang";
+    });
+  });
+
+  // ---- export ----
+  function csv(){
+    const rows=[["Nama","Tarikh","Masa","Atas (sistolik)","Bawah (diastolik)","Nadi","Gula (mmol/L)","Waktu ujian gula","Catatan"]];
+    state.entries.slice().sort((a,b)=>a.p.localeCompare(b.p)||a.t.localeCompare(b.t)).forEach(e=>{
+      const [d,ti]=e.t.split("T");
+      rows.push([e.p,d,ti,e.sys??"",e.dia??"",e.pulse??"",e.glu??"",e.gw??"",e.note??""]);
+    });
+    return rows;
+  }
+  $("copyBtn").onclick=async()=>{
+    const tsv=csv().map(r=>r.join("\t")).join("\n");
+    try{ await navigator.clipboard.writeText(tsv); $("copyBtn").textContent="Disalin ✓ — tampal dalam Excel"; }
+    catch(e){ $("copyBtn").textContent="Tidak boleh salin di sini"; }
+    setTimeout(()=>$("copyBtn").textContent="Salin jadual",2500);
+  };
+  $("dlBtn").onclick=async()=>{
+    const text=csv().map(r=>r.map(c=>{c=String(c);return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c;}).join(",")).join("\n");
+    const blob=new Blob(["\ufeff"+text],{type:"text/csv;charset=utf-8"});
+    const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="rekod-kesihatan.csv";
+    document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},1000);
+  };
+
+  // ---- init ----
+  $("dt").value=nowLocal();
+  $("dtToggle").onclick=()=>{ const b=$("dtBox"); const show=b.style.display==="none"; b.style.display=show?"block":"none"; $("dtToggle").textContent=show?"Tutup":"Tukar"; };
+  $("dt").onchange=()=>{ $("dtText").textContent=$("dt").value?fmtShort($("dt").value):"Sekarang"; $("dt").dataset.set="1"; };
+  $("noteToggle").onclick=()=>{ $("noteBox").style.display="block"; $("noteToggle").style.display="none"; $("note").focus(); };
+  bindAddPerson();
+  $("reloadBtn").onclick=()=>load();
+  document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible"&&!saving) load(); });
+  renderWhen(); renderChartTabs(); renderAll();
+
+  load();
+})();
+</script>
+</body>
+</html>
