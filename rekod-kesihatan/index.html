@@ -35,6 +35,8 @@
   .latest{padding:12px 14px}
   .latest .tile{text-align:center}
   .foot{text-align:center;margin-top:10px}
+  .nr{display:block;font-size:.8rem;font-weight:600;color:var(--ok);margin-top:1px}
+  legend .nr{display:inline;margin-left:4px}
   details.hafiz summary{cursor:pointer;color:var(--muted);font-size:.9rem;padding:8px;list-style:none}
   details.hafiz summary::-webkit-details-marker{display:none}
   .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
@@ -111,15 +113,15 @@
       <fieldset>
         <legend>Tekanan darah <small>(mmHg)</small></legend>
         <div class="row">
-          <div><label for="sys">Atas</label><input id="sys" type="number" inputmode="numeric" min="50" max="260"></div>
+          <div><label for="sys">Atas <span class="nr">Normal 90–129</span></label><input id="sys" type="number" inputmode="numeric" min="50" max="260"></div>
           <div class="bp-sep">/</div>
-          <div><label for="dia">Bawah</label><input id="dia" type="number" inputmode="numeric" min="30" max="160"></div>
-          <div><label for="pulse">Nadi</label><input id="pulse" type="number" inputmode="numeric" min="30" max="200"></div>
+          <div><label for="dia">Bawah <span class="nr">Normal 60–84</span></label><input id="dia" type="number" inputmode="numeric" min="30" max="160"></div>
+          <div><label for="pulse">Nadi <span class="nr">Normal 60–100</span></label><input id="pulse" type="number" inputmode="numeric" min="30" max="200"></div>
         </div>
       </fieldset>
 
       <fieldset>
-        <legend>Gula dalam darah <small>(mmol/L)</small></legend>
+        <legend>Gula dalam darah <small>(mmol/L)</small> <span class="nr" id="gluRange">Normal 4.0–7.0</span></legend>
         <div class="row">
           <div><input id="glu" type="number" inputmode="decimal" step="0.1" min="1" max="35"></div>
         </div>
@@ -294,6 +296,7 @@
   function renderWhen(){
     $("gluWhen").innerHTML = WHENS.map(w=>`<button type="button" class="chip ${w===gluWhen?"on":""}" data-w="${w}">${w}</button>`).join("");
     $("gluWhen").querySelectorAll(".chip").forEach(c=>c.onclick=()=>{ gluWhen=c.dataset.w; renderWhen(); });
+    $("gluRange").textContent = gluWhen==="Berpuasa" ? "Normal 4.0–7.0" : gluWhen==="Selepas makan" ? "Normal 4.0–10.0" : "Normal 4.0–8.5";
   }
 
   function renderHistory(){
