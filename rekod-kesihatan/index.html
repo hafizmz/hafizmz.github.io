@@ -165,7 +165,21 @@
       <button type="button" class="tbtn" id="reloadBtn">Muat semula</button>
     </div>
   </div>
+  <button type="button" class="linkbtn" id="addPerson" style="color:var(--muted)">+ Tambah orang</button>
+</div>
 
+<div class="modal" id="modal">
+  <div class="box">
+    <div id="modalText" style="margin-bottom:10px"></div>
+    <input id="modalInput" style="display:none">
+    <div class="acts">
+      <button class="tbtn" id="modalCancel" type="button">Batal</button>
+      <button class="tbtn" id="modalOk" type="button" style="background:var(--accent);color:#fff;border-color:var(--accent)">OK</button>
+    </div>
+  </div>
+</div>
+
+<script id="state" type="application/json">{"people":["Abah","Mak"],"entries":[]}</script>
 <script>
 (function(){
   // Simpanan: Google Apps Script (Google Sheets Hafiz). Kod rahsia datang dari pautan (#k=...).
