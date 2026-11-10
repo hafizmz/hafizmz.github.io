@@ -58,6 +58,7 @@ main{max-width:1100px;margin:0 auto;padding:16px 20px 80px}
 .name:hover{text-decoration:underline}
 .nick,.spouse{color:var(--muted);font-size:.92rem}
 .pill{font-size:.74rem;padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.pill.pend{background:#e8f1ec;color:#0d5a43;border:1px dashed #2f7d5f}
 .pill.check{background:var(--warn-bg);color:var(--warn);border-color:transparent}
 .realname{font-size:.92rem;color:var(--ink)}
 .avatar{width:28px;height:28px;border-radius:50%;object-fit:cover;flex:none;border:1px solid var(--line)}
@@ -243,8 +244,8 @@ footer.foot .jawi{font-family:Amiri,"Noto Naskh Arabic",serif;color:var(--gold);
 
 <script>
 let SNAPSHOT = {};
-const ENC = {"s":"il8JuEkscUAYJuKRzRZSbw==","i":"g+dWlDpBCsk8xQ/J","n":310000,"c":"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"};
-const SNAPSHOT_DATE = "9 Nov 2026";
+const ENC = {"s":"QaI7wS8G7cvph53DlYY9+A==","i":"ksjc86wFRQKhSyfM","n":310000,"c":"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"};
+const SNAPSHOT_DATE = "10 Nov 2026";
 
 const T = {
  ms:{
@@ -259,6 +260,7 @@ const T = {
   notes:"Catatan", isDeceased:"Sudah meninggal dunia", needsCheck:"Perlu disemak (tidak pasti)",
   parentOf:"Anak kepada", childrenOf:"Anak-anak", noChildren:"Belum ada anak disenaraikan.",
   olderTitle:"Menyusur ke generasi lebih tua", olderBody:"Siapakah ibu bapa {n}? Jika anda tahu nama mereka, atau datuk nenek sebelumnya, bantu kami menyusur galur ke atas.", olderBtn:"↑ Tambah ibu/bapa {n}", gapNoParent:"Ibu/bapa belum disenaraikan",
+  pendingPill:"baru · menunggu semakan",
   addChild:"↓ Tambah anak", addSibling:"↔ Tambah adik-beradik", addParent:"↑ Tambah ibu/bapa", addSiblingTo:"Tambah adik-beradik kepada", addParentTo:"Tambah ibu/bapa kepada", sugParent:"Tambah ibu/bapa kepada", editInfo:"Betulkan / tambah maklumat", del:"Padam",
   yourName:"Nama anda & hubungan", yourNameHint:"cth. 'Aisyah, menantu'",
   save:"Simpan", send:"Hantar cadangan", cancel:"Batal",
@@ -320,6 +322,7 @@ const T = {
   notes:"Notes", isDeceased:"Has passed away", needsCheck:"Needs checking (not sure)",
   parentOf:"Child of", childrenOf:"Children", noChildren:"No children listed yet.",
   olderTitle:"Trace back to older generations", olderBody:"Who were {n}'s parents? If you know their names, or the grandparents before them, help us trace the line further back.", olderBtn:"↑ Add {n}'s parent", gapNoParent:"Parents not yet listed",
+  pendingPill:"new · awaiting review",
   addChild:"↓ Add child", addSibling:"↔ Add brother/sister", addParent:"↑ Add parent", addSiblingTo:"Add a brother/sister to", addParentTo:"Add a parent to", sugParent:"Add parent to", editInfo:"Correct / add details", del:"Delete",
   yourName:"Your name & relation", yourNameHint:"e.g. 'Aisyah, daughter-in-law'",
   save:"Save", send:"Send suggestion", cancel:"Cancel",
@@ -376,7 +379,7 @@ try{ lang = localStorage.getItem("salasilah-lang") || "ms"; }catch(e){}
 const t = (k, vars) => { let s = (T[lang][k] ?? T.ms[k] ?? k); if(vars) for(const v in vars) s = s.replace("{"+v+"}", vars[v]); return s; };
 
 const GENCOL = ["var(--g1)","var(--g2)","var(--g3)","var(--g4)","var(--g5)","var(--g6)"];
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbxwfZ6F80zDmIcSdmHdQFN4JYgWJTyIjGoK_rBb_0FcwRleUTGPVHEADPgO7jurOAcA/exec", SHEET_KEY = "salasilah-2026", TREE_NAME = "Keluarga Saleh";
+let SHEET_URL = "", SHEET_KEY = "", TREE_NAME = "Keluarga Saleh";
 const FIELDS = ["nick","name","nameConfirmed","gender","order","born","birthPlace","deceased","spouse","otherParent","photo","pastAddress","inPerlis","housePhoto","notes","check"];
 const PHOTO = new Set(["photo","housePhoto"]);
 
@@ -536,6 +539,7 @@ function renderTree(){
       p.otherParent ? el("span",{class:"pill",text:(lang==="ms"?"ibu/bapa: ":"parent: ")+p.otherParent}) : null,
       p.deceased ? el("span",{class:"pill",text:t("deceased")}) : null,
       p.check ? el("span",{class:"pill check",text:t("check")}) : null,
+      p.pending ? el("span",{class:"pill pend",text:t("pendingPill")}) : null,
       kids.length ? el("span",{class:"cnt",text:kids.length+" "+t("children")}) : null
     );
     const n = el("div",{class:"node"}, row);
@@ -651,6 +655,7 @@ function openPerson(id, refresh){
     el("h2",{text:label(id)}),
     el("div",{style:"margin-top:4px"}, el("span",{class:"path",text:t("name")+": "}), realNameEl(p,"",true), p.nameConfirmed ? null : el("span",{class:"pill",style:"margin-left:6px",text:t("unconfirmed")})),
     p.check ? el("span",{class:"pill check",text:t("check")}) : null,
+    p.pending ? el("div",{class:"path",style:"margin-top:6px"}, el("span",{class:"pill pend",text:t("pendingPill")}), p.pendingBy ? " "+t("from")+": "+p.pendingBy : "") : null,
     dl,
     home,
     par ? el("div",{}, el("b",{text:t("parentOf")+": "}), el("button",{class:"chip",onclick:()=>openPerson(par),text:label(par)})) : null,
@@ -815,6 +820,7 @@ async function submitForm(f,type,targetId,direct){
   if(SHEET_URL){
     try{
       await fetch(SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({...sug,key:SHEET_KEY,tree:TREE_NAME})});
+      addPending({...sug, id: Date.now().toString(36)}); renderAll();
       showMessage(sug, targetId, true); return;
     }catch(e){ /* fall back to WhatsApp */ }
   }
@@ -907,14 +913,41 @@ function useSnapshot(){
 }
 function initExpanded(){
   IDX = index();
-  IDX.roots.forEach(r=>state.expanded.add(r));
+  const all = Object.keys(state.people).length <= 80;
+  for(const id in IDX.gen){ if(all || IDX.gen[id] <= 2) state.expanded.add(id); }
+}
+function addPending(row){
+  const d = row.data || {};
+  let tgt = row.target && state.people[row.target] ? row.target : null;
+  if(!tgt && row.targetLabel){
+    const want = String(row.targetLabel).split(" › ").map(s=>s.trim());
+    tgt = Object.keys(state.people).find(id => { const pth = lineage(id).map(label); return pth.join("|")===want.join("|"); })
+       || Object.keys(state.people).find(id => label(id)===want[want.length-1]);
+  }
+  if(!tgt) return;
+  const id = "pending-" + (row.id || Math.random().toString(36).slice(2));
+  if(state.people[id]) return;
+  const node = { name:"",nick:"",gender:"",order:"",born:"",birthPlace:"",spouse:"",otherParent:"",notes:"",deceased:false,check:false,nameConfirmed:false,photo:"",pastAddress:"",inPerlis:false,housePhoto:"", ...d, pending:true, pendingBy: row.byName||"" };
+  if(row.type==="parent"){ node.parent = state.people[tgt].parent || ""; state.people[id]=node; state.people[tgt] = {...state.people[tgt], parent:id}; }
+  else if(row.type==="add"){ node.parent = tgt; state.people[id]=node; }
+  else return;
+  state.expanded.add(tgt); state.expanded.add(id);
+}
+async function loadPending(){
+  if(!SHEET_URL || !SHEET_KEY || state.live) return;
+  try{
+    const r = await fetch(SHEET_URL + "?key=" + encodeURIComponent(SHEET_KEY) + "&tree=" + encodeURIComponent(TREE_NAME));
+    const j = await r.json();
+    (j.rows||[]).forEach(addPending);
+    renderAll();
+  }catch(e){}
 }
 
 async function start(){
   setTab("tree");
   useSnapshot(); initExpanded(); state.mode="loading"; applyLang();
 
-  if(typeof claude==="undefined"){ document.querySelector('nav [data-tab="sugs"]').hidden=true; state.mode="readonly"; renderAll(); return; }
+  if(typeof claude==="undefined"){ document.querySelector('nav [data-tab="sugs"]').hidden=true; state.mode="readonly"; renderAll(); loadPending(); return; }
   [db, user, assets] = await Promise.all([claude.use("db"), claude.use("user"), claude.use("assets")]).catch(()=>[null,null,null]);
   const isOwner = user?.isOwner?.() ?? false;
   const canEdit = user?.canEdit?.() ?? false;
@@ -949,7 +982,7 @@ async function unlock(pw){
   return JSON.parse(new TextDecoder().decode(pt));
 }
 async function tryOpen(pw, quiet){
-  try{ SNAPSHOT = await unlock(pw); try{ sessionStorage.setItem("salasilah-pw", pw); }catch(e){}
+  try{ const P = await unlock(pw); SNAPSHOT = P.people || P; if(P.cfg){ SHEET_URL = P.cfg.url; SHEET_KEY = P.cfg.key; } try{ sessionStorage.setItem("salasilah-pw", pw); }catch(e){}
     $("#gate").remove(); start(); return true;
   }catch(e){ if(!quiet) $("#gateErr").textContent = "Kata laluan salah / Wrong password"; return false; }
 }
