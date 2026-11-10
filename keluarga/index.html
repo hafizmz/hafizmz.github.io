@@ -58,7 +58,9 @@ main{max-width:1100px;margin:0 auto;padding:16px 20px 80px}
 .name:hover{text-decoration:underline}
 .nick,.spouse{color:var(--muted);font-size:.92rem}
 .pill{font-size:.74rem;padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
-.pill.pend{background:#e8f1ec;color:#0d5a43;border:1px dashed #2f7d5f}
+.pill.pend{background:#e7efff;color:#1d4ed8;border:1px dashed #3b6fd8}
+.name.blue{color:#1d4ed8}
+@media (prefers-color-scheme: dark){ .pill.pend{background:#14254a;color:#9ec1ff;border-color:#5b8def} .name.blue{color:#9ec1ff} }
 .pill.check{background:var(--warn-bg);color:var(--warn);border-color:transparent}
 .realname{font-size:.92rem;color:var(--ink)}
 .avatar{width:28px;height:28px;border-radius:50%;object-fit:cover;flex:none;border:1px solid var(--line)}
@@ -244,7 +246,7 @@ footer.foot .jawi{font-family:Amiri,"Noto Naskh Arabic",serif;color:var(--gold);
 
 <script>
 let SNAPSHOT = {};
-const ENC = {"s":"QaI7wS8G7cvph53DlYY9+A==","i":"ksjc86wFRQKhSyfM","n":310000,"c":"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"};
+const ENC = {"s":"YRrkxuIzce9PnTHfNkfuhw==","i":"pAb16+/ULRvHjphv","n":310000,"c":"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"};
 const SNAPSHOT_DATE = "10 Nov 2026";
 
 const T = {
@@ -260,7 +262,7 @@ const T = {
   notes:"Catatan", isDeceased:"Sudah meninggal dunia", needsCheck:"Perlu disemak (tidak pasti)",
   parentOf:"Anak kepada", childrenOf:"Anak-anak", noChildren:"Belum ada anak disenaraikan.",
   olderTitle:"Menyusur ke generasi lebih tua", olderBody:"Siapakah ibu bapa {n}? Jika anda tahu nama mereka, atau datuk nenek sebelumnya, bantu kami menyusur galur ke atas.", olderBtn:"↑ Tambah ibu/bapa {n}", gapNoParent:"Ibu/bapa belum disenaraikan",
-  pendingPill:"baru · menunggu semakan",
+  pendingPill:"baru · menunggu semakan", editedPill:"dikemas kini · menunggu semakan", blueNote:"Biru = baru atau dikemas kini, menunggu semakan",
   addChild:"↓ Tambah anak", addSibling:"↔ Tambah adik-beradik", addParent:"↑ Tambah ibu/bapa", addSiblingTo:"Tambah adik-beradik kepada", addParentTo:"Tambah ibu/bapa kepada", sugParent:"Tambah ibu/bapa kepada", editInfo:"Betulkan / tambah maklumat", del:"Padam",
   yourName:"Nama anda & hubungan", yourNameHint:"cth. 'Aisyah, menantu'",
   save:"Simpan", send:"Hantar cadangan", cancel:"Batal",
@@ -322,7 +324,7 @@ const T = {
   notes:"Notes", isDeceased:"Has passed away", needsCheck:"Needs checking (not sure)",
   parentOf:"Child of", childrenOf:"Children", noChildren:"No children listed yet.",
   olderTitle:"Trace back to older generations", olderBody:"Who were {n}'s parents? If you know their names, or the grandparents before them, help us trace the line further back.", olderBtn:"↑ Add {n}'s parent", gapNoParent:"Parents not yet listed",
-  pendingPill:"new · awaiting review",
+  pendingPill:"new · awaiting review", editedPill:"updated · awaiting review", blueNote:"Blue = new or updated, awaiting review",
   addChild:"↓ Add child", addSibling:"↔ Add brother/sister", addParent:"↑ Add parent", addSiblingTo:"Add a brother/sister to", addParentTo:"Add a parent to", sugParent:"Add parent to", editInfo:"Correct / add details", del:"Delete",
   yourName:"Your name & relation", yourNameHint:"e.g. 'Aisyah, daughter-in-law'",
   save:"Save", send:"Send suggestion", cancel:"Cancel",
@@ -500,6 +502,7 @@ function renderLegend(){
   const maxGen = Math.max(0,...Object.values(IDX.gen));
   const L = $("#legend"); rc(L);
   L.append(el("span",{class:"realname unconf",style:"font-size:.82rem",text:t("greyNote")}));
+  if(Object.values(state.people).some(p=>p.pending||p.edited)) L.append(el("span",{class:"realname",style:"font-size:.82rem;color:#1d4ed8",text:t("blueNote")}));
   for(let g=1; g<=maxGen; g++){ const s=el("span",{text:t("gen")+" "+g}); s.style.setProperty("--c",GENCOL[Math.min(g-1,GENCOL.length-1)]); L.append(s); }
 }
 
@@ -533,13 +536,13 @@ function renderTree(){
         onclick:()=>{ state.expanded.has(id)?state.expanded.delete(id):state.expanded.add(id); renderTree(); }, text: kids.length ? (open?"▾":"▸") : ""}),
       (()=>{ const d=el("span",{class:"dot"}); d.style.background=GENCOL[Math.min(g-1,GENCOL.length-1)]; return d; })(),
       p.photo ? imgEl(p.photo,"avatar") : null,
-      el("button",{class:"name", onclick:()=>openPerson(id)}, highlight(label(id), q)),
+      el("button",{class:"name"+((p.pending||p.edited)?" blue":""), onclick:()=>openPerson(id)}, highlight(label(id), q)),
       realNameEl(p,q),
       p.spouse ? el("span",{class:"spouse"},"+ ", highlight(str(p.spouse),q)) : null,
       p.otherParent ? el("span",{class:"pill",text:(lang==="ms"?"ibu/bapa: ":"parent: ")+p.otherParent}) : null,
       p.deceased ? el("span",{class:"pill",text:t("deceased")}) : null,
       p.check ? el("span",{class:"pill check",text:t("check")}) : null,
-      p.pending ? el("span",{class:"pill pend",text:t("pendingPill")}) : null,
+      p.pending ? el("span",{class:"pill pend",text:t("pendingPill")}) : p.edited ? el("span",{class:"pill pend",text:t("editedPill")}) : null,
       kids.length ? el("span",{class:"cnt",text:kids.length+" "+t("children")}) : null
     );
     const n = el("div",{class:"node"}, row);
@@ -631,16 +634,16 @@ function openPerson(id, refresh){
   const kids = IDX.kids[id]||[];
   const par = p.parent && state.people[p.parent] ? p.parent : null;
   const dl = el("dl",{});
-  const add=(k,v)=>{ if(v!=null && v!=="" ) dl.append(el("dt",{text:k}), el("dd",{text:v})); };
+  const add=(k,v,f)=>{ if(v!=null && v!=="" ){ const dd=el("dd",{text:v}); if(f && (p.editedFields||[]).includes(f)) dd.style.color="#1d4ed8"; dl.append(el("dt",{text:k}), dd); } };
   add(t("gen"), IDX.gen[id]);
   add(t("gender"), p.gender ? fmtVal("gender",p.gender) : "");
-  add(t("order"), p.order);
-  add(t("spouse"), p.spouse);
-  add(t("otherParent"), p.otherParent);
-  add(t("born"), p.born);
-  add(t("birthPlace"), p.birthPlace);
+  add(t("order"), p.order, "order");
+  add(t("spouse"), p.spouse, "spouse");
+  add(t("otherParent"), p.otherParent, "otherParent");
+  add(t("born"), p.born, "born");
+  add(t("birthPlace"), p.birthPlace, "birthPlace");
   if(p.deceased) add(t("deceased"), "✓");
-  add(t("notes"), p.notes);
+  add(t("notes"), p.notes, "notes");
   const home = (p.pastAddress || p.housePhoto) ? el("div",{class:"homebox"},
     el("h3",{text:t("oldHome")}),
     p.pastAddress ? el("div",{text:p.pastAddress}) : null,
@@ -655,7 +658,7 @@ function openPerson(id, refresh){
     el("h2",{text:label(id)}),
     el("div",{style:"margin-top:4px"}, el("span",{class:"path",text:t("name")+": "}), realNameEl(p,"",true), p.nameConfirmed ? null : el("span",{class:"pill",style:"margin-left:6px",text:t("unconfirmed")})),
     p.check ? el("span",{class:"pill check",text:t("check")}) : null,
-    p.pending ? el("div",{class:"path",style:"margin-top:6px"}, el("span",{class:"pill pend",text:t("pendingPill")}), p.pendingBy ? " "+t("from")+": "+p.pendingBy : "") : null,
+    (p.pending||p.edited) ? el("div",{class:"path",style:"margin-top:6px"}, el("span",{class:"pill pend",text:t(p.pending?"pendingPill":"editedPill")}), p.pendingBy ? " "+t("from")+": "+p.pendingBy : "", p.edited && p.editedFields ? " · "+p.editedFields.map(fieldName).join(", ") : "") : null,
     dl,
     home,
     par ? el("div",{}, el("b",{text:t("parentOf")+": "}), el("button",{class:"chip",onclick:()=>openPerson(par),text:label(par)})) : null,
@@ -928,6 +931,13 @@ function addPending(row){
   const id = "pending-" + (row.id || Math.random().toString(36).slice(2));
   if(state.people[id]) return;
   const node = { name:"",nick:"",gender:"",order:"",born:"",birthPlace:"",spouse:"",otherParent:"",notes:"",deceased:false,check:false,nameConfirmed:false,photo:"",pastAddress:"",inPerlis:false,housePhoto:"", ...d, pending:true, pendingBy: row.byName||"" };
+  if(row.type==="edit"){
+    const ch = {}; for(const k in d){ if(d[k]!=="" && d[k]!==false && d[k]!=null) ch[k]=d[k]; }
+    if(!Object.keys(ch).length) return;
+    const cur = state.people[tgt];
+    state.people[tgt] = {...cur, ...ch, edited:true, editedFields:[...new Set([...(cur.editedFields||[]), ...Object.keys(ch)])], pendingBy: row.byName||cur.pendingBy||""};
+    return;
+  }
   if(row.type==="parent"){ node.parent = state.people[tgt].parent || ""; state.people[id]=node; state.people[tgt] = {...state.people[tgt], parent:id}; }
   else if(row.type==="add"){ node.parent = tgt; state.people[id]=node; }
   else return;
