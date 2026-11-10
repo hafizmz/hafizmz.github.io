@@ -55,14 +55,14 @@ h3{margin:0;font-size:15px}
 .stats{display:flex;gap:14px;margin-top:6px;font-size:12.5px;color:var(--muted)}.stats b{color:var(--ink)}
 .sec{display:flex;justify-content:space-between;align-items:baseline;margin:20px 0 10px}
 .chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px;scrollbar-width:none}
-.chip{flex:none;border:1px solid var(--line);background:var(--paper);border-radius:20px;padding:6px 12px;font:600 12.5px Inter;color:var(--ink);cursor:pointer}
+.chip{flex:none;border:1px solid var(--line);background:var(--paper);border-radius:20px;padding:8px 14px;min-height:40px;font:600 12.5px Inter;color:var(--ink);cursor:pointer}
 .chip.on{background:var(--forest);color:var(--cream);border-color:var(--forest)}
 .seg{display:flex;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:3px;margin-bottom:14px}
 .seg button{flex:1;border:0;background:none;padding:9px 4px;border-radius:9px;font:600 13px Inter;color:var(--muted);cursor:pointer}
 .seg button.on{color:#fff}
 .seg button[data-k=history].on{background:var(--history)}.seg button[data-k=nature].on{background:var(--nature)}.seg button[data-k=arts].on{background:var(--arts)}
 .src{font-size:11.5px;margin-top:6px;color:var(--muted)}
-.src a{font-weight:600;text-decoration:none;display:inline-block;padding:6px 2px}
+.src a{font-weight:600;text-decoration:none;display:inline-block;padding:10px 3px}
 /* timeline */
 .tl{position:relative;padding-left:62px}
 .tl:before{content:"";position:absolute;left:52px;top:4px;bottom:4px;width:2px;background:var(--line)}
@@ -133,8 +133,9 @@ ul{padding-left:18px;margin:6px 0 0}li{margin:3px 0}
 .tmwrap{position:relative;border-radius:14px;border:1px solid var(--line);overflow:hidden;background:#e8efdf;touch-action:none;height:56vh;min-height:320px;max-height:560px}
 #tm{width:100%;height:100%;display:block;cursor:grab}
 #tm.drag{cursor:grabbing}
+.osmcr{position:absolute;right:6px;bottom:6px;z-index:2;background:rgba(255,255,255,.85);color:#1f3d2b;font:600 11px Inter,sans-serif;padding:3px 7px;border-radius:6px;text-decoration:none}
 .zoom{position:absolute;right:8px;top:8px;display:flex;flex-direction:column;gap:6px}
-.zoom button{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--paper);font:600 18px Inter;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.zoom button{width:42px;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--paper);font:600 18px Inter;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.12)}
 .compass{position:absolute;left:10px;top:10px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:3px 7px;font:700 11px Inter;color:var(--forest)}
 .layers{display:flex;gap:14px;font-size:12.5px;color:var(--muted);margin:8px 0}
 .trl{fill:none;stroke-linecap:round;stroke-linejoin:round;transition:opacity .2s,stroke-width .2s;cursor:pointer}
@@ -192,7 +193,7 @@ path.sel{stroke-dasharray:14 8;animation:march 1s linear infinite}
 .badge2.got .bi{filter:none;opacity:1;border:2px solid var(--c);background:#fff}
 .badge2.got{color:var(--ink);font-weight:600}
 .vtick{color:var(--nature);font-weight:700;margin-left:4px}
-#langBtn{border:1px solid rgba(246,241,230,.5);background:none;color:var(--cream);border-radius:8px;padding:4px 8px;font:700 11.5px Inter,sans-serif;cursor:pointer;margin-left:6px}
+#langBtn{border:1px solid rgba(246,241,230,.5);background:none;color:var(--cream);border-radius:8px;padding:4px 8px;min-width:40px;min-height:36px;font:700 12px Inter,sans-serif;cursor:pointer;margin-left:6px}
 .hero2{position:relative;height:clamp(285px,55vw,440px);overflow:hidden;background:#2c5a3c}
 .herocard{position:absolute;left:14px;bottom:calc(clamp(22px,4vw,46px) + 4px);width:clamp(150px,42%,300px);cursor:pointer;z-index:2;border:4px solid #7a5532;border-radius:10px;background:#7a5532;box-shadow:0 6px 14px rgba(0,0,0,.25)}.herocard:before,.herocard:after{content:'';position:absolute;top:100%;width:7px;height:clamp(22px,4vw,46px);background:linear-gradient(90deg,#5e4027,#7a5532);border-radius:0 0 2px 2px}.herocard:before{left:18%}.herocard:after{right:18%}.herocard svg{border-radius:6px}.herocard:active{transform:scale(.98)}
 .hero2 .scene{position:absolute;inset:0;width:100%;height:100%}.hero2txt{pointer-events:none}
@@ -400,7 +401,7 @@ path.sel{stroke-dasharray:14 8;animation:march 1s linear infinite}
     <div class="chips" id="trailChips"></div>
     <div class="tmwrap" id="tmwrap">
       <svg id="tm" viewBox="-1700 -1000 2700 2300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg>
-      <div class="zoom"><button id="zin" aria-label="Zoom in">+</button><button id="zout" aria-label="Zoom out">−</button><button id="zreset" aria-label="Reset view">⟲</button><button id="zme" aria-label="Show my location">📍</button></div>
+      <a class="osmcr" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap</a><div class="zoom"><button id="zin" aria-label="Zoom in">+</button><button id="zout" aria-label="Zoom out">−</button><button id="zreset" aria-label="Reset view">⟲</button><button id="zme" aria-label="Show my location">📍</button></div>
       <div class="compass">▲<br>N</div><div class="scalebar" id="scalebar"><span></span><b></b></div><div class="mapmsg" id="mapMsg" style="display:none"></div><div class="nearchip" id="nearChip" style="display:none"></div>
     </div>
     <div class="layers"><label><input type="checkbox" id="lyStops" checked> Stops</label><label><input type="checkbox" id="lyRoads" checked> Roads & paths</label><label><input type="checkbox" id="lyLabels" checked> Labels</label><label><input type="checkbox" id="lyFac" checked> Facilities</label></div>
@@ -454,12 +455,14 @@ path.sel{stroke-dasharray:14 8;animation:march 1s linear infinite}
     <label class="setrow"><span>📳 Vibrate with alerts</span><input type="checkbox" id="setVibe" checked></label>
     <label class="setrow"><span>🌐 Bahasa Malaysia</span><input type="checkbox" id="setLang"></label>
     <button class="btn ghost" id="resetVisits" style="margin-top:8px">Clear my visited stops</button></div>
-  <div class="card"><h3>Build plan</h3><ol class="muted">
+  <div class="card" id="contactCard"><h3>💬 Contact & feedback</h3><p class="muted" style="margin:4px 0 10px">This is an independent guide. It is not affiliated with Penang Hill Corporation (PHC) or the Penang Hill Biosphere Reserve. For feedback, corrections, or to remove your beta sign-up email, contact the developer on GitHub.</p>
+ <div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn" href="https://github.com/hafizmz" target="_blank" rel="noopener">GitHub: hafizmz</a><a class="btn ghost" href="privacy.html">Privacy policy</a></div></div>
+ <div class="card"><h3>Build plan</h3><ol class="muted">
     <li>Skeleton ✅</li><li>Library ✅</li><li>History, Nature and Arts content from the library ✅</li>
     <li><b>First route</b>: your photos and checkpoints</li>
     <li>Interactive trail map + GPX loader ✅</li><li>Stop alerts, visited stops & badges ✅</li><li>True-scale map from OpenStreetMap ✅</li><li>Real GPS lines for each route</li>
-    <li>More routes, GPS "you are here", Bahasa Malaysia</li></ol></div>
-  <p class="muted">Beta 1.4. All text is written for this guide from the sources in the Library. Books and articles belong to their authors. Map data © OpenStreetMap contributors. Font: Inter (SIL Open Font License). <a href="privacy.html">Privacy</a></p>
+    <li>GPS "you are here" and Bahasa Malaysia ✅</li><li>More routes (Middle Station Trail added)</li></ol></div>
+  <p class="muted">Beta 1.6. All text is written for this guide from the sources in the Library. Books and articles belong to their authors. Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>, available under the Open Database License. Font: Inter (SIL Open Font License). <a href="privacy.html">Privacy</a></p>
 </div></div>
 </main>
 
@@ -484,7 +487,7 @@ const LIB=[
  {id:"app_official",c:"apps",t:"Penang Hill Hiking Trails (official app)",s:"PHC · iOS & Android",k:"App",u:"https://apps.apple.com/us/app/-/id6499240893",d:"Navigation with live location, trail photos, hilltop weather and AED locations. Covers 10 popular trails."},
  {id:"app_visitor",c:"apps",t:"Penang Hill Apps (visitor app)",s:"PHC · iOS & Android",k:"App",u:"https://apps.apple.com/us/app/-/id1333454604",d:"Attractions, events, tickets and directions. Trails are shown through OsmAnd."},
  {id:"osmand",c:"apps",t:"OsmAnd (offline OpenStreetMap)",s:"OsmAnd",k:"App",u:"https://osmand.net",d:"Offline maps recommended by PHC for following the hill's trails."},
- {id:"osm",c:"trails",t:"OpenStreetMap: Penang Hill",s:"OpenStreetMap contributors",k:"Open data",u:"https://www.openstreetmap.org/search?query=Bukit%20Bendera",d:"Free, openly licensed trail lines (ODbL). Our planned base for drawing routes, credited to OSM."},
+ {id:"osm",c:"trails",t:"OpenStreetMap: Penang Hill",s:"OpenStreetMap contributors",k:"Open data",u:"https://www.openstreetmap.org/search?query=Bukit%20Bendera",d:"Free, openly licensed map data (ODbL). The base for this guide's trail map, credited to OpenStreetMap."},
  {id:"wk_heritage",c:"trails",t:"Heritage Trail: Lower to Upper Station",s:"Wikiloc",k:"GPS track",u:"https://www.wikiloc.com/hiking-trails/bukit-bendera-heritage-trail-lower-station-to-upper-station-53707506",d:"The steep classic route via Middle Station, recorded by a hiker."},
  {id:"wk_bypathb",c:"trails",t:"Heritage Trail → Bypath B → Astaka",s:"Wikiloc",k:"GPS track",u:"https://www.wikiloc.com/hiking-trails/penang-hill-167071865",d:"About 6 km one way in roughly 2 hours. Has waypoint photos at Middle Station."},
  {id:"wk_botanic",c:"trails",t:"Botanic Gardens to Penang Hill",s:"Wikiloc",k:"GPS track",u:"https://www.wikiloc.com/hiking-trails/botantical-gardens-to-penang-hill-9083574",d:"About 5.4 km one way from the Botanic Gardens."},
@@ -538,6 +541,9 @@ const ROUTES=[
  {id:"moniot",trail:"moniot",name:"Moniot Road Trail",sub:"Built 1825, one of the oldest tracks on the hill",c:"#8a5a2b",km:1.5,min:null,level:"Moderate",start:"Moon Gate / Botanic Gardens side",
   note:"Named after J.M. Moniot, Surveyor-General of the Straits Settlements. It was built by convict labourers of Indian descent brought from Bencoolen (Sumatra), and declared a Heritage Trail in 1995. Many hikers come up from Moon Gate on this route.",src:["phc_trails","wiki"],
   tips:["Download an offline map first (OsmAnd or MAPS.ME). There are many junctions.","Maps are posted at the bypass junctions."]},
+ {id:"moniotw",trail:"moniotw",name:"Moniot Road West",sub:"Western section, towards Tiger Hill",c:"#8a5a2b",km:1.6,min:null,level:"Moderate",start:"Moniot Road, below the summit ridge",
+  note:"The western part of the old Moniot Road, running below the summit ridge towards Tiger Hill. About 1.6 km measured on the map.",src:["phc_trails"],
+  tips:["Quiet and shaded, with few other hikers.","Download an offline map first. Side paths lead off towards Tiger Hill."]},
  {id:"jeep",trail:"jeep",name:"Jeep Track from Botanic Gardens",sub:"Paved road climb, the classic workout",c:"#7a4a3a",km:4.8,min:150,level:"Challenging",start:"Penang Botanic Gardens",
   note:"Only authorised vehicles can drive it, but hikers can walk it. It arrives near The Habitat and the Bellevue Hotel. About 4.8 km one way, measured on the map.",src:["wk_botanic"],
   tips:["Steady and steep, with no shade in places.","Step aside for jeeps on bends."]},
@@ -602,7 +608,7 @@ function openRoute(id){const r=ROUTES.find(x=>x.id===id);if(!r)return;curRoute=i
    <div class="card" style="margin-top:12px;background:#eef4ec;border-color:#cfe0c9"><p class="muted" style="margin:0">📷 Photos of each checkpoint are coming. Hiked it? Send your photos to add them.</p></div>`;}
  $("#v-route").innerHTML=`<div class="rhead"><span class="pill ${PILL[r.status][1]}">${PILL[r.status][0]}</span>
    <h2 style="margin-top:8px">${r.name}</h2><div class="muted">${r.sub}</div>
-   <div class="bigstats"><div><b>${fmt(r.km,"")}</b>km</div><div><b>${fmt(r.min,"")}</b>min</div><div><b>${r.checkpoints?r.checkpoints.length:t.stops.length}</b>stops</div><div><b>${r.level}</b>level</div></div></div>
+   <div class="bigstats"><div><b>${fmt(r.km,"")}</b>km</div><div><b>${fmt(r.min,"")}</b>min</div><div><b>${(r.checkpoints?r.checkpoints.length:t.stops.length)||"–"}</b>stops</div><div><b>${r.level}</b>level</div></div></div>
    <div class="pad">${body}</div>`;
  $("#v-route").querySelectorAll(".stop").forEach(c=>c.onclick=()=>openStop(STOPS.find(s=>s.n===c.dataset.n)));
  $("#v-route").querySelectorAll(".tabs").forEach(tb=>tb.onclick=e=>{const k=e.target.closest(".tab")?.dataset.k;if(!k)return;
@@ -1039,7 +1045,7 @@ const dayN=Math.floor((Date.now()+8*3600e3)/864e5);let factI=dayN%FACTS.length;
 function renderToday(){const st=STOPS.filter(x=>x.lens)[dayN%STOPS.filter(x=>x.lens).length];const sp=SPECIES[dayN%SPECIES.length];const [ft,fs]=FACTS[factI];
  const lens=st.lens?Object.values(st.lens)[0]:st.d;
  $("#today").innerHTML=`<div class="tcard fact" id="factCard"><div class="lbl">💡 Did you know?</div><p style="font-size:15px">${ft}</p><div class="more">Another fact ›</div><div class="big">💡</div></div>
-  <div class="tcard stopd" data-stopn="${st.n}"><div class="lbl">📍 Stop of the day · ${st.n}</div><h3>${st.name}</h3><p>${lens.length>140?lens.slice(0,lens.lastIndexOf(" ",135))+"…":lens}</p><div class="more">Read the story ›</div><div class="big">🏛️</div></div>
+  <div class="tcard stopd" data-stopn="${st.n}"><div class="lbl">📍 Stop of the day · ${st.n}</div><h3>${st.name}</h3><p>${(L=>L.length>140?L.slice(0,L.lastIndexOf(" ",135))+"…":L)(libTr(lens))}</p><div class="more">Read the story ›</div><div class="big">🏛️</div></div>
   <div class="tcard wild" data-wild="1"><div class="lbl">🐾 Wildlife spotlight</div><h3>${sp.n}</h3><p>${sp.d}</p><div class="more">Open field guide ›</div><div class="big">${sp.e}</div></div>`;
  $("#factCard").onclick=()=>{factI=(factI+1)%FACTS.length;renderToday();$("#today").scrollLeft=0};
  $("#today").querySelector("[data-stopn]").onclick=e=>openStop(STOPS.find(x=>x.n===e.currentTarget.dataset.stopn));
@@ -1073,7 +1079,7 @@ function renderHeroMap(){const g=$("#heroCard");if(!g||typeof TRAILS2==="undefin
   <rect x="${CX0}" y="${CY0}" width="${CX1-CX0}" height="${CY1-CY0}" rx="7" fill="#fbf6ea"/>
   <rect x="${CX0}" y="${CY0}" width="${CX1-CX0}" height="${CY1-CY0}" rx="7" fill="#e6eedb" opacity=".6"/>
   <text x="${CX0+8}" y="${CY0+13}" font-size="7.2" font-weight="700" letter-spacing=".6" fill="#1f3d2b" font-family="Inter,sans-serif">TRAIL MAP · ${TRAILS2.length} ROUTES</text>
-  <circle cx="${CX0+10}" cy="${CY1-9}" r="2.6" fill="#2f7de1" stroke="#fff" stroke-width=".8"/><text x="${CX0+15}" y="${CY1-6.6}" font-size="6.2" font-weight="600" fill="#1f3d2b" font-family="Inter,sans-serif">Live tracking</text>
+  <circle cx="${CX0+10}" cy="${CY1-9}" r="2.6" fill="#2f7de1" stroke="#fff" stroke-width=".8"/><text x="${CX0+15}" y="${CY1-6.6}" font-size="6.2" font-weight="600" fill="#1f3d2b" font-family="Inter,sans-serif">Funicular line</text>
   <text x="${CX1-8}" y="${CY0+13}" font-size="7" font-weight="700" fill="#1f3d2b" text-anchor="end" font-family="Inter,sans-serif">▲N</text>
   <clipPath id="cardClip"><rect x="${CX0}" y="${CY0+17}" width="${CX1-CX0}" height="${CY1-CY0-17}" rx="7"/></clipPath>
   <g clip-path="url(#cardClip)"><g transform="translate(${tx.toFixed(2)},${ty.toFixed(2)}) scale(${k.toFixed(5)})">${roads}${pk}
@@ -1121,10 +1127,10 @@ document.querySelector(".feat").onclick=e=>{const d=e.target.closest("[data-go]"
  if(k==="map"||k==="near"||k==="rec")document.querySelector(`.qa button[data-qa="${k}"]`).click();
  else if(k==="prog")$("#progCard").scrollIntoView({behavior:"smooth",block:"center"});
  else if(k==="lang")$("#langBtn").click();else if(k==="about")go("about")};
-Object.assign(MS_HOME,{"Middle Station Trail":"Denai Stesen Tengah","Middle Station → Upper Tunnel Road":"Stesen Tengah → Upper Tunnel Road","Middle Station (on the Heritage Trail steps)":"Stesen Tengah (di anak tangga Denai Warisan)",
+Object.assign(MS_HOME,{"Official GPS trail map with # trail entrances and rest stops, plus a short history of the Moniot Trail (#).":"Peta denai GPS rasmi dengan # pintu masuk denai dan tempat rehat, serta sejarah ringkas Denai Moniot (#).","The printable version of the map on the trail signs.":"Versi boleh cetak bagi peta pada papan tanda denai.","Designated # Sep #, covering # ha. Malaysia's third UNESCO biosphere reserve. Includes species pages.":"Diwartakan # Sep #, meliputi # ha. Rizab biosfera UNESCO ketiga di Malaysia. Termasuk halaman spesies.","Opening hours, ticket prices and directions. Closed on Tuesdays.":"Waktu dibuka, harga tiket dan arah. Ditutup pada hari Selasa.","Navigation with live location, trail photos, hilltop weather and AED locations. Covers # popular trails.":"Navigasi dengan lokasi langsung, foto denai, cuaca di puncak dan lokasi AED. Meliputi # denai popular.","Attractions, events, tickets and directions. Trails are shown through OsmAnd.":"Tarikan, acara, tiket dan arah. Denai dipaparkan melalui OsmAnd.","Offline maps recommended by PHC for following the hill's trails.":"Peta luar talian yang disyorkan oleh PHC untuk mengikuti denai bukit.","Free, openly licensed map data (ODbL). The base for this guide's trail map, credited to OpenStreetMap.":"Data peta percuma berlesen terbuka (ODbL). Asas peta denai panduan ini, dengan kredit kepada OpenStreetMap.","The steep classic route via Middle Station, recorded by a hiker.":"Laluan klasik yang curam melalui Stesen Tengah, dirakam oleh seorang pendaki.","About # km one way in roughly # hours. Has waypoint photos at Middle Station.":"Kira-kira # km sehala dalam lebih kurang # jam. Ada foto titik laluan di Stesen Tengah.","About # km one way from the Botanic Gardens.":"Kira-kira # km sehala dari Taman Botani.","About # km. Described as one of the most relaxing trails on the island.":"Kira-kira # km. Disifatkan sebagai antara denai paling santai di pulau ini.","# km with # m of climbing, plus hikers' tips.":"# km dengan pendakian # m, serta tip daripada pendaki.","A long-running independent guide to walks, peaks and starting points across the hills.":"Panduan bebas yang sudah lama wujud tentang laluan, puncak dan titik permulaan di seluruh bukit.","Routes, difficulty, hazards and what to bring. No permit or fee is needed to hike.":"Laluan, tahap kesukaran, bahaya dan apa yang perlu dibawa. Tiada permit atau bayaran diperlukan untuk mendaki.","Step-by-step walk from the 'Heritage Trail – Since #' stone.":"Panduan langkah demi langkah dari batu 'Heritage Trail – Since #'.","An overview of the hill's trail network and lesser-known paths.":"Gambaran keseluruhan rangkaian denai bukit dan laluan yang kurang dikenali.","A short, readable official history, published for the railway's centenary.":"Sejarah rasmi yang ringkas dan mudah dibaca, diterbitkan sempena ulang tahun ke-100 kereta api.","All # bungalows, with more than # photographs.":"Kesemua # banglo, dengan lebih # gambar.","A full history of the hill, with more than # images.":"Sejarah lengkap bukit ini, dengan lebih # imej.","The funicular's century, plus the hill's natural heritage.":"Seabad kereta api funikular, serta warisan semula jadi bukit.","Early bungalows along The Habitat trail, with a fold-out map.":"Banglo awal di sepanjang denai The Habitat, dengan peta lipat.","How the bungalows served as sanatoriums, retreats and homes.":"Bagaimana banglo-banglo ini menjadi sanatorium, tempat peranginan dan kediaman.","Pages on individual bungalows such as Bel Retiro, Moy Craig and Richmond.":"Halaman tentang banglo tertentu seperti Bel Retiro, Moy Craig dan Richmond.","Francis Light's # horse track, Bel Retiro, Flagstaff Hill and the peaks.":"Laluan kuda Francis Light (#), Bel Retiro, Bukit Flagstaff dan puncak-puncaknya.","A guided walk with NatureWalks covering the trams, Angsana trees and bungalows.":"Jalan berpandu bersama NatureWalks tentang trem, pokok Angsana dan banglo.","# scientists recorded over # species, about four of them likely new to science. Free download.":"# saintis merekodkan lebih # spesies, kira-kira empat daripadanya mungkin baharu kepada sains. Muat turun percuma.","Community species observations with photos. Photo licences vary.":"Pemerhatian spesies oleh komuniti, dengan foto. Lesen foto berbeza-beza.","At least # orchid species recorded on Penang Hill.":"Sekurang-kurangnya # spesies orkid direkodkan di Bukit Bendera.","Dusky leaf monkeys, and the canopy bridges that help wildlife cross roads.":"Lotong cenekah, dan jambatan kanopi yang membantu hidupan liar melintas jalan.","Colugos, slow lorises and the conservation debate.":"Kubung, kongkang dan perdebatan tentang pemuliharaan.","A walk through the time tunnel, the funicular gallery and the Cultural Gallery.":"Lawatan melalui terowong masa, galeri funikular dan Galeri Budaya.","Murals by Equator College students marking the railway's centenary, plus the station gallery.":"Mural oleh pelajar Equator College sempena ulang tahun ke-100 kereta api, serta galeri stesen.","Includes 'Renewal', a sculpture built from old funicular wheels, rope and rail.":"Termasuk 'Renewal', arca yang dibina daripada roda, tali dan rel funikular lama.","Edgecliff, an Art Deco bungalow, and its five gallery sections.":"Edgecliff, banglo Art Deco, dan lima bahagian galerinya.","Official species gallery: flora, fungi and fauna of the reserve.":"Galeri spesies rasmi: flora, kulat dan fauna rizab.","Funicular line":"Laluan funikular","© OpenStreetMap":"© OpenStreetMap","💬 Contact & feedback":"💬 Hubungi & maklum balas","This is an independent guide. It is not affiliated with Penang Hill Corporation (PHC) or the Penang Hill Biosphere Reserve. For feedback, corrections, or to remove your beta sign-up email, contact the developer on GitHub.":"Ini panduan bebas. Ia tidak bergabung dengan Perbadanan Bukit Bendera (PHC) atau Rizab Biosfera Bukit Bendera. Untuk maklum balas, pembetulan, atau memadam e-mel pendaftaran beta anda, hubungi pembangun di GitHub.","Privacy policy":"Dasar privasi","GPS \"you are here\" and Bahasa Malaysia ✅":"GPS \"anda di sini\" dan Bahasa Malaysia ✅","More routes (Middle Station Trail added)":"Lebih banyak laluan (Denai Stesen Tengah ditambah)","Moniot Road West":"Jalan Moniot Barat","Western section, towards Tiger Hill":"Bahagian barat, ke arah Bukit Harimau","Moniot Road, below the summit ridge":"Jalan Moniot, di bawah rabung puncak","The western part of the old Moniot Road, running below the summit ridge towards Tiger Hill. About # km measured on the map.":"Bahagian barat Jalan Moniot lama, di bawah rabung puncak ke arah Bukit Harimau. Kira-kira # km diukur pada peta.","Quiet and shaded, with few other hikers.":"Tenang dan redup, dengan sedikit pendaki lain.","Download an offline map first. Side paths lead off towards Tiger Hill.":"Muat turun peta luar talian dahulu. Ada simpang ke arah Bukit Harimau.","I've already joined (e.g. in Safari)":"Saya sudah mendaftar (cth. di Safari)","Enter the email you joined with.":"Masukkan e-mel yang anda gunakan untuk mendaftar.","You only need to do this once on each phone. To remove your email, contact the developer (link on the Safety page).":"Anda hanya perlu buat sekali bagi setiap telefon. Untuk memadam e-mel anda, hubungi pembangun (pautan di halaman Keselamatan).","Map":"Peta","Museum":"Muzium","App":"Aplikasi","Open data":"Data terbuka","GPS track":"Jejak GPS","Website":"Laman web","Guide":"Panduan","Book":"Buku","Article":"Artikel","Encyclopedia":"Ensiklopedia","Paper":"Kertas kajian","Project":"Projek","Report":"Laporan","Review":"Ulasan","Middle Station Trail":"Denai Stesen Tengah","Middle Station → Upper Tunnel Road":"Stesen Tengah → Upper Tunnel Road","Middle Station (on the Heritage Trail steps)":"Stesen Tengah (di anak tangga Denai Warisan)",
  "A quieter forest path that starts beside Middle Station. It heads south-west on the 'Middle to Air Itam' trail, then turns west on the trail OpenStreetMap calls 'Middle Station to Upper Tunnel Road', ending where it meets the road up to Viaduct Road West. About # km measured on the map.":"Laluan hutan yang lebih tenang bermula di sebelah Stesen Tengah. Ia menghala ke barat daya melalui denai 'Middle to Air Itam', kemudian ke barat melalui denai yang dinamakan 'Middle Station to Upper Tunnel Road' dalam OpenStreetMap, dan berakhir di simpang jalan naik ke Viaduct Road West. Kira-kira # km diukur pada peta.",
  "A forest path from Middle Station, first south-west along 'Middle to Air Itam', then west on 'Middle Station to Upper Tunnel Road'. About # km measured on the map.":"Laluan hutan dari Stesen Tengah, mula-mula ke barat daya melalui 'Middle to Air Itam', kemudian ke barat melalui 'Middle Station to Upper Tunnel Road'. Kira-kira # km diukur pada peta.",
- "Fewer people than the Heritage Trail steps.":"Kurang orang berbanding anak tangga Denai Warisan.","Have an offline map ready. Side paths branch off to Air Itam.":"Sediakan peta luar talian. Ada simpang ke Air Itam.","Not on the official trail sign, so there are no route markers.":"Tiada dalam papan tanda rasmi, jadi tiada penanda laluan.","Home":"Utama","🏠 Home":"🏠 Utama","‹ Back":"‹ Kembali","Live tracking":"Penjejakan langsung","UNESCO Biosphere Reserve · 130-million-year-old rainforest":"Rizab Biosfera UNESCO · hutan hujan berusia 130 juta tahun",
+ "Fewer people than the Heritage Trail steps.":"Kurang orang berbanding anak tangga Denai Warisan.","Have an offline map ready. Side paths branch off to Air Itam.":"Sediakan peta luar talian. Ada simpang ke Air Itam.","Not on the official trail sign, so there are no route markers.":"Tiada dalam papan tanda rasmi, jadi tiada penanda laluan.","Home":"Utama","🏠 Home":"🏠 Utama","‹ Back":"‹ Kembali","Funicular line":"Laluan funikular","UNESCO Biosphere Reserve · 130-million-year-old rainforest":"Rizab Biosfera UNESCO · hutan hujan berusia 130 juta tahun",
  "🌏 UNESCO Biosphere Reserve · since #":"🌏 Rizab Biosfera UNESCO · sejak #","A living rainforest, from hilltop to sea":"Hutan hujan yang hidup, dari puncak ke laut",
  "On # September #, UNESCO named Penang Hill Malaysia's third Biosphere Reserve, after Tasik Chini and the Crocker Range. It protects an ancient rainforest while people continue to live, work and play around it.":"Pada # September #, UNESCO mengiktiraf Bukit Bendera sebagai Rizab Biosfera ketiga Malaysia, selepas Tasik Chini dan Banjaran Crocker. Ia melindungi hutan hujan purba sambil masyarakat terus hidup, bekerja dan beriadah di sekitarnya.",
  "about ¼ of Penang Island":"kira-kira ¼ Pulau Pinang","# M yrs":"# juta thn","age of the rainforest":"usia hutan hujan","species found in one survey":"spesies dalam satu kajian",
@@ -1212,12 +1218,13 @@ Object.assign(MS_HOME,{"👋 Meet your trail buddy":"👋 Kenali teman denai and
 /* ===== LIBRARY ===== */
 const LIBCATS={official:{l:"Official",i:"🏛️"},trails:{l:"Trails & GPS",i:"🥾"},history:{l:"History",i:"📜"},nature:{l:"Nature",i:"🌿"},arts:{l:"Arts",i:"🎨"},apps:{l:"Apps",i:"📱"}};
 let libCat="all";
+function libTr(t){try{return LANG==="ms"?trText(t):t}catch(e){return t}}
 function renderLib(){const q=$("#libq").value.toLowerCase().trim();
  const items=LIB.filter(x=>(libCat==="all"||x.c===libCat)&&(!q||(x.t+x.s+x.d+x.k).toLowerCase().includes(q)));
  const cats=libCat==="all"?Object.keys(LIBCATS):[libCat];
  $("#libList").innerHTML=cats.map(c=>{const g=items.filter(x=>x.c===c);if(!g.length)return"";
   return `<div class="grp">${LIBCATS[c].i} ${LIBCATS[c].l} · ${g.length}</div>`+g.map(x=>`<a class="card lib" id="lib-${x.id}" href="${x.u}" target="_blank" rel="noopener">
-   <div class="ico">${LIBCATS[x.c].i}</div><div><h3>${x.t}<span class="kind">${x.k}</span></h3><div class="by">${x.s}</div><p>${x.d}</p></div></a>`).join("")}).join("")||'<p class="muted">Nothing matches that search.</p>';}
+   <div class="ico">${LIBCATS[x.c].i}</div><div><h3>${x.t}<span class="kind">${libTr(x.k)}</span></h3><div class="by">${x.s}</div><p>${libTr(x.d)}</p></div></a>`).join("")}).join("")||'<p class="muted">Nothing matches that search.</p>';}
 $("#libChips").innerHTML=`<button class="chip on" data-c="all">All ${LIB.length}</button>`+Object.entries(LIBCATS).map(([k,v])=>`<button class="chip" data-c="${k}">${v.i} ${v.l}</button>`).join("");
 $("#libChips").onclick=e=>{const c=e.target.closest(".chip");if(!c)return;libCat=c.dataset.c;$("#libChips").querySelectorAll(".chip").forEach(b=>b.classList.toggle("on",b===c));renderLib()};
 $("#libq").oninput=renderLib;
@@ -1278,18 +1285,23 @@ window.addEventListener("online",betaSend);
   <label for="gEmail">Email</label><input id="gEmail" type="email" autocomplete="email" inputmode="email" required>
   <div class="chk"><input id="gOk" type="checkbox"><label for="gOk" style="margin:0;font-weight:400;color:inherit">I agree to be contacted about the beta. My email is only used for this and is never shared.</label></div>
   <div class="gerr" id="gErr"></div><button type="submit" id="gGo">Start exploring</button>
-  <p class="small">You only need to do this once on each phone. To remove your email, contact the developer from the Safety page.</p></form>`;
+  <button type="button" id="gBefore" style="background:none;color:var(--forest);text-decoration:underline;font-weight:600;margin-top:6px;padding:8px">I've already joined (e.g. in Safari)</button>
+  <p class="small">You only need to do this once on each phone. To remove your email, contact the developer (link on the Safety page). <a href="privacy.html">Privacy policy</a></p></form>`;
  document.body.appendChild(g);document.body.style.overflow="hidden";
  g.querySelector("form").onsubmit=e=>{e.preventDefault();const em=$("#gEmail").value.trim(),nm=$("#gName").value.trim();
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){$("#gErr").textContent=(LANG==="ms"?trText:String)("Please enter a valid email address.");return}
   if(!$("#gOk").checked){$("#gErr").textContent=(LANG==="ms"?trText:String)("Please tick the box to continue.");return}
   const rec={email:em,name:nm,lang:LANG,joined:new Date().toISOString()};store.set(BETA.key,rec);store.set(BETA.queue,rec);betaSend();
-  g.remove();document.body.style.overflow=""}})();
+  g.remove();document.body.style.overflow=""};
+ $("#gBefore").onclick=()=>{const em=$("#gEmail").value.trim();if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){$("#gErr").textContent=(LANG==="ms"?trText:String)("Enter the email you joined with.");return}
+  store.set(BETA.key,{email:em,returning:true,joined:new Date().toISOString()});g.remove();document.body.style.overflow=""}})();
 Object.assign(MS,{"Join the beta":"Sertai beta","Penang Hill Trail Guide is in testing. Leave your email to get in, and we'll let you know about updates.":"Panduan Denai Bukit Bendera sedang diuji. Tinggalkan e-mel anda untuk masuk, dan kami akan maklumkan tentang kemas kini.",
  "Name (optional)":"Nama (pilihan)","Email":"E-mel","I agree to be contacted about the beta. My email is only used for this and is never shared.":"Saya bersetuju dihubungi tentang beta. E-mel saya hanya digunakan untuk tujuan ini dan tidak akan dikongsi.",
  "Start exploring":"Mula meneroka","You only need to do this once on each phone. To remove your email, contact the developer from the Safety page.":"Anda hanya perlu buat sekali bagi setiap telefon. Untuk memadam e-mel anda, hubungi pembangun melalui halaman Keselamatan.",
  "Please enter a valid email address.":"Sila masukkan alamat e-mel yang sah.","Please tick the box to continue.":"Sila tanda kotak untuk teruskan."});
 if(LANG==="ms"&&$("#gate"))trTree($("#gate"));
+
+if(LANG==="ms"){try{renderToday();renderLib()}catch(e){}}
 </script>
 </body>
 </html>
