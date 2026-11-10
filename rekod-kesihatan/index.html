@@ -35,6 +35,8 @@
   .latest{padding:12px 14px}
   .latest .tile{text-align:center}
   .foot{text-align:center;margin-top:10px}
+  details.hafiz summary{cursor:pointer;color:var(--muted);font-size:.9rem;padding:8px;list-style:none}
+  details.hafiz summary::-webkit-details-marker{display:none}
   .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
   .card h2{font-size:1.1rem;margin:0 0 12px}
   .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
@@ -52,7 +54,7 @@
   .row{display:flex;gap:10px}
   .row > div{flex:1;min-width:0}
   .bp-sep{align-self:flex-end;padding-bottom:12px;font-size:1.4rem;color:var(--muted);flex:0 0 auto !important}
-  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px} .chips .chip{flex:1;text-align:center;padding:12px 6px}
   .chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:9px 14px;font-size:1rem;cursor:pointer;color:var(--ink)}
   .chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
   .save{width:100%;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:18px;font-size:1.3rem;font-weight:700;cursor:pointer}
@@ -85,7 +87,7 @@
   .modal .box{background:#fff;border-radius:14px;padding:18px;max-width:360px;width:100%}
   .modal .acts{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
   .warnbar{background:var(--warn-bg);color:var(--warn);border-radius:10px;padding:8px 12px;font-size:.88rem;margin-bottom:12px;display:none}
-  @media (max-width:520px){ .grid{grid-template-columns:1fr 1fr;gap:8px} .tile .val{font-size:1.5rem} body{font-size:18px} .row{flex-wrap:wrap} .row > div{flex:1 1 40%} }
+  @media (max-width:520px){ .grid{grid-template-columns:1fr 1fr;gap:8px} .tile .val{font-size:1.5rem} body{font-size:18px} .row{gap:6px} .bp-sep{padding-bottom:10px;font-size:1.2rem} input{padding:12px 8px;text-align:center} }
 </style>
 </head>
 <body>
@@ -109,17 +111,17 @@
       <fieldset>
         <legend>Tekanan darah <small>(mmHg)</small></legend>
         <div class="row">
-          <div><label for="sys">Atas</label><input id="sys" type="number" inputmode="numeric" min="50" max="260" placeholder="120"></div>
+          <div><label for="sys">Atas</label><input id="sys" type="number" inputmode="numeric" min="50" max="260"></div>
           <div class="bp-sep">/</div>
-          <div><label for="dia">Bawah</label><input id="dia" type="number" inputmode="numeric" min="30" max="160" placeholder="80"></div>
-          <div><label for="pulse">Nadi</label><input id="pulse" type="number" inputmode="numeric" min="30" max="200" placeholder="72"></div>
+          <div><label for="dia">Bawah</label><input id="dia" type="number" inputmode="numeric" min="30" max="160"></div>
+          <div><label for="pulse">Nadi</label><input id="pulse" type="number" inputmode="numeric" min="30" max="200"></div>
         </div>
       </fieldset>
 
       <fieldset>
         <legend>Gula dalam darah <small>(mmol/L)</small></legend>
         <div class="row">
-          <div><input id="glu" type="number" inputmode="decimal" step="0.1" min="1" max="35" placeholder="5.6"></div>
+          <div><input id="glu" type="number" inputmode="decimal" step="0.1" min="1" max="35"></div>
         </div>
         <div class="chips" id="gluWhen"></div>
       </fieldset>
@@ -134,38 +136,36 @@
     </form>
   </div>
 
+
+  <div class="card">
+    <h2>Bacaan lepas</h2>
+    <div id="history"></div>
+    <div class="legend" style="margin-top:12px">
+      <span class="badge s-ok">Normal</span><span class="badge s-warn">Agak tinggi</span><span class="badge s-bad">Tinggi</span><span class="badge s-low">Rendah</span>
+    </div>
+  </div>
   <div class="card">
     <h2>Graf bacaan</h2>
     <div class="tabs" id="chartTabs"></div>
     <div id="chart"></div>
   </div>
-
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-      <h2 style="margin:0">Senarai bacaan</h2>
-      <div class="tools">
-        <button class="tbtn" id="copyBtn" type="button">Salin jadual</button>
-        <button class="tbtn" id="dlBtn" type="button">Muat turun (Excel)</button>
-      </div>
-    </div>
-    <div class="legend">
-      <span class="badge s-ok">Normal</span><span class="badge s-warn">Agak tinggi</span><span class="badge s-bad">Tinggi</span><span class="badge s-low">Rendah</span>
-    </div>
-    <div id="history"></div>
-    <p class="note-small">Warna hanya panduan umum (tekanan darah ≥140/90 tinggi, &lt;90/60 rendah; gula &lt;4.0 rendah, berpuasa &gt;7.0 atau selepas makan &gt;10.0 tinggi). Ikut sasaran yang ditetapkan oleh doktor.</p>
-  </div>
 </div>
 
 <div class="foot wrap" style="padding-top:0">
-  <div class="card" style="text-align:center">
-    <h2 style="margin-bottom:6px">Rekod Excel (Google Sheets)</h2>
-    <div id="syncStatus" style="font-size:.9rem;color:var(--muted);margin-bottom:10px">Setiap bacaan terus disimpan dalam Google Sheets Hafiz.</div>
-    <div class="tools" style="justify-content:center">
-      <a class="tbtn" href="https://docs.google.com/spreadsheets/d/16u4dHu7xewSLdU7ph34gkGNsc4L6mr-fo2Fp3l7akjc/edit" target="_blank" rel="noopener" style="text-decoration:none">Buka Excel (Hafiz)</a>
-      <button type="button" class="tbtn" id="reloadBtn">Muat semula</button>
+  <div id="syncStatus" style="font-size:.85rem;color:var(--muted);margin-bottom:6px">Setiap bacaan terus disimpan.</div>
+  <details class="hafiz">
+    <summary>Untuk Hafiz</summary>
+    <div class="card" style="text-align:center;margin-top:10px">
+      <div class="tools" style="justify-content:center;margin-bottom:10px">
+        <a class="tbtn" href="https://docs.google.com/spreadsheets/d/16u4dHu7xewSLdU7ph34gkGNsc4L6mr-fo2Fp3l7akjc/edit" target="_blank" rel="noopener" style="text-decoration:none">Buka Excel</a>
+        <button type="button" class="tbtn" id="copyBtn">Salin jadual</button>
+        <button type="button" class="tbtn" id="dlBtn">Muat turun (Excel)</button>
+        <button type="button" class="tbtn" id="reloadBtn">Muat semula</button>
+      </div>
+      <button type="button" class="linkbtn" id="addPerson">+ Tambah orang</button>
+      <p class="note-small">Warna hanya panduan umum (tekanan darah ≥140/90 tinggi, &lt;90/60 rendah; gula &lt;4.0 rendah, berpuasa &gt;7.0 atau selepas makan &gt;10.0 tinggi). Ikut sasaran yang ditetapkan oleh doktor.</p>
     </div>
-  </div>
-  <button type="button" class="linkbtn" id="addPerson" style="color:var(--muted)">+ Tambah orang</button>
+  </details>
 </div>
 
 <div class="modal" id="modal">
@@ -207,7 +207,7 @@
   let loaded=false;
 
   const $ = id => document.getElementById(id);
-  const WHENS = ["Berpuasa","Sebelum makan","Selepas makan","Sebelum tidur","Rawak"];
+  const WHENS = ["Berpuasa","Selepas makan","Lain-lain"];
   
 
   // ---- status rules (general guide) ----
@@ -297,8 +297,8 @@
   }
 
   function renderHistory(){
-    const list=mine();
-    if(!list.length){ $("history").innerHTML=`<div class="empty">Belum ada bacaan untuk ${esc(current)}. Masukkan bacaan pertama di atas.</div>`; return; }
+    const list=mine().slice(0,10);
+    if(!list.length){ $("history").innerHTML=`<div class="empty">Belum ada bacaan untuk ${esc(current)}.</div>`; return; }
     let html="", lastDay="";
     for(const e of list){
       const day=fmtDay(e.t);
