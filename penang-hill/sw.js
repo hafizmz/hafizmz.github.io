@@ -1,6 +1,6 @@
 /* Penang Hill Trail Guide: offline service worker.
    When you change any file, bump VERSION so phones fetch the update. */
-const VERSION = "beta-1.6.1";
+const VERSION = "beta-1.7.0";
 const CACHE = "phtg-" + VERSION;
 const FILES = [
   "./",
