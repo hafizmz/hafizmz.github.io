@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cancer Cure Quest Junior</title>
+<link href="../fonts/fonts.css" rel="stylesheet">
+<style>
+/* Cancer Cure Quest Junior: companion to the hospital-machines game for young children. Same toy-hospital look: tiled wall, chunky ink outlines, hard shadows. */
+:root{
+  --wall:#E3F6EF; --tile:#CFEFE3; --acc:#20B26B; --ink:#123C43; --ink-soft:#4A6B70;
+  --coral:#FF6B4A; --sun:#FFC21A; --sky:#3AB0FF; --leaf:#20B26B; --card:#FFFFFF; --grey:#C9D6D3; --plum:#9B5FC0;
+  --display:"Fredoka","Baloo 2","Trebuchet MS",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background-color:var(--wall);background-image:linear-gradient(var(--tile) 2px,transparent 2px),linear-gradient(90deg,var(--tile) 2px,transparent 2px);background-size:56px 56px;color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.45}
+.app{max-width:1000px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 48px}
+button{font:inherit;color:inherit}
+button:focus-visible,svg:focus-visible,input:focus-visible,canvas:focus-visible,[tabindex]:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
+.kbring{position:fixed;width:36px;height:36px;border:4px solid var(--sun);border-radius:50%;box-shadow:0 0 0 3px var(--ink);pointer-events:none;z-index:40}
+g[tabindex]:focus-visible{outline:none}g[tabindex]:focus-visible>*{filter:drop-shadow(0 0 4px #58B6E0) drop-shadow(0 0 4px #58B6E0)}
+
+header.top{display:flex;flex-wrap:wrap;gap:14px 20px;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px}
+.brand svg{width:56px;height:60px;flex:none}
+.brand h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,40px);margin:0;line-height:1;letter-spacing:-.01em}
+.brand h1 span{color:var(--coral)}
+.brand p{margin:4px 0 0;color:var(--ink-soft);font-size:16px;max-width:46ch}
+.toggles{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.seg{display:inline-flex;border:3px solid var(--ink);border-radius:999px;background:var(--card);overflow:hidden}
+.seg button{font:600 15px var(--display);border:0;background:transparent;padding:0 14px;min-height:42px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--card)}
+.round{width:48px;height:48px;border:3px solid var(--ink);border-radius:50%;background:var(--card);display:grid;place-items:center;cursor:pointer;flex:none;padding:0}
+.round svg{width:24px;height:24px}
+.round.sm{width:40px;height:40px}
+.round.sm svg{width:20px;height:20px}
+.round[aria-pressed="false"]{background:var(--grey)}
+
+.helper{display:flex;gap:12px;align-items:flex-end;margin:22px 0 20px}
+.ana{width:84px;flex:none}
+.sina .shead{transform-box:fill-box;transform-origin:50% 90%;animation:snod 4.8s ease-in-out infinite}
+.sina .blink{transform-box:fill-box;transform-origin:50% 50%;animation:sblink 5.2s infinite}
+@keyframes snod{0%,70%,100%{transform:rotate(0)}78%{transform:rotate(-5deg)}88%{transform:rotate(3deg)}}
+@keyframes sblink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@media (prefers-reduced-motion:reduce){.sina .shead,.sina .blink{animation:none}}
+.mentari{width:96px;flex:none}
+.bubble{position:relative;background:var(--card);border:3px solid var(--ink);border-radius:22px;padding:14px 14px 14px 18px;box-shadow:4px 4px 0 var(--ink);flex:1;min-width:0;display:flex;gap:12px;align-items:center}
+.bubble::before{content:"";position:absolute;left:-15px;bottom:18px;width:22px;height:22px;background:var(--card);border-left:3px solid var(--ink);border-bottom:3px solid var(--ink);transform:rotate(45deg) skew(10deg,10deg)}
+.bubble p{margin:0;font-size:18px;flex:1;min-width:0;position:relative}
+.bubble p.say{animation:say .35s ease-out}
+@media (max-width:560px){.mentari{display:none}.ana{width:64px}.bubble p{font-size:17px}}
+
+.rooms{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (min-width:620px){.rooms{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}}
+.rooms.three{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.room{position:relative;text-align:left;border:3px solid var(--ink);border-radius:22px;background:var(--card);box-shadow:5px 5px 0 var(--ink);padding:0;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
+.room:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+.room:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+.room .art{position:relative;background:var(--c);border-bottom:3px solid var(--ink);aspect-ratio:4/3;display:grid;place-items:center}
+.room .art>svg{width:72%;height:auto;max-height:86%}
+.room .meta{padding:12px 14px 14px;display:flex;flex-direction:column;gap:2px}
+.room h2{font:700 22px var(--display);margin:0;line-height:1.1;text-wrap:balance;overflow-wrap:break-word}
+.room .tag{color:var(--ink-soft);font-size:15px}
+@media (max-width:619px){.room .meta{padding:10px 11px 12px}.room h2{font-size:18px}.room .tag{font-size:14px}}
+.num{position:absolute;top:8px;left:8px;z-index:2;width:34px;height:34px;border-radius:50%;background:var(--card);border:3px solid var(--ink);display:grid;place-items:center;font:700 17px var(--display)}
+.room.locked .art>svg{filter:grayscale(.9);opacity:.45}
+.lockb{position:absolute;inset:0;display:grid;place-items:center}
+.lockb svg{width:44px;height:44px;background:var(--card);border:3px solid var(--ink);border-radius:50%;padding:7px}
+.stars{display:flex;gap:3px;margin-top:6px}
+.stars svg{width:26px;height:26px}
+
+.cert{margin-top:22px;display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center;background:var(--sun);border:3px solid var(--ink);border-radius:22px;box-shadow:5px 5px 0 var(--ink);padding:14px 18px}
+.cert>svg{width:72px;flex:none}
+.cert h2{font:700 24px var(--display);margin:0}
+.cert p{margin:2px 0 0}
+.cert>div{flex:1;min-width:180px}
+
+footer{margin-top:34px;padding-top:16px;border-top:3px dashed var(--grey);display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;color:var(--ink-soft);font-size:15px}
+footer p{margin:0 0 6px;max-width:64ch}
+footer a{color:var(--ink);font-weight:700}
+.footL{flex:1 1 380px;min-width:0}
+.footR{flex:0 1 260px;min-width:0}
+.linkish{background:none;border:0;padding:0;text-decoration:underline;cursor:pointer;color:var(--ink-soft);font-size:15px}
+
+.playbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.wingbar{margin-top:18px}
+.pill{display:inline-flex;align-items:center;gap:6px;font:600 17px var(--display);border:3px solid var(--ink);border-radius:999px;background:var(--card);padding:0 16px 0 10px;min-height:48px;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+.pill svg{width:22px;height:22px}
+.playbar h2{font:700 clamp(21px,4vw,32px) var(--display);margin:0;flex:1;min-width:0;overflow-wrap:anywhere;line-height:1.1}
+@media (max-width:480px){.play .pill .pl{display:none}.play .pill{padding:0 10px}}
+.play .helper{margin:16px 0 0}
+.play .ana{width:64px}
+.stage{margin-top:16px;border:3px solid var(--ink);border-radius:22px;overflow:hidden;background:var(--card);box-shadow:5px 5px 0 var(--ink);position:relative}
+.gsvg{display:block;width:100%;height:auto;user-select:none;-webkit-user-select:none}
+.drag{touch-action:none;cursor:grab}
+.chips{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.chip{width:52px;height:52px;border:3px solid var(--ink);border-radius:14px;background:var(--card);display:grid;place-items:center;opacity:.35;filter:grayscale(1)}
+.chip svg{width:34px;height:34px}
+.chip.got{opacity:1;filter:none;background:var(--sun);animation:pop .45s}
+@media (max-width:480px){.chips{gap:6px}.chip{width:36px;height:36px;border-radius:10px;border-width:2px}.chip svg{width:24px;height:24px}}
+.controls{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:16px;min-height:10px}
+.cta{font:700 22px var(--display);letter-spacing:.02em;border:3px solid var(--ink);border-radius:999px;padding:0 30px;min-height:58px;background:var(--coral);color:var(--card);box-shadow:4px 4px 0 var(--ink);cursor:pointer}
+.cta:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.cta[disabled]{background:var(--grey);color:var(--ink-soft);box-shadow:none;cursor:not-allowed}
+.cta.ready{animation:pulse 1s ease-in-out infinite}
+.cta.ok{background:var(--leaf)}
+.bar{width:min(220px,50vw);height:22px;border:3px solid var(--ink);border-radius:999px;background:var(--card);overflow:hidden}
+.bar i{display:block;height:100%;width:100%;background:var(--leaf);transition:width .6s,background .6s}
+.meter{display:flex;align-items:center;gap:8px;font:600 17px var(--display)}
+
+.qa{padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.q{font:600 21px var(--display);text-align:center;margin:0;max-width:40ch;text-wrap:balance}
+.jobpic svg{width:min(260px,70vw);height:auto;display:block}
+.machines{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:12px;width:100%;max-width:680px}
+.mach{border:3px solid var(--ink);border-radius:18px;background:var(--card);padding:10px 8px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;box-shadow:3px 3px 0 var(--ink);font:600 16px var(--display);text-align:center;line-height:1.15}
+.mach svg{width:84px;height:68px}
+.mach.yes{background:#CDEFDD}
+.mach.no{background:#FFD9CF;opacity:.7;box-shadow:none}
+.mach.person svg{height:90px}
+.scope{width:min(300px,78vw);height:auto;display:block}
+.choice{font:700 20px var(--display);border:3px solid var(--ink);border-radius:18px;background:var(--card);min-height:62px;padding:0 22px;box-shadow:4px 4px 0 var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:10px}
+.choice svg{width:38px;height:38px}
+.choice:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.choice[disabled]{opacity:.45;box-shadow:none;cursor:not-allowed}
+.band{display:inline-flex;align-items:center;gap:10px;border:3px solid var(--ink);border-radius:999px;background:#FFF6D6;padding:6px 20px 6px 8px;font:700 22px var(--display);letter-spacing:.08em}
+.band svg{width:44px;height:44px}
+.who{width:min(150px,40vw);height:auto}
+
+.overlay{position:fixed;inset:0;background:rgba(18,60,67,.55);display:grid;place-items:center;z-index:50;padding:max(16px,env(safe-area-inset-top,0px)) 16px max(16px,env(safe-area-inset-bottom,0px));overflow:auto}
+.card{background:var(--card);border:3px solid var(--ink);border-radius:26px;box-shadow:6px 6px 0 var(--ink);padding:22px;max-width:520px;width:100%;display:flex;flex-direction:column;gap:14px;animation:pop .35s}
+.card h2{font:700 30px var(--display);margin:0;text-align:center;text-wrap:balance}
+.card p{margin:0}
+.bigstars{display:flex;justify-content:center;gap:8px}
+.bigstars svg{width:62px;height:62px}
+.bigstars svg.on{animation:pop .5s backwards}
+.tip{display:flex;gap:10px;align-items:flex-start;background:var(--wall);border-radius:16px;padding:10px 12px;font-size:16px}
+.tip svg{width:46px;flex:none}
+.eyebrow{font:600 14px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:center}
+.btnrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.opts{display:grid;gap:10px;width:100%;max-width:520px}
+.opt{text-align:left;border:3px solid var(--ink);border-radius:16px;background:var(--card);padding:12px 14px;cursor:pointer;font-size:18px;min-height:52px}
+.opt.yes{background:#CDEFDD}.opt.no{background:#FFD9CF}
+.medal{width:150px;margin:0 auto;display:block}
+.certbox{border:5px double var(--ink);border-radius:18px;padding:14px;text-align:center;background:#FFFBEA;display:grid;gap:8px}
+.certbox .nm{font:700 26px var(--display);min-height:1.2em;color:var(--coral)}
+.namein{font:600 18px var(--display);border:3px solid var(--ink);border-radius:14px;padding:8px 12px;width:100%}
+.teamrow{display:flex;gap:4px 10px;justify-content:center;flex-wrap:wrap}
+.teamrow figure{margin:0;width:64px;text-align:center;font:600 11px var(--display);line-height:1.15}
+.teamrow svg{width:56px;height:62px;display:block;margin:0 auto 2px}
+.small{font-size:14px;color:var(--ink-soft);text-align:center}
+
+/* game bits */
+.cellg{cursor:pointer}
+.cin{transform-box:fill-box;transform-origin:center;animation:breathe 2.6s ease-in-out infinite}
+.busy .cin{animation:split .8s ease-in-out infinite}
+.stopall .cellg:not(.busy) .cin{animation-play-state:paused}
+.born .cin{animation:born .45s ease-out,split .8s .45s ease-in-out infinite}
+.found .cin>:first-child{stroke:var(--sun);stroke-width:7}
+.cellg.wrong .cin{animation:shake .45s}
+.tapme{cursor:pointer;transform-box:fill-box;transform-origin:center;animation:glow 1.1s ease-in-out infinite}
+.ouch{transform-box:fill-box;transform-origin:center;animation:shake .5s}
+.flash{animation:flash .7s}
+#tufts{transition:transform 1.4s ease-in,opacity 1.4s}
+#tufts.fall{transform:translateY(70px);opacity:0}
+#tufts.grow{animation:born .8s ease-out}
+#beanie{opacity:0;transition:opacity .7s}
+#beanie.on{opacity:1}
+#lumpg{transition:transform 1s ease-in,opacity 1s;transform-box:fill-box;transform-origin:center}
+#lumpg.lifted{transform:translate(230px,-170px) scale(.3);opacity:0}
+.nextdot{transform-box:fill-box;transform-origin:center;animation:glow .9s ease-in-out infinite}
+.zz{animation:zz 2s ease-in-out infinite}
+.shake{animation:shake .45s}
+.whob{display:inline-flex;align-items:center;gap:8px;border:3px solid var(--ink);border-radius:999px;background:var(--card);padding:0 14px 0 3px;min-height:48px;cursor:pointer;font:600 16px var(--display);max-width:210px}
+.whob .wn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.kh{display:block;border-radius:50%;overflow:hidden;border:3px solid var(--ink);flex:none;background:#fff}.kh svg{display:block;width:100%;height:100%}
+.whob .kh{width:38px;height:38px;border-width:2px}
+.field{display:grid;gap:6px}.field label,.flabel{font:600 16px var(--display)}
+.field input{width:100%;font:600 22px var(--display);border:3px solid var(--ink);border-radius:14px;padding:8px 14px;min-height:54px;background:var(--card);color:var(--ink)}
+.avgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.avopt{position:relative;cursor:pointer;display:block}.avopt input{position:absolute;opacity:0;pointer-events:none}
+.avopt .kh{width:100%;aspect-ratio:1;height:auto;transition:transform .12s}.avopt:hover .kh{transform:scale(1.04)}
+.avopt input:checked+.kh{box-shadow:0 0 0 4px var(--coral)}.avopt input:focus-visible+.kh{outline:4px solid var(--sky);outline-offset:3px}
+.agerow{display:flex;flex-wrap:wrap;gap:8px}.ageopt{position:relative;cursor:pointer}.ageopt input{position:absolute;opacity:0;pointer-events:none}
+.ageopt span{display:grid;place-items:center;min-width:52px;height:52px;padding:0 6px;border:3px solid var(--ink);border-radius:14px;background:var(--card);font:700 22px var(--display)}
+.ageopt input:checked+span{background:var(--sun);box-shadow:0 0 0 3px var(--coral)}.ageopt input:focus-visible+span{outline:4px solid var(--sky);outline-offset:3px}
+.agehint{margin:0;font-size:15px;color:var(--ink-soft);min-height:1.3em}.hiprev{text-align:center;font:600 20px var(--display);margin:0;min-height:1.4em}
+.plist{display:grid;gap:8px;max-height:46vh;overflow:auto;padding:2px}.prow{display:flex;align-items:center;gap:8px}
+.pbtn{flex:1;min-width:0;display:flex;align-items:center;gap:12px;border:3px solid var(--ink);border-radius:16px;background:var(--card);padding:6px 12px 6px 6px;cursor:pointer;text-align:left;font:600 18px var(--display)}
+.pbtn .kh{width:50px;height:50px}.pbtn small{display:block;font:400 14px var(--body);color:var(--ink-soft)}.pbtn.on{background:#FFF2CC}
+.xbtn{border:3px solid var(--ink);border-radius:12px;background:var(--card);min-height:50px;padding:0 12px;cursor:pointer;font:600 14px var(--display);flex:none}.xbtn.arm{background:var(--coral);color:#fff}
+.ebtn{border:3px solid var(--ink);border-radius:12px;background:var(--card);width:50px;height:50px;cursor:pointer;flex:none;display:grid;place-items:center;color:var(--ink)}.ebtn svg{width:24px;height:24px}
+.avpick{border:0;background:none;padding:0;cursor:pointer;border-radius:50%}.avpick .kh{width:100%;aspect-ratio:1;height:auto}.avpick.on .kh{box-shadow:0 0 0 4px var(--coral)}.avpick:focus-visible{outline:4px solid var(--sky);outline-offset:3px}
+.overlay{place-items:unset;justify-items:center}.overlay{grid-template-columns:minmax(0,1fr)}.overlay>.card{box-sizing:border-box;min-width:0}
+@media (max-width:420px){.prow{gap:6px}.xbtn{padding:0 8px;font-size:13px}.ebtn{width:44px}.pbtn{gap:8px;padding:6px 8px 6px 6px;font-size:16px}.pbtn .kh{width:44px;height:44px}.pbtn>span:last-child{min-width:0;overflow-wrap:break-word}}.overlay>.card{margin:auto 0}
+@media (max-height:800px),(max-width:420px){.card h2{font-size:clamp(22px,6vw,30px)}.avgrid{gap:8px;max-width:320px;margin:0 auto;width:100%}.ageopt span{min-width:46px;height:46px;font-size:20px}.agerow{gap:6px}}
+.stage{box-shadow:6px 6px 0 var(--acc)!important;border-color:var(--ink)}
+.playbar h2{color:var(--ink)}.play .playbar h2::after{content:"";display:block;width:64px;height:6px;border-radius:3px;background:var(--acc);margin-top:6px}
+.ctwrap canvas{border-color:var(--acc)!important;border-width:4px!important}
+.k .bubble p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
+.k .bubble p.open{-webkit-line-clamp:unset}
+.k .ctwrap figure{font-size:0}.k .ctwrap figure>*{font-size:14px}
+.glowbear{filter:drop-shadow(0 0 2px #FFC21A) drop-shadow(0 0 2px #FFC21A)}
+.confetti{position:fixed;left:0;top:0;width:12px;height:12px;border-radius:3px;pointer-events:none;z-index:60;animation:fly 1.1s cubic-bezier(.2,.7,.4,1) forwards}
+@keyframes fly{to{transform:translate(var(--dx),var(--dy)) rotate(var(--rot));opacity:0}}
+.cheer{position:fixed;right:14px;bottom:14px;width:110px;z-index:55;pointer-events:none;animation:cheer 1.6s ease forwards}
+@keyframes cheer{0%{transform:translateY(140px)}20%{transform:translateY(0) rotate(-6deg)}35%{transform:rotate(6deg)}50%{transform:rotate(-4deg)}80%{transform:translateY(0)}100%{transform:translateY(160px)}}
+@media (prefers-reduced-motion:reduce){.confetti,.cheer{display:none}}
+.ctwrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:640px;align-items:start}
+.ctwrap figure{margin:0;text-align:center;font:600 14px var(--display);color:var(--ink-soft)}
+.ctwrap svg,.ctwrap canvas{width:100%;height:auto;display:block;border-radius:12px}
+.ctwrap canvas{image-rendering:auto;background:#000;border:3px solid var(--ink)}
+@media (max-width:520px){.ctwrap{grid-template-columns:1fr}}
+.holdbtn{border:0;background:none;padding:0;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.holdbtn svg{width:130px;height:130px;display:block}
+.holdbtn:active svg{transform:scale(.96)}
+.guide li{margin:0 0 8px}.guide ul{padding-left:18px;margin:0}.guide{max-height:70vh;overflow:auto;display:grid;gap:10px}
+
+@keyframes breathe{50%{transform:scale(1.05)}}
+@keyframes split{0%,100%{transform:scale(1)}50%{transform:scale(1.16,.86)}}
+@keyframes born{from{transform:scale(0)}to{transform:scale(1)}}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+@keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+@keyframes pulse{50%{transform:scale(1.05)}}
+@keyframes glow{50%{transform:scale(1.1)}}
+@keyframes flash{50%{opacity:.35}}
+@keyframes say{from{opacity:0;transform:translateY(4px)}}
+@keyframes zz{0%{opacity:0;transform:translate(0,0)}50%{opacity:1}100%{opacity:0;transform:translate(10px,-18px)}}
+@media (prefers-reduced-motion:reduce){.cta.ready,.tapme,.nextdot,.zz,.cin{animation:none}.busy .cin{animation:split 1.6s ease-in-out infinite}}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<div id="ov"></div>
+<script>
+"use strict";
+/* ---------- basics ---------- */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const NS='http://www.w3.org/2000/svg';
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const INK='#123C43';
+const KEY='beamon-cellsquad-v1';
+let S={lang:'en',mode:'k',sound:true,stars:{},badgeSeen:false,players:[],cur:null};
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
+function curP(){return (S.players||[]).find(p=>p.id===S.cur)||null}
+function save(){const p=curP();if(p){p.stars=S.stars;p.badgeSeen=S.badgeSeen;p.detSeen=S.detSeen;p.mode=S.mode}try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const K=()=>S.mode==='k';
+
+let timers=[],raf=0;
+function later(fn,ms){const id=setTimeout(fn,ms);timers.push(id);return id}
+function every(fn,ms){const id=setInterval(fn,ms);timers.push(id);return id}
+function clearTimers(){timers.forEach(i=>{clearTimeout(i);clearInterval(i)});timers=[];cancelAnimationFrame(raf)}
+function starsFor(miss,a,b){return miss<=a?3:miss<=b?2:1}
+function svgPt(svg,e){const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(svg.getScreenCTM().inverse())}
+function blob(cx,cy,r,irr,n=10){const pts=[];for(let i=0;i<n;i++){const a=i/n*Math.PI*2,rr=r*(1+(Math.random()*2-1)*irr);pts.push([cx+Math.cos(a)*rr,cy+Math.sin(a)*rr])}
+  let d='';for(let i=0;i<n;i++){const p=pts[i],q=pts[(i+1)%n],m=[(p[0]+q[0])/2,(p[1]+q[1])/2];
+    if(i===0){const pm=pts[n-1];d+=`M${((pm[0]+p[0])/2).toFixed(1)} ${((pm[1]+p[1])/2).toFixed(1)}`}
+    d+=` Q${p[0].toFixed(1)} ${p[1].toFixed(1)} ${m[0].toFixed(1)} ${m[1].toFixed(1)}`}
+  return d+'Z'}
+
+/* ---------- words (EN + BM, "kamu") ---------- */
+const L={en:{
+title_html:'Cancer Cure Quest <span>Junior</span>',sub:"Join Mentari's Mission in a cancer science adventure",
+modeK:'Little ones 4–6',modeP:'Big kids 7–12',sound:'Sound',hear:'Hear again',lang:'Language',
+intro:{k:"Hi! I'm Dr. Sina, an oncologist (a cancer doctor). This is Mentari the sun bear. One of her cells got confused and keeps copying itself. Let's help her! It isn't catching, and it's nobody's fault.",p:"Hi! I'm Dr. Sina, an oncologist (a cancer doctor). Meet Mentari the sun bear. One of her cells has forgotten how to stop copying itself, and now there's a lump. Our hospital team will find it, check it and treat it. Cancer isn't catching, and it's nobody's fault. Start at room 1!"},
+home_more:'Pick a room to keep helping Mentari.',
+home_wing:'The team has decided! The Treatment Wing is open now.',
+home_done:'You did it! Mentari is feeling much better. You can play any room again.',
+wing_locked:'The Treatment Wing opens after the Team Meeting. The team must decide first!',
+wing_intro:'Mentari needs three treatments. Open each door to help.',
+backHome:'Hospital',backWing:'Treatment Wing',next:'Next',again:'Play again',toHome:'Back to hospital',toWing:'Back to Treatment Wing',well_done:'Well done!',
+cells_t:'Cell Detectives',cells_tag:'Spot the confused cell',scan_t:'Scan Room',scan_tag:'Find the lump with scans',micro_t:'Microscope Lab',micro_tag:'Stain and look closely',lab_t:'Research Lab',lab_tag:'Test new medicines',team_t:'Team Meeting',team_tag:'Who does what?',wing_t:'Treatment Wing',wing_tag:'Help Mentari get better',
+rt_t:'Radiotherapy',rt_tag:'Aim the beams',surg_t:'Surgery',surg_tag:'Take out the lump',chemo_t:'Chemotherapy',chemo_tag:'Medicine in the drip',
+cells_k:'Look! One cell keeps copying itself. Tap the confused cell!',
+cells_p:'Body cells copy themselves, then stop when the body says STOP. When the lamp turns red, find the cell that keeps going!',
+cells_yes:'Found it! Great spotting.',cells_next:"Here's another part of Mentari's body. Find the confused cell!",
+cells_no:{k:"That one is a happy, normal cell. Look for the one making more and more copies.",p:"That cell stops when it should. Watch for the one that keeps going when the lamp is red."},
+fact_cells:{k:'Your body makes new cells every day. They know when to stop!',p:"Your body makes millions of new cells every day to grow and heal. Cancer starts when a cell stops listening to the 'stop' signal and makes too many copies."},
+m_mammo:'Mammogram',m_ct:'CT scanner',m_us:'Ultrasound',m_mri:'MRI',m_pet:'PET scan',
+spin:'Spin',magnet:'Magnet',radio:'Radio waves',startb:'Start',
+sc_mammo_i:{k:"Big Bear, Mentari's grown-up, is having a check-up too! This is a mammogram, a special X-ray picture that checks grown-ups for tiny lumps very early. Can you find the tiny white spot?",p:"Big Bear, Mentari's grown-up, is having a check-up too. A mammogram is a low-dose X-ray of the breast. Screening finds lumps early, often before anyone can feel them. Find the tiny white spot!"},
+sc_mammo_ok:'You found it early! Finding cancer early makes it easier to treat.',sc_mammo_no:'Not there. Look for a tiny bright white spot.',
+sc_ct_i:{k:'Mentari lies on the CT bed. The X-ray tube and the detector spin around her together. Press Spin and watch the picture build up!',p:'In CT, an X-ray tube and a detector spin around the patient together. The detector measures how much X-ray gets through from every angle, and a computer turns those measurements into a slice picture. Press Spin to go all the way round.'},ct_sig:'Detector signal',ct_img:'CT slice',ct_gan:'Inside the scanner',
+sc_ct_more:'Keep spinning! More angles make a clearer picture.',sc_ct_tap:'The slice is ready! Bone looks white and air looks black. Can you tap the lump?',sc_ct_no:'That is a healthy part. Look for the lump.',
+sc_ct_ok:{k:'Found it! CT shows where the lump is and how big it is.',p:'Found it! CT shows exactly where the lump is and how big it is. Medical physicists also use these slices to plan radiotherapy.'},
+sc_us_gel:{k:'First, squeeze on some gel! Sound cannot travel through air, so the gel helps it get in.',p:'First, put on some gel. Sound waves bounce off air, so the gel fills the air gap between the probe and the skin.'},
+sc_us_nogel:'The picture is dark! Air is blocking the sound. Add some gel first.',
+sc_us_i:{k:"Now slide the probe along Mentari's tummy. Look for a dark round lump in the picture, then tap it!",p:'Slide the probe along the tummy. Bright means strong echoes, black means fluid, and gas or bone cast dark shadows. Find the lump, a darker round shape, and tap it!'},
+sc_us_no:'That is healthy tissue. Keep looking for the dark round lump.',us_gel:'Gel',us_img:'Ultrasound picture',us_slide:'Slide the probe',
+sc_us_ok:'There it is! Echoes bounce back from the lump and make a picture.',
+sc_mri_i:{k:'MRI uses a giant magnet. Press Magnet, then press Radio waves!',p:'MRI uses a giant magnet to line up tiny particles in the body, then radio waves make them send signals. Press Magnet, then Radio waves.'},
+sc_mri_mag:'The tiny particles all line up, like little compass needles!',
+sc_mri_ok:"Wow, a clear picture of the soft brain! MRI is great for soft parts, and it doesn't use X-rays.",
+sc_pet_i:{k:'Busy cells love sugar! One small, quick pinch puts a tiny bit of glowing sugar into the blood. Press Start, then tap the glowing lump.',p:"PET uses a tiny bit of glowing sugar, given with one small, quick pinch. Busy cells, like cancer cells, take in lots of it and glow. The brain and bladder always glow too, so find the glow that shouldn't be there!"},
+sc_pet_no:{k:'That glow is normal. Find the other glowing spot!',p:'That glow is normal: the brain uses lots of sugar, and the bladder collects it. Find the unusual spot!'},
+sc_pet_ok:'You found the busy cells! PET can also show if cancer has spread.',
+fact_scan:{k:'Scans help doctors find cancer early, without any cutting!',p:'Scans help find cancer early and show where it is. Medical physicists check every scanner so the pictures are sharp and the radiation dose is as low as possible.'},
+micro_1:'While Mentari was asleep, the doctor took a tiny piece of the lump. Tap the pot to put it on the glass slide.',
+micro_2:{k:'Now add the colours! Tap both bottles.',p:"Add the stains: purple first (it colours each cell's centre), then pink (it colours the rest)."},
+micro_order:'Oops, purple goes first. Try the purple bottle.',
+micro_3:"Let's look through the microscope. Is this cell neat or messy?",
+neat:'Neat',messy:'Messy',micro_yes:'Yes! Next cell.',micro_no:'Look at the centre. Messy cells have a big, dark, wobbly centre.',
+fact_micro:{k:'The colours are dyes. They help us see tiny cells clearly.',p:'The pathologist looks at stained cells under a microscope. Cancer cells often have big, dark, oddly shaped centres called nuclei.'},
+lab_fair_q:'Scientists must make it a fair test. What should be the same for every medicine?',
+lab_f1:'The same number of drops in every dish',lab_f2:'More drops for the bottle I like best',lab_f3:'Bigger dishes for some medicines',
+lab_fair_yes:'Exactly! Change only the medicine and keep everything else the same.',lab_fair_no:"Hmm, that wouldn't be fair. Try again!",
+lab_test:'Tap each bottle to test it on confused cells and healthy cells.',
+col_conf:'Confused cells',col_heal:'Healthy cells',drops:'3 drops',
+lab_good:'The confused cells calmed down and the healthy cells are fine!',
+lab_strong:'It calmed the confused cells, but it hurt the healthy cells too.',
+lab_weak:'Nothing changed. This one is too weak.',
+lab_pick:'Which medicine is the best one?',
+lab_pick_no:'Look again. We want the one that calms confused cells AND keeps healthy cells safe.',
+lab_yes:"Brilliant! That's the one to study more.",
+fact_lab:{k:'Scientists test new medicines many, many times to keep patients safe.',p:'A good cancer medicine stops confused cells but is gentle on healthy ones. Scientists test it many times in the lab before patients ever use it. Ibn Sina wrote rules for testing medicines fairly over 1,000 years ago!'},
+team_intro:'Everyone in the team has a special job. Which tool does each person use?',
+who_q:'Which tool is theirs?',team_no:'Not quite. Think about what this person does.',
+p_onc:'Oncologist',p_mp:'Medical physicist',p_rad:'Radiographer',p_path:'Pathologist',p_surg:'Surgeon',p_nurse:'Nurse',
+p_onc_do:"That's me! The oncologist is the cancer doctor who looks after Mentari and leads the team.",
+p_mp_do:'The medical physicist plans the radiation beams and checks every machine is safe and exact.',
+p_rad_do:'The radiographer takes the scans and gives the radiotherapy treatment.',
+p_path_do:'The pathologist looks at cells under the microscope to find out what the lump is.',
+p_surg_do:'The surgeon carefully takes out the lump while the patient sleeps.',
+p_nurse_do:'The nurse cares for Mentari every day and gives medicine through the drip.',
+t_steth:'Stethoscope',t_plan:'Beam plan',t_scanner:'Scanner',t_micro:'Microscope',t_gloves:'Surgery gloves',t_drip:'Drip bag',t_mask:'Sleeping mask',t_pills:'Medicine bottle',t_films:'Scan pictures',t_tubes:'Test tubes',t_plate:'Food plate',t_talk:'Talking and listening',
+p_anaes:'Anaesthetist',p_pharm:'Pharmacist',p_radl:'Radiologist',p_sci:'Cancer researcher',p_diet:'Dietitian',p_couns:'Counsellor',
+p_anaes_do:'The anaesthetist gives sleeping medicine so patients feel nothing during surgery, and watches over them the whole time.',
+p_pharm_do:"The pharmacist prepares the chemotherapy medicine and checks it's the right dose for each patient.",
+p_radl_do:'The radiologist is a doctor who reads the scan pictures to find the lump.',
+p_sci_do:'The cancer researcher tests new medicines in the lab to find better treatments.',
+p_diet_do:'The dietitian plans tasty food that gives Mentari energy during treatment.',
+p_couns_do:'The counsellor talks with Mentari and her family about their feelings. Feeling worried is okay!',
+team_decide:'The whole team met and agreed: Mentari will have surgery, radiotherapy and chemotherapy.',
+open_wing:'Open the Treatment Wing',
+fact_team:{k:'Lots of people work together to help one patient!',p:'A cancer team has more than ten different jobs! Some patients need one treatment, some need two or three. The team chooses together what is best for each patient.'},
+rt_intro:{k:'Mentari lies very still. Drag the machine around the circle, then press Beam on! Aim so the beam misses the kidney.',p:'Plan 3 beams from different directions. They must meet at the lump and miss the kidney and the bowel. Drag the machine, then press Beam on!'},
+beam_on:'Beam on!',
+rt_hit:'Oops, that beam would go through a healthy organ. Turn the machine and try another angle.',
+rt_good:{k:'Zap! The beam reached the lump.',p:"Good beam! See how the beams overlap at the lump? That's where the dose adds up."},
+rt_spread:'Spread the beams out! Move the machine further from your last beam.',
+rt_done:'All done! The beams met right at the lump.',
+organ_kid:'kidney',organ_bow:'bowel',turnL:'Turn left',turnR:'Turn right',
+fact_rt:{k:"Radiotherapy doesn't hurt, and you're not radioactive afterwards. Hugs are fine!",p:"Each beam is gentle on its own. Where the beams cross, the dose adds up and stops the confused cells. It doesn't hurt, and you're not radioactive afterwards, so hugs are fine!"},
+surg_1:'First, the anaesthetist gives Mentari sleeping medicine so she feels nothing. Tap the button.',
+surg_sleep_btn:'Sleeping medicine',
+surg_2:{k:'Mentari is fast asleep. Trace all the way around the lump, inside the green ring.',p:'Trace all the way around the lump, between the dotted lines. Keep a small safe edge: not too close, not too far.'},
+surg_close:'Too close to the lump! Leave a little edge.',surg_far:'Too far! Stay near the lump to save the healthy parts.',
+surg_lift:'Perfect cut! Now tap the lump to lift it out.',
+surg_stitch:'Now stitch up. Tap the dots in order, starting with the glowing one.',
+surg_done:'All stitched! Mentari will wake up soon.',
+fact_surg:{k:'Mentari was asleep the whole time and felt nothing. Over 1,000 years ago, a famous doctor called Ibn Sina said to take out the whole lump. Surgeons still do!',p:'The surgeon takes out a little healthy edge around the lump, just to be sure no confused cells are left behind. Over 1,000 years ago, Ibn Sina (Avicenna) wrote that a lump should be taken out early, with healthy tissue around it. Surgeons still follow that idea today!'},
+chemo_1:"The nurse always checks the name band first. Which drip bag is Mentari's?",
+chemo_wrong:"That bag is for {0}. Look at Mentari's band again.",
+chemo_2:{k:'Right bag! Tap Start the drip and watch the medicine travel all around the body.',p:'Right bag! Start the drip and watch: the medicine travels everywhere in the blood.'},
+chemo_drip:'Start the drip',
+chemo_hair:"The medicine also reaches hair cells, because they split fast too. Mentari's fur falls out for a while. Here's a cosy beanie!",
+chemo_more:'The confused cells are getting smaller. Again!',
+chemo_rest_q:'Mentari feels tired. What should happen next week?',
+rest:'Rest week',more:'More medicine now',
+chemo_rest_yes:'Yes! Rest weeks let healthy cells grow back. Energy is up again.',
+chemo_rest_no:'Hmm, Mentari is too tired. Healthy cells need a rest week to grow back first.',
+chemo_done:"All the medicine is finished and the confused cells are gone. Look, Mentari's fur is growing back!",
+energy:'Energy',n_cat:'Oyen the cat',n_rab:'Gebu the rabbit',n_bear:'Mentari',
+fact_chemo:{k:'Hair may fall out for a while, then it grows back!',p:"Chemotherapy medicine travels everywhere in the blood and works on all fast-splitting cells, including hair. That's why hair falls out for a while and then grows back."},
+badge_t:'Brave Bear Badge!',badge_p:'Mentari is feeling much better. Thank you for helping the hospital team!',
+who_helped:'Who helped?',your_name:'Type your name',awarded:'Awarded to',hooray:'Hooray!',see_badge:'See your badge',
+cert_tip:'Grown-ups: take a screenshot to keep the certificate.',sina_t:'Who was Ibn Sina?',sina_p:{k:'Dr. Sina is named after Ibn Sina, a famous doctor who lived over 1,000 years ago. He wrote a giant book about medicine, and he said a lump should be taken out early. Doctors still learn from him!',p:'Dr. Sina is named after Ibn Sina (Avicenna, 980–1037), a famous doctor and scientist. His book, The Canon of Medicine, was used to teach doctors for about 600 years. He described lumps that grow and can spread, and said they should be taken out early with healthy tissue around them. He also wrote rules for testing medicines fairly.'},
+grownups:"For grown-ups: Cancer Cure Quest Junior gently explains how scientists and hospitals find and treat cancer, for ages 4–12. We call cancer a “confused cell”. It's a learning game, not medical advice. If a child has questions about someone they know, talk it through together. Our guide, Dr. Sina, is named after the physician Ibn Sina (Avicenna).",
+more_games:'More medical physics games',contact:'Contact',reset:'Reset progress',
+reset_q:'Start again from the beginning? All stars will be cleared.',
+rt_still:{k:'Radiotherapy works best when Mentari lies very still. Press and hold the big button to help her keep still!',p:'Radiotherapy works best when the patient lies very still, so the beams hit exactly the right spot. Press and hold the button for 5 seconds to help Mentari keep still.'},
+rt_still_ok:'Great, nice and still! Now let us aim the beams.',rt_still_moved:'Oops, she wiggled! Press and hold again.',hold:'Hold still',who:'Who is playing?',newP:'New player',newT:'Who is joining the Cancer Cure Junior Crew today?',nameL:'Your name',picL:'Pick your picture',chgPic:'Change picture',picFor:'Pick a new picture for {0}',ageL:'How old are you?',startP:'Start',cancel:'Cancel',hiPrev:'Hi {0}, welcome to the Cancer Cure Junior Crew!',ageMode:'We picked {0} mode for this age. You can change it any time at the top.',remove:'Remove',sure:'Sure?',hi_name:'Hi {0}!',well_name:'Well done, {0}!',privacy:'Names and pictures stay on this device and are never sent anywhere.',age:'Age',help_trace:'Help me trace',pot_l:'Sample pot',purple_l:'Purple stain',pink_l:'Pink stain',med_l:'Medicine',stitch_l:'Stitch',lump_l:'Lump',kb_aim:'Use the arrow keys to move the ring, then press Enter',cell_l:'Cell',sc_us_hint:'Try sliding the probe towards the left, over the liver.',
+team_combo:'Using treatments together works better, just like a team working together!',
+det_badge_t:'Cancer Detective Badge!',det_badge_p:"You found the confused cell, used the scanners to find the lump and checked the cells under the microscope. You're a real cancer detective!",
+det_short:'Cancer Detective',
+guide_btn:'Guide for parents and teachers',guide_t:'Talking about cancer with children',
+guide_intro:'Play together, then use these questions to talk. Keep answers short and honest, and let children lead.',
+g_cells:'Cancer starts when a cell forgets to stop copying itself. Ask: "What did the confused cell do?"',
+g_scan:'Scans help doctors find cancer early and see exactly where it is. Ask: "Which scan used sound? Which one spun all the way round?"',
+g_micro:'A tiny sample is checked under a microscope to find out what the lump is. Ask: "How did the messy cells look different?"',
+g_lab:'New medicines are tested carefully and fairly before patients use them. Ask: "What makes a test fair?"',
+g_team:'Many people work together, and patients often have more than one treatment. Ask: "Who would you like to be in the team?"',
+g_wing:'Treatments can make people tired or lose hair for a while, and that gets better. Ask: "How did Mentari feel, and what helped her?"',
+g_keys:'Key messages: cancer is not catching, it is nobody\'s fault, and many people get better. Many children with cancer get better, and treatments keep improving.',
+g_help:'If a child is worried about someone they know, listen first, answer simply, and ask the family\'s doctor or nurse for support.',close:'Close',yes:'Yes',no:'No',locked:'Locked'
+},bm:{
+title_html:'Misi Penawar Kanser <span>Junior</span>',sub:'Sertai Misi Mentari dalam pengembaraan sains kanser',
+modeK:'Tadika 4–6',modeP:'Sekolah Rendah 7–12',sound:'Bunyi',hear:'Dengar semula',lang:'Bahasa',
+intro:{k:'Hai! Saya Dr. Sina, pakar onkologi (doktor kanser). Ini Mentari, si beruang matahari. Satu sel dalam badannya keliru dan terus membiak. Mari kita bantu dia! Kanser tidak berjangkit dan bukan salah sesiapa.',p:'Hai! Saya Dr. Sina, pakar onkologi (doktor kanser). Kenali Mentari, si beruang matahari. Satu selnya terlupa untuk berhenti membiak, dan kini terdapat ketulan. Pasukan hospital kita akan mencari, memeriksa dan merawatnya. Kanser tidak berjangkit dan bukan salah sesiapa. Mulakan di Bilik 1!'},
+home_more:'Pilih bilik untuk terus membantu Mentari.',
+home_wing:'Pasukan telah membuat keputusan! Wad Rawatan kini dibuka.',
+home_done:'Kamu berjaya! Mentari berasa jauh lebih sihat. Kamu boleh bermain di mana-mana bilik lagi.',
+wing_locked:'Wad Rawatan akan dibuka selepas Mesyuarat Pasukan. Pasukan perlu membuat keputusan dahulu!',
+wing_intro:'Mentari memerlukan tiga rawatan. Buka setiap pintu untuk membantu.',
+backHome:'Hospital',backWing:'Wad Rawatan',next:'Seterusnya',again:'Main semula',toHome:'Kembali ke hospital',toWing:'Kembali ke Wad Rawatan',well_done:'Syabas!',
+cells_t:'Detektif Sel',cells_tag:'Cari sel yang keliru',scan_t:'Bilik Imbasan',scan_tag:'Cari ketulan dengan imbasan',micro_t:'Makmal Mikroskop',micro_tag:'Warnakan dan lihat dekat',lab_t:'Makmal Penyelidikan',lab_tag:'Uji ubat baharu',team_t:'Mesyuarat Pasukan',team_tag:'Apakah tugas mereka?',wing_t:'Wad Rawatan',wing_tag:'Bantu Mentari sembuh',
+rt_t:'Radioterapi',rt_tag:'Halakan alur sinar',surg_t:'Pembedahan',surg_tag:'Keluarkan ketulan',chemo_t:'Kemoterapi',chemo_tag:'Ubat melalui titisan',
+cells_k:'Lihat! Satu sel asyik membiak. Ketik sel yang keliru!',
+cells_p:'Sel badan membiak, kemudian berhenti apabila badan memberikan isyarat BERHENTI. Apabila lampu bertukar menjadi merah, cari sel yang tidak berhenti!',
+cells_yes:'Jumpa! Pandai kamu.',cells_next:'Ini bahagian lain badan Mentari. Cari sel yang keliru!',
+cells_no:{k:'Itu sel biasa yang sihat. Cari sel yang semakin banyak salinannya.',p:'Sel itu berhenti apabila sepatutnya. Perhatikan sel yang terus membiak semasa lampu merah.'},
+fact_cells:{k:'Badan kamu membuat sel baharu setiap hari. Sel-sel itu tahu masa untuk berhenti!',p:"Badan kamu membuat berjuta-juta sel baharu setiap hari untuk membesar dan sembuh. Kanser bermula apabila satu sel tidak lagi mendengar isyarat 'berhenti' dan membuat terlalu banyak salinan."},
+m_mammo:'Mamogram',m_ct:'Pengimbas CT',m_us:'Ultrabunyi',m_mri:'MRI',m_pet:'Imbasan PET',
+spin:'Pusing',magnet:'Magnet',radio:'Gelombang radio',startb:'Mula',
+sc_mammo_i:{k:'Beruang Besar, penjaga Mentari, juga menjalani pemeriksaan! Ini mamogram, gambar sinar-X khas untuk memeriksa ketulan kecil pada orang dewasa seawal mungkin. Bolehkah kamu mencari bintik putih yang kecil?',p:'Beruang Besar, penjaga Mentari, juga menjalani pemeriksaan. Mamogram ialah sinar-X dos rendah untuk payudara. Saringan dapat mengesan ketulan lebih awal, selalunya sebelum dapat dirasai. Cari bintik putih yang kecil!'},
+sc_mammo_ok:'Kamu jumpa awal! Kanser yang dikesan awal lebih mudah dirawat.',sc_mammo_no:'Bukan di situ. Cari bintik putih yang kecil dan terang.',
+sc_ct_i:{k:'Mentari berbaring di atas katil CT. Tiub sinar-X dan pengesan berpusing bersama di sekelilingnya. Tekan Pusing dan lihat gambar terbentuk!',p:'Dalam CT, tiub sinar-X dan pengesan berpusing bersama di sekeliling pesakit. Pengesan mengukur berapa banyak sinar-X yang menembusi dari setiap sudut, dan komputer menukar ukuran itu menjadi gambar keratan. Tekan Pusing sehingga habis satu pusingan.'},ct_sig:'Isyarat pengesan',ct_img:'Keratan CT',ct_gan:'Di dalam pengimbas',
+sc_ct_more:'Terus pusing! Lebih banyak sudut, lebih jelas gambarnya.',sc_ct_tap:'Keratan sudah siap! Tulang nampak putih dan udara nampak hitam. Bolehkah kamu mengetik ketulan itu?',sc_ct_no:'Itu bahagian yang sihat. Cari ketulan itu.',
+sc_ct_ok:{k:'Jumpa! CT menunjukkan di mana ketulan itu dan berapa besarnya.',p:'Jumpa! CT menunjukkan dengan tepat di mana ketulan itu dan berapa besarnya. Ahli fizik perubatan juga menggunakan keratan ini untuk merancang radioterapi.'},
+sc_us_gel:{k:'Mula-mula, picit sedikit gel! Bunyi tidak dapat bergerak melalui udara, jadi gel membantunya masuk.',p:'Mula-mula, sapukan gel. Gelombang bunyi terpantul apabila bertemu udara, jadi gel mengisi ruang udara antara prob dan kulit.'},
+sc_us_nogel:'Gambarnya gelap! Udara menghalang bunyi. Sapukan gel dahulu.',
+sc_us_i:{k:'Sekarang gerakkan prob di sepanjang perut Mentari. Cari ketulan bulat yang gelap dalam gambar, kemudian ketik!',p:'Gerakkan prob di sepanjang perut. Terang bermaksud gema kuat, hitam bermaksud cecair, dan gas atau tulang menghasilkan bayang gelap. Cari ketulan, iaitu bentuk bulat yang lebih gelap, dan ketik!'},
+sc_us_no:'Itu tisu yang sihat. Terus cari ketulan bulat yang gelap.',us_gel:'Gel',us_img:'Gambar ultrabunyi',us_slide:'Gerakkan prob',
+sc_us_ok:'Itu dia! Gema memantul dari ketulan dan menghasilkan gambar.',
+sc_mri_i:{k:'MRI menggunakan magnet gergasi. Tekan Magnet, kemudian tekan Gelombang radio!',p:'MRI menggunakan magnet gergasi untuk menyusun zarah kecil dalam badan, kemudian gelombang radio membuatkan zarah itu menghantar isyarat. Tekan Magnet, kemudian Gelombang radio.'},
+sc_mri_mag:'Zarah kecil itu semuanya tersusun, seperti jarum kompas!',
+sc_mri_ok:'Wah, gambar otak yang lembut dan jelas! MRI sangat baik untuk tisu lembut, dan tidak menggunakan sinar-X.',
+sc_pet_i:{k:'Sel yang sibuk suka gula! Dengan satu cucukan kecil yang sekejap, sedikit gula bercahaya dimasukkan ke dalam darah. Tekan Mula, kemudian ketik ketulan yang bercahaya.',p:'PET menggunakan sedikit gula bercahaya, yang diberikan melalui satu cucukan kecil yang sekejap. Sel yang sibuk, seperti sel kanser, mengambil banyak gula itu dan bercahaya. Otak dan pundi kencing memang sentiasa bercahaya, jadi cari cahaya yang sepatutnya tiada!'},
+sc_pet_no:{k:'Cahaya itu biasa. Cari bintik bercahaya yang lain!',p:'Cahaya itu biasa: otak menggunakan banyak gula, dan pundi kencing mengumpulkannya. Cari bintik yang luar biasa!'},
+sc_pet_ok:'Kamu jumpa sel yang sibuk! PET juga dapat menunjukkan sama ada kanser telah merebak.',
+fact_scan:{k:'Imbasan membantu doktor mengesan kanser lebih awal, tanpa pembedahan!',p:'Imbasan membantu mengesan kanser lebih awal dan menunjukkan di mana ia berada. Ahli fizik perubatan memeriksa setiap pengimbas supaya gambarnya jelas dan dos sinaran serendah mungkin.'},
+micro_1:'Semasa Mentari tidur, doktor mengambil sedikit cebisan ketulan. Ketik bekas itu untuk meletakkannya di atas slaid kaca.',
+micro_2:{k:'Sekarang tambah warna! Ketik kedua-dua botol.',p:'Tambah pewarna: ungu dahulu (mewarnakan bahagian tengah sel), kemudian merah jambu (mewarnakan bahagian lain).'},
+micro_order:'Oh, ungu dahulu. Cuba botol ungu.',
+micro_3:'Mari lihat melalui mikroskop. Sel ini kemas atau berselerak?',
+neat:'Kemas',messy:'Berselerak',micro_yes:'Betul! Sel seterusnya.',micro_no:'Lihat bahagian tengah. Sel berselerak ada bahagian tengah yang besar, gelap dan herot.',
+fact_micro:{k:'Warna itu ialah pewarna. Ia membantu kita melihat sel yang kecil dengan jelas.',p:'Ahli patologi melihat sel yang diwarnakan di bawah mikroskop. Sel kanser selalunya mempunyai bahagian tengah (nukleus) yang besar, gelap dan bentuknya pelik.'},
+lab_fair_q:'Saintis mesti menjalankan ujian yang adil. Apakah yang patut sama untuk setiap ubat?',
+lab_f1:'Bilangan titisan yang sama dalam setiap piring',lab_f2:'Lebih banyak titisan untuk botol yang saya suka',lab_f3:'Piring lebih besar untuk sesetengah ubat',
+lab_fair_yes:'Tepat sekali! Tukar ubat sahaja dan kekalkan perkara lain.',lab_fair_no:'Hmm, itu tidak adil. Cuba lagi!',
+lab_test:'Ketik setiap botol untuk mengujinya pada sel keliru dan sel sihat.',
+col_conf:'Sel keliru',col_heal:'Sel sihat',drops:'3 titis',
+lab_good:'Sel keliru sudah tenang dan sel sihat tidak terjejas!',
+lab_strong:'Ia menenangkan sel keliru, tetapi turut mencederakan sel sihat.',
+lab_weak:'Tiada perubahan. Ubat ini terlalu lemah.',
+lab_pick:'Ubat manakah yang terbaik?',
+lab_pick_no:'Lihat semula. Kita mahu ubat yang menenangkan sel keliru DAN menjaga sel sihat.',
+lab_yes:'Hebat! Itulah ubat yang patut dikaji lagi.',
+fact_lab:{k:'Saintis menguji ubat baharu berkali-kali supaya pesakit selamat.',p:'Ubat kanser yang baik menghentikan sel keliru tetapi lembut pada sel sihat. Saintis mengujinya berkali-kali di makmal sebelum pesakit menggunakannya. Ibnu Sina menulis peraturan untuk menguji ubat secara adil lebih daripada 1,000 tahun dahulu!'},
+team_intro:'Setiap orang dalam pasukan mempunyai tugas istimewa. Alat manakah yang digunakan oleh setiap orang?',
+who_q:'Alat manakah miliknya?',team_no:'Belum tepat. Fikirkan apa tugas orang ini.',
+p_onc:'Pakar onkologi',p_mp:'Ahli fizik perubatan',p_rad:'Jururadiografi',p_path:'Ahli patologi',p_surg:'Pakar bedah',p_nurse:'Jururawat',
+p_onc_do:'Itulah saya! Pakar onkologi ialah doktor kanser yang menjaga Mentari dan mengetuai pasukan.',
+p_mp_do:'Ahli fizik perubatan merancang alur sinar dan memastikan setiap mesin selamat dan tepat.',
+p_rad_do:'Jururadiografi mengambil imbasan dan memberikan rawatan radioterapi.',
+p_path_do:'Ahli patologi melihat sel di bawah mikroskop untuk mengetahui jenis ketulan itu.',
+p_surg_do:'Pakar bedah mengeluarkan ketulan dengan berhati-hati semasa pesakit tidur.',
+p_nurse_do:'Jururawat menjaga Mentari setiap hari dan memberikan ubat melalui titisan.',
+t_steth:'Stetoskop',t_plan:'Pelan sinar',t_scanner:'Pengimbas',t_micro:'Mikroskop',t_gloves:'Sarung tangan bedah',t_drip:'Beg titisan',t_mask:'Topeng ubat tidur',t_pills:'Botol ubat',t_films:'Gambar imbasan',t_tubes:'Tabung uji',t_plate:'Pinggan makanan',t_talk:'Berbual dan mendengar',
+p_anaes:'Pakar bius',p_pharm:'Ahli farmasi',p_radl:'Pakar radiologi',p_sci:'Penyelidik kanser',p_diet:'Pakar diet',p_couns:'Kaunselor',
+p_anaes_do:'Pakar bius memberi ubat tidur supaya pesakit tidak merasakan apa-apa semasa pembedahan, dan menjaga mereka sepanjang masa.',
+p_pharm_do:'Ahli farmasi menyediakan ubat kemoterapi dan memastikan dosnya betul untuk setiap pesakit.',
+p_radl_do:'Pakar radiologi ialah doktor yang membaca gambar imbasan untuk mencari ketulan.',
+p_sci_do:'Penyelidik kanser menguji ubat baharu di makmal untuk mencari rawatan yang lebih baik.',
+p_diet_do:'Pakar diet merancang makanan yang sedap dan memberi Mentari tenaga semasa rawatan.',
+p_couns_do:'Kaunselor berbual dengan Mentari dan keluarganya tentang perasaan mereka. Berasa risau itu perkara biasa!',
+team_decide:'Seluruh pasukan bermesyuarat dan bersetuju: Mentari akan menjalani pembedahan, radioterapi dan kemoterapi.',
+open_wing:'Buka Wad Rawatan',
+fact_team:{k:'Ramai orang bekerjasama untuk membantu seorang pesakit!',p:'Pasukan kanser mempunyai lebih daripada sepuluh jenis tugas! Sesetengah pesakit memerlukan satu rawatan, dan ada yang memerlukan dua atau tiga. Pasukan memilih bersama apa yang terbaik untuk setiap pesakit.'},
+rt_intro:{k:'Mentari berbaring tanpa bergerak. Seret mesin di sekeliling bulatan, kemudian tekan Sinar! Halakan supaya alur sinar tidak mengenai buah pinggang.',p:'Rancang 3 alur sinar dari arah berbeza. Semuanya mesti bertemu di ketulan serta mengelakkan buah pinggang dan usus. Seret mesin, kemudian tekan Sinar!'},
+beam_on:'Sinar!',
+rt_hit:'Oh, alur itu akan melalui organ yang sihat. Pusingkan mesin dan cuba sudut lain.',
+rt_good:{k:'Zap! Alur sinar sampai ke ketulan.',p:'Bagus! Nampakkah alur-alur yang bertindih di ketulan? Di situlah dos bertambah.'},
+rt_spread:'Jarakkan alur sinar! Gerakkan mesin lebih jauh dari alur tadi.',
+rt_done:'Siap! Semua alur bertemu tepat di ketulan.',
+organ_kid:'buah pinggang',organ_bow:'usus',turnL:'Pusing kiri',turnR:'Pusing kanan',
+fact_rt:{k:'Radioterapi tidak sakit, dan kamu tidak menjadi radioaktif selepas itu. Kamu masih boleh dipeluk!',p:'Setiap alur sinar lembut sahaja. Di tempat alur-alur bersilang, dos bertambah dan menghentikan sel keliru. Ia tidak sakit, dan kamu tidak menjadi radioaktif selepas itu, jadi kamu masih boleh dipeluk!'},
+surg_1:'Mula-mula, pakar bius memberi Mentari ubat tidur supaya dia tidak merasakan apa-apa. Ketik butang itu.',
+surg_sleep_btn:'Ubat tidur',
+surg_2:{k:'Mentari sudah tidur lena. Lukis garisan mengelilingi ketulan, di dalam gelang hijau.',p:'Lukis garisan mengelilingi ketulan, di antara garisan bertitik. Tinggalkan sedikit ruang selamat: jangan terlalu dekat, jangan terlalu jauh.'},
+surg_close:'Terlalu dekat dengan ketulan! Tinggalkan sedikit ruang.',surg_far:'Terlalu jauh! Kekal dekat dengan ketulan untuk menjaga bahagian yang sihat.',
+surg_lift:'Potongan sempurna! Sekarang ketik ketulan untuk mengeluarkannya.',
+surg_stitch:'Sekarang jahit. Ketik titik mengikut urutan, bermula dengan yang bercahaya.',
+surg_done:'Sudah dijahit! Mentari akan bangun tidak lama lagi.',
+fact_surg:{k:'Mentari tidur sepanjang masa dan tidak merasakan apa-apa. Lebih daripada 1,000 tahun dahulu, doktor terkenal bernama Ibnu Sina berkata ketulan perlu dikeluarkan sepenuhnya. Pakar bedah masih melakukannya hingga kini!',p:'Pakar bedah mengeluarkan sedikit tepi sihat di sekeliling ketulan, untuk memastikan tiada sel keliru yang tertinggal. Lebih daripada 1,000 tahun dahulu, Ibnu Sina (Avicenna) menulis bahawa ketulan perlu dikeluarkan awal, bersama sedikit tisu sihat di sekelilingnya. Pakar bedah masih mengikut idea itu hari ini!'},
+chemo_1:'Jururawat sentiasa memeriksa gelang nama dahulu. Beg titisan manakah milik Mentari?',
+chemo_wrong:'Beg itu untuk {0}. Lihat gelang Mentari sekali lagi.',
+chemo_2:{k:'Beg yang betul! Ketik Mula titisan dan lihat ubat bergerak ke seluruh badan.',p:'Beg yang betul! Mulakan titisan dan perhatikan: ubat bergerak ke seluruh badan melalui darah.'},
+chemo_drip:'Mula titisan',
+chemo_hair:'Ubat juga sampai ke sel rambut, kerana sel itu pun cepat membiak. Bulu Mentari gugur untuk sementara waktu. Ini topi kait yang selesa!',
+chemo_more:'Sel keliru semakin kecil. Teruskan!',
+chemo_rest_q:'Mentari berasa letih. Apakah yang patut dilakukan pada minggu hadapan?',
+rest:'Minggu rehat',more:'Tambah ubat sekarang',
+chemo_rest_yes:'Betul! Minggu rehat membolehkan sel sihat tumbuh semula. Tenaganya pulih semula.',
+chemo_rest_no:'Hmm, Mentari terlalu letih. Sel sihat perlu minggu rehat untuk tumbuh semula dahulu.',
+chemo_done:'Semua ubat telah habis dan sel keliru telah tiada. Lihat, bulu Mentari tumbuh semula!',
+energy:'Tenaga',n_cat:'Oyen si kucing',n_rab:'Gebu si arnab',n_bear:'Mentari',
+fact_chemo:{k:'Rambut mungkin gugur untuk sementara waktu, kemudian tumbuh semula!',p:'Ubat kemoterapi bergerak ke seluruh badan melalui darah dan bertindak pada semua sel yang cepat membiak, termasuk rambut. Sebab itu rambut gugur untuk sementara waktu dan kemudian tumbuh semula.'},
+badge_t:'Lencana Beruang Berani!',badge_p:'Mentari berasa jauh lebih sihat. Terima kasih kerana membantu pasukan hospital!',
+who_helped:'Siapa yang membantu?',your_name:'Tulis nama kamu',awarded:'Dianugerahkan kepada',hooray:'Hore!',see_badge:'Lihat lencana kamu',
+cert_tip:'Ibu bapa dan guru: ambil tangkapan skrin untuk menyimpan sijil.',sina_t:'Siapakah Ibnu Sina?',sina_p:{k:'Dr. Sina dinamakan sempena Ibnu Sina, doktor terkenal yang hidup lebih daripada 1,000 tahun dahulu. Beliau menulis buku perubatan yang sangat besar, dan berkata ketulan perlu dikeluarkan awal. Doktor masih belajar daripada beliau!',p:'Dr. Sina dinamakan sempena Ibnu Sina (Avicenna, 980–1037), doktor dan saintis terkenal. Bukunya, Al-Qanun fi al-Tibb, digunakan untuk mengajar doktor selama kira-kira 600 tahun. Beliau menerangkan ketulan yang membesar dan boleh merebak, dan berkata ketulan perlu dikeluarkan awal bersama tisu sihat di sekelilingnya. Beliau juga menulis peraturan untuk menguji ubat secara adil.'},
+grownups:'Untuk ibu bapa dan guru: Misi Penawar Kanser Junior menerangkan secara lembut cara saintis dan hospital mengesan dan merawat kanser, untuk umur 4–12. Kami memanggil kanser “sel yang keliru”. Ini permainan pembelajaran, bukan nasihat perubatan. Jika anak mempunyai soalan tentang seseorang yang mereka kenali, bincangkan bersama. Pemandu kami, Dr. Sina, dinamakan sempena doktor Ibnu Sina (Avicenna).',
+more_games:'Lagi permainan fizik perubatan',contact:'Hubungi',reset:'Set semula kemajuan',
+reset_q:'Mulakan semula dari awal? Semua bintang akan dipadamkan.',
+rt_still:{k:'Radioterapi paling berkesan apabila Mentari berbaring tanpa bergerak. Tekan dan tahan butang besar untuk membantunya kekal diam!',p:'Radioterapi paling berkesan apabila pesakit berbaring tanpa bergerak, supaya alur sinar mengenai tempat yang tepat. Tekan dan tahan butang selama 5 saat untuk membantu Mentari kekal diam.'},
+rt_still_ok:'Bagus, Mentari tidak bergerak langsung! Sekarang mari kita halakan alur sinar.',rt_still_moved:'Oh, dia bergerak! Tekan dan tahan sekali lagi.',hold:'Kekal diam',who:'Siapa yang bermain?',newP:'Pemain baharu',newT:'Siapa yang menyertai Krew Junior Penawar Kanser hari ini?',nameL:'Nama kamu',picL:'Pilih gambar kamu',chgPic:'Tukar gambar',picFor:'Pilih gambar baharu untuk {0}',ageL:'Berapa umur kamu?',startP:'Mula',cancel:'Batal',hiPrev:'Hai {0}, selamat datang ke Krew Junior Penawar Kanser!',ageMode:'Kami memilih mod {0} untuk umur ini. Kamu boleh menukarnya pada bila-bila masa di bahagian atas.',remove:'Padam',sure:'Pasti?',hi_name:'Hai {0}!',well_name:'Syabas, {0}!',privacy:'Nama dan gambar kekal dalam peranti ini dan tidak dihantar ke mana-mana.',age:'Umur',help_trace:'Bantu saya',pot_l:'Bekas sampel',purple_l:'Pewarna ungu',pink_l:'Pewarna merah jambu',med_l:'Ubat',stitch_l:'Jahitan',lump_l:'Ketulan',kb_aim:'Gunakan kekunci anak panah untuk menggerakkan gelang, kemudian tekan Enter',cell_l:'Sel',sc_us_hint:'Cuba gerakkan prob ke arah kiri, di atas hati.',
+team_combo:'Rawatan yang digunakan bersama lebih berkesan, sama seperti pasukan yang bekerjasama!',
+det_badge_t:'Lencana Detektif Kanser!',det_badge_p:'Kamu menemui sel yang keliru, menggunakan pengimbas untuk mencari ketulan dan memeriksa sel di bawah mikroskop. Kamu memang detektif kanser!',
+det_short:'Detektif Kanser',
+guide_btn:'Panduan untuk ibu bapa dan guru',guide_t:'Berbual tentang kanser dengan kanak-kanak',
+guide_intro:'Main bersama, kemudian gunakan soalan ini untuk berbual. Beri jawapan yang ringkas dan jujur, dan biarkan anak memimpin perbualan.',
+g_cells:'Kanser bermula apabila satu sel terlupa untuk berhenti membiak. Tanya: "Apakah yang dilakukan oleh sel keliru itu?"',
+g_scan:'Imbasan membantu doktor mengesan kanser lebih awal dan melihat dengan tepat di mana ia berada. Tanya: "Imbasan manakah yang menggunakan bunyi? Imbasan manakah yang berpusing?"',
+g_micro:'Sampel kecil diperiksa di bawah mikroskop untuk mengetahui jenis ketulan. Tanya: "Apakah bezanya sel yang berselerak?"',
+g_lab:'Ubat baharu diuji dengan teliti dan adil sebelum pesakit menggunakannya. Tanya: "Apakah yang menjadikan ujian itu adil?"',
+g_team:'Ramai orang bekerjasama, dan pesakit selalunya menerima lebih daripada satu rawatan. Tanya: "Kamu mahu menjadi siapa dalam pasukan?"',
+g_wing:'Rawatan boleh membuat seseorang letih atau rambutnya gugur untuk sementara waktu, dan keadaan itu akan pulih. Tanya: "Bagaimana perasaan Mentari, dan apakah yang membantunya?"',
+g_keys:'Mesej utama: kanser tidak berjangkit, bukan salah sesiapa, dan ramai orang sembuh. Ramai kanak-kanak yang menghidap kanser sembuh, dan rawatan terus bertambah baik.',
+g_help:'Jika anak risau tentang seseorang yang dikenali, dengar dahulu, jawab dengan ringkas, dan minta sokongan daripada doktor atau jururawat keluarga.',close:'Tutup',yes:'Ya',no:'Tidak',locked:'Berkunci'
+}};
+function t(k){let v=L[S.lang][k];if(v==null)v=L.en[k];if(v&&typeof v==='object')v=v[S.mode]||v.k;return v==null?k:v}
+function tf(k,...a){return t(k).replace(/\{(\d)\}/g,(m,i)=>a[i])}
+
+/* ---------- sound + voice ---------- */
+let AC;
+function sfx(kind){if(!S.sound)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();
+  const seq={good:[[660,.08],[880,.14]],bad:[[220,.2]],win:[[523,.1],[659,.1],[784,.1],[1047,.26]],zap:[[300,.05],[600,.05],[900,.14]],pop:[[520,.07]],drip:[[880,.05],[700,.06]]}[kind];
+  let tt=AC.currentTime;seq.forEach(([f,d])=>{const o=AC.createOscillator(),g=AC.createGain();o.type=kind==='bad'?'triangle':'sine';o.frequency.value=f;g.gain.setValueAtTime(.16,tt);g.gain.exponentialRampToValueAtTime(.001,tt+d);o.connect(g).connect(AC.destination);o.start(tt);o.stop(tt+d+.02);tt+=d*.9})}catch(e){}}
+let voices=[];
+function loadVoices(){try{voices=speechSynthesis.getVoices()}catch(e){}}
+if('speechSynthesis' in window){loadVoices();try{speechSynthesis.onvoiceschanged=loadVoices}catch(e){}}
+/* Pre-recorded clips: audio/<lang>/<hash>.<ext>, listed in audio/index.json (made by generate_voice.py).
+   A missing clip falls back to the browser voice. */
+function h32(s){let h=0x811c9dc5;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,0x01000193)}return (h>>>0).toString(16).padStart(8,'0')}
+let CLIPS=null;
+let clipsReady=Promise.resolve();
+try{clipsReady=Promise.race([fetch('audio/index.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.files){CLIPS={ext:j.ext||'mp3',have:new Set(j.files)}}}).catch(()=>{}),new Promise(r=>setTimeout(r,2500))])}catch(e){}
+let curAudio=null,seqId=0;
+function stopVoice(){seqId++;if(curAudio){try{curAudio.pause()}catch(e){}curAudio=null}try{speechSynthesis.cancel()}catch(e){}}
+function ttsSpeak(txt,done){if(!('speechSynthesis' in window))return done();try{const u=new SpeechSynthesisUtterance(txt);let v;
+  if(S.lang==='bm'){v=voices.find(x=>/^ms/i.test(x.lang))||voices.find(x=>/^id/i.test(x.lang));u.lang=v?v.lang:'ms-MY'}
+  else{v=voices.find(x=>/^en-GB/i.test(x.lang))||voices.find(x=>/^en/i.test(x.lang));u.lang='en-GB'}
+  if(v)u.voice=v;u.rate=.95;u.pitch=1.1;u.onend=done;speechSynthesis.speak(u)}catch(e){done()}}
+function playLine(txt,done){if(!CLIPS){const id=seqId;clipsReady.then(()=>{if(id===seqId){CLIPS=CLIPS||{ext:'mp3',have:new Set()};playLine(txt,done)}});return}const key=S.lang+'/'+h32(txt);
+  if(!CLIPS||!CLIPS.have.has(key))return ttsSpeak(txt,done);
+  let over=false;const fail=()=>{if(over)return;over=true;ttsSpeak(txt,done)};
+  try{const a=new Audio('audio/'+key+'.'+CLIPS.ext);curAudio=a;a.onended=()=>{if(!over){over=true;done()}};a.onerror=fail;const p=a.play();if(p&&p.catch)p.catch(fail)}catch(e){fail()}}
+function speakSeq(list){stopVoice();if(!S.sound)return;const id=seqId;let i=0;const next=()=>{if(id!==seqId||i>=list.length)return;playLine(list[i++],next)};next()}
+function speak(txt){speakSeq([txt])}
+let lastSay=[];
+function sayParts(parts,prefix){lastSay=parts;const p=$('#say');if(p){p.textContent=prefix?prefix+' '+parts.join(' ').replace(/^(Hi|Hai)!\s*/,''):parts.join(' ');p.classList.remove('say');void p.offsetWidth;p.classList.add('say')}speakSeq(parts)}
+function say(k,raw){sayParts([raw?k:t(k)])}
+document.addEventListener('click',e=>{const p=e.target.closest('.bubble p');if(p)p.classList.toggle('open')});
+let sayGate=0;function sayOnce(k){const n=Date.now();if(n-sayGate<2200)return;sayGate=n;say(k)}
+
+/* ---------- art ---------- */
+const st3=`stroke="${INK}" stroke-width="3" stroke-linejoin="round"`;
+function star(on,i=0){return `<svg viewBox="0 0 24 24" class="${on?'on':''}" style="animation-delay:${i*.15}s" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="${on?'#FFC53D':'#fff'}" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/></svg>`}
+const ic={
+ back:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+ spk:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="${INK}"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="${INK}" stroke-width="2.4" stroke-linecap="round"/></svg>`,
+ mute:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="${INK}"/><path d="M16 9l6 6M22 9l-6 6" stroke="${INK}" stroke-width="2.4" stroke-linecap="round"/></svg>`,
+ lock:`<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="${INK}"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="${INK}" stroke-width="2.6"/></svg>`,
+ again:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12a7 7 0 1 1-2.1-5" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/><path d="M18 3v5h-5" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+ l:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 0-2.3 5.7" fill="none" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/><path d="M17 21l1-4-4-1" fill="none" stroke="${INK}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+ r:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 1 2.3 5.7" fill="none" stroke="${INK}" stroke-width="2.6" stroke-linecap="round"/><path d="M7 21l-1-4 4-1" fill="none" stroke="${INK}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+};
+function bear(o={}){const vs='vector-effect="non-scaling-stroke"',s=`stroke="${INK}" stroke-width="${o.sw||2.5}" ${vs}`,F='#2E2622',T='#E9C58F',P='#F7A8B8',C='#F7D27A';
+ const eyes=o.sleepy?`<path d="M42 37 Q47 41 52 37" stroke="#fff" fill="none" stroke-width="2.6" stroke-linecap="round" ${vs}/><path d="M68 37 Q73 41 78 37" stroke="#fff" fill="none" stroke-width="2.6" stroke-linecap="round" ${vs}/>`
+  :`<circle cx="48" cy="37" r="6.2" fill="#fff"/><circle cx="48.8" cy="37.8" r="4.6" fill="#111"/><circle cx="50.6" cy="35.4" r="1.9" fill="#fff"/><circle cx="46.8" cy="40" r=".9" fill="#fff"/>
+    <circle cx="72" cy="37" r="6.2" fill="#fff"/><circle cx="72.8" cy="37.8" r="4.6" fill="#111"/><circle cx="74.6" cy="35.4" r="1.9" fill="#fff"/><circle cx="70.8" cy="40" r=".9" fill="#fff"/>`;
+ const tufts=o.noTufts||o.beanie?'':`<path d="M54 12 q3 -8 6 -2 q4 -7 6 2" fill="${F}" stroke="${F}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`;
+ const beanie=o.beanie?`<g transform="translate(12.6 -3.4) scale(.79)">${BEANIE}</g>`:'';const happy=o.happy||o.wave;
+ const armR=o.wave?`<path d="M80 72 Q92 60 96 46" fill="none" stroke="${INK}" stroke-width="14.5" stroke-linecap="round" ${vs}/><path d="M80 72 Q92 60 96 46" fill="none" stroke="${F}" stroke-width="10" stroke-linecap="round"/><circle cx="96" cy="44" r="3" fill="${T}"/>`
+  :`<path d="M80 72 Q87 86 85 100" fill="none" stroke="${INK}" stroke-width="14.5" stroke-linecap="round" ${vs}/><path d="M80 72 Q87 86 85 100" fill="none" stroke="${F}" stroke-width="10" stroke-linecap="round"/><circle cx="85" cy="101" r="2.6" fill="${T}"/>`;
+ return `<svg viewBox="0 0 120 130" class="${o.cls||''}" ${o.id?`id="${o.id}"`:''} aria-hidden="true">${tufts}
+ <path d="M49 106 V120" stroke="${INK}" stroke-width="15" stroke-linecap="round" ${vs}/><path d="M71 106 V120" stroke="${INK}" stroke-width="15" stroke-linecap="round" ${vs}/>
+ <path d="M49 106 V120" stroke="${F}" stroke-width="10.5" stroke-linecap="round"/><path d="M71 106 V120" stroke="${F}" stroke-width="10.5" stroke-linecap="round"/>
+ <ellipse cx="47" cy="124.5" rx="9.5" ry="4.5" fill="${F}" ${s}/><ellipse cx="73" cy="124.5" rx="9.5" ry="4.5" fill="${F}" ${s}/>
+ <path d="M40 74 Q38 62 60 61 Q82 62 80 74 L82 98 Q82 113 60 113 Q38 113 38 98Z" fill="${F}" ${s}/>
+ <path d="M44 65 Q60 92 76 65 Q60 76 44 65Z" fill="${C}" ${s}/>
+ <path d="M40 72 Q33 86 35 100" fill="none" stroke="${INK}" stroke-width="14.5" stroke-linecap="round" ${vs}/><path d="M40 72 Q33 86 35 100" fill="none" stroke="${F}" stroke-width="10" stroke-linecap="round"/><circle cx="35" cy="101" r="2.6" fill="${T}"/>
+ ${armR}
+ <circle cx="36" cy="15" r="9.5" fill="${F}" ${s}/><circle cx="36" cy="15" r="4.8" fill="${P}"/><circle cx="84" cy="15" r="9.5" fill="${F}" ${s}/><circle cx="84" cy="15" r="4.8" fill="${P}"/>
+ <ellipse cx="60" cy="38" rx="29" ry="27" fill="${F}" ${s}/>
+ <ellipse cx="60" cy="50" rx="12.5" ry="9.5" fill="${T}" ${s}/>
+ <path d="M55.5 44.5 Q60 42 64.5 44.5 Q64.5 48 60 50 Q55.5 48 55.5 44.5Z" fill="#111"/><ellipse cx="58.5" cy="44.6" rx="1.5" ry=".9" fill="#fff" opacity=".8"/>
+ ${eyes}${happy?`<path d="M54.5 52.5 Q60 61 65.5 52.5 Z" fill="#7A2E2E" stroke="#111" stroke-width="1.8" stroke-linejoin="round" ${vs}/><path d="M57 56 Q60 59 63 56 Q60 60 57 56Z" fill="#FF8FA3"/>`:`<path d="M56 53.5 Q58 56 60 54 Q62 56 64 53.5" stroke="#111" fill="none" stroke-width="1.8" stroke-linecap="round" ${vs}/>`}
+ <ellipse cx="40.5" cy="47.5" rx="4.6" ry="3.1" fill="#FF8FA3" opacity=".85"/><ellipse cx="79.5" cy="47.5" rx="4.6" ry="3.1" fill="#FF8FA3" opacity=".85"/>${beanie}</svg>`}
+/* Mentari lying on her back on a couch or bed, face turned to us */
+function bearLying(o={}){const vs='vector-effect="non-scaling-stroke"',s=`stroke="${INK}" stroke-width="2.5" ${vs}`,F='#2E2622',T='#E9C58F',P='#F7A8B8',C='#F7D27A';
+ const eyes=o.sleepy?`<path d="M29 31 Q33 35 37 31 M47 31 Q51 35 55 31" stroke="#fff" fill="none" stroke-width="2.4" stroke-linecap="round" ${vs}/>`
+  :`<circle cx="33" cy="31" r="4.8" fill="#fff"/><circle cx="33.6" cy="31.6" r="3.5" fill="#111"/><circle cx="35" cy="29.8" r="1.4" fill="#fff"/><circle cx="51" cy="31" r="4.8" fill="#fff"/><circle cx="51.6" cy="31.6" r="3.5" fill="#111"/><circle cx="53" cy="29.8" r="1.4" fill="#fff"/>`;
+ return `<svg viewBox="0 0 200 74" class="${o.cls||''}" aria-hidden="true">
+ ${o.pillow===false?'':`<rect x="4" y="46" width="58" height="22" rx="11" fill="#FFFFFF" ${s}/>`}
+ <path d="M136 56 L164 58" stroke="${INK}" stroke-width="17" stroke-linecap="round" ${vs}/><path d="M136 56 L164 58" stroke="${F}" stroke-width="12.5" stroke-linecap="round"/><path d="M136 62 L162 64" stroke="${INK}" stroke-width="15" stroke-linecap="round" ${vs}/><path d="M136 62 L162 64" stroke="${F}" stroke-width="10.5" stroke-linecap="round"/>
+ <ellipse cx="170" cy="52" rx="5.5" ry="11" fill="${F}" ${s}/>
+ <path d="M52 44 Q58 36 86 37 Q124 37 140 48 Q146 64 128 68 L70 68 Q52 66 52 44Z" fill="${F}" ${s}/>
+ <path d="M64 41 Q80 53 68 66 Q72 54 64 41Z" fill="${C}" ${s}/>
+ ${o.blanket?`<path d="M84 40 Q124 34 150 46 L156 70 L82 70Z" fill="#9FD8FF" ${s}/><path d="M88 50 H150 M86 60 H154" stroke="#fff" stroke-width="2" opacity=".7"/>`:`<path d="M74 52 Q94 56 114 52" fill="none" stroke="${INK}" stroke-width="13" stroke-linecap="round" ${vs}/><path d="M74 52 Q94 56 114 52" fill="none" stroke="${F}" stroke-width="8.5" stroke-linecap="round"/><circle cx="115" cy="52" r="2.4" fill="${T}"/>`}
+ <circle cx="24" cy="12" r="8" fill="${F}" ${s}/><circle cx="24" cy="12" r="4" fill="${P}"/><circle cx="60" cy="12" r="8" fill="${F}" ${s}/><circle cx="60" cy="12" r="4" fill="${P}"/>
+ <ellipse cx="42" cy="32" rx="23" ry="21" fill="${F}" ${s}/>
+ <ellipse cx="42" cy="42" rx="10" ry="7.6" fill="${T}" ${s}/><path d="M38.4 37.6 Q42 35.6 45.6 37.6 Q45.6 40.4 42 42 Q38.4 40.4 38.4 37.6Z" fill="#111"/>
+ ${eyes}<path d="M38.8 45 Q40.4 47 42 45.4 Q43.6 47 45.2 45" stroke="#111" fill="none" stroke-width="1.6" stroke-linecap="round" ${vs}/>
+ <ellipse cx="26" cy="40" rx="3.6" ry="2.4" fill="#FF8FA3" opacity=".85"/><ellipse cx="58" cy="40" rx="3.6" ry="2.4" fill="#FF8FA3" opacity=".85"/></svg>`}
+const BEANIE=`<path d="M23 44 Q24 11 60 11 Q96 11 97 44 Z" fill="#F26B4F" stroke="${INK}" stroke-width="2.5" vector-effect="non-scaling-stroke"/><rect x="21" y="36" width="78" height="12" rx="6" fill="#FFC53D" stroke="${INK}" stroke-width="2.5" vector-effect="non-scaling-stroke"/><circle cx="60" cy="9" r="7" fill="#FFC53D" stroke="${INK}" stroke-width="2.5" vector-effect="non-scaling-stroke"/>`;
+function mp(cls='ana'){const w=`stroke="${INK}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"`;return `<svg viewBox="0 0 84 104" class="${cls} sina" aria-hidden="true">
+ <g class="sbody"><path d="M10 104 Q10 70 42 67 Q74 70 74 104Z" fill="#fff" ${w}/>
+ <path d="M33 68 L42 86 L51 68 Q42 72 33 68Z" fill="#20B2AA" ${w}/><path d="M38 76 L42 84 L46 76" fill="#FFD23F" stroke="none"/>
+ <path d="M30 70 L36 96 M54 70 L48 96" fill="none" stroke="${INK}" stroke-width="2"/>
+ <rect x="54" y="80" width="12" height="15" rx="2" fill="#E8F7F5" ${w}/><path d="M57 80 V74 M61 80 V72 M64 80 V75" stroke-width="3" stroke-linecap="round" fill="none" stroke="#FF6B4A"/><circle cx="61" cy="72" r="1.6" fill="#3AB0FF"/>
+ <rect x="15" y="82" width="15" height="9" rx="2.5" fill="#FFD23F" ${w}/><path d="M18 86.5 H27" stroke="${INK}" stroke-width="1.8"/>
+ <path d="M31 69 Q26 80 30 88 M53 69 Q58 80 50 88" fill="none" stroke="#FF6B4A" stroke-width="3.2" stroke-linecap="round"/><path d="M30 88 Q34 96 42 94" fill="none" stroke="#FF6B4A" stroke-width="3.2" stroke-linecap="round"/><circle cx="47" cy="89" r="4.2" fill="#C0C9D2" ${w}/><circle cx="47" cy="89" r="1.6" fill="#fff"/></g>
+ <g class="shead"><rect x="35" y="56" width="14" height="11" rx="3" fill="#B97C4D" ${w}/>
+ <ellipse cx="24.5" cy="42" rx="4" ry="5" fill="#B97C4D" ${w}/><ellipse cx="59.5" cy="42" rx="4" ry="5" fill="#B97C4D" ${w}/>
+ <ellipse cx="42" cy="42" rx="17" ry="19" fill="#C68B59" ${w}/>
+ <path d="M26 47 Q28 60 42 61.5 Q56 60 58 47 Q55 55 49 53.5 Q42 51.5 35 53.5 Q29 55 26 47Z" fill="#3A2A22" ${w}/>
+ <path d="M35 53.5 Q42 59 49 53.5" fill="#fff" stroke="${INK}" stroke-width="2"/>
+ <path d="M25 38 Q21 19 34 13 Q41 8 50 10 Q62 13 60 37 Q58 29 55 26 Q50 27 44 25 Q36 29 30 31 Q27 33 25 38Z" fill="#2B211C" ${w}/>
+ <path d="M33 18 Q42 12 53 15 M31 24 Q38 19 46 19" fill="none" stroke="#6B4E3D" stroke-width="2" stroke-linecap="round"/>
+ <path d="M30.5 35 Q35 32.5 39 34.5 M45 34.5 Q49 32.5 53.5 35" fill="none" stroke="#2B211C" stroke-width="2.6" stroke-linecap="round"/>
+ <g class="blink"><ellipse cx="35" cy="41" rx="2.9" ry="3.3" fill="${INK}"/><ellipse cx="49" cy="41" rx="2.9" ry="3.3" fill="${INK}"/><circle cx="36" cy="39.8" r="1.1" fill="#fff"/><circle cx="50" cy="39.8" r="1.1" fill="#fff"/></g>
+ <circle cx="29" cy="48" r="2.6" fill="#FF8FA3" opacity=".75"/><circle cx="55" cy="48" r="2.6" fill="#FF8FA3" opacity=".75"/></g></svg>`}
+function cellS(x,y,r,messy){return messy?`<path d="${blob(x,y,r,.2,9)}" fill="#E7B6E8" stroke="${INK}" stroke-width="2.5"/><path d="${blob(x,y,r*.5,.25,8)}" fill="#7B3F9E"/>`:`<circle cx="${x}" cy="${y}" r="${r}" fill="#FFD6C9" stroke="${INK}" stroke-width="2.5"/><circle cx="${x}" cy="${y}" r="${r*.36}" fill="#B36A9E"/>`}
+const MICRO=`<rect x="18" y="68" width="64" height="9" rx="4" fill="${INK}"/><path d="M62 68 Q76 44 56 24" fill="none" stroke="${INK}" stroke-width="8" stroke-linecap="round"/><g transform="rotate(-28 44 28)"><rect x="37" y="6" width="15" height="40" rx="4" fill="#58B6E0" ${st3}/></g><rect x="26" y="52" width="38" height="6" rx="2" fill="${INK}"/>`;
+const MACH={
+ mammo:`<svg viewBox="0 0 100 80"><rect x="62" y="4" width="16" height="72" rx="4" fill="#fff" ${st3}/><rect x="14" y="20" width="52" height="9" rx="3" fill="#BFE6F5" ${st3}/><rect x="14" y="44" width="52" height="9" rx="3" fill="#BFE6F5" ${st3}/><rect x="64" y="6" width="12" height="12" rx="3" fill="#FFC53D"/><rect x="52" y="72" width="36" height="6" rx="2" fill="${INK}"/></svg>`,
+ xray:`<svg viewBox="0 0 100 80"><rect x="64" y="6" width="22" height="66" rx="4" fill="#fff" ${st3}/><rect x="68" y="20" width="14" height="30" fill="#BFE6F5"/><path d="M12 6V74M12 16H44" stroke="${INK}" stroke-width="5" stroke-linecap="round"/><rect x="34" y="8" width="22" height="22" rx="5" fill="#FFC53D" ${st3}/><rect x="4" y="70" width="30" height="7" rx="2" fill="${INK}"/></svg>`,
+ us:`<svg viewBox="0 0 100 80"><rect x="8" y="8" width="50" height="36" rx="5" fill="#1B2B30" ${st3}/><path d="M33 13 L19 38 A18 18 0 0 0 47 38Z" fill="#7D8C8F"/><rect x="13" y="46" width="40" height="28" rx="5" fill="#fff" ${st3}/><path d="M70 18 q8 -6 15 0 l-4 26 h-7z" fill="#BFE6F5" ${st3}/><path d="M77 44 Q80 62 54 60" fill="none" stroke="${INK}" stroke-width="3"/></svg>`,
+ ct:`<svg viewBox="0 0 100 80"><circle cx="50" cy="36" r="29" fill="#BFE6F5" ${st3}/><circle cx="50" cy="36" r="14" fill="#fff" ${st3}/><rect x="4" y="58" width="92" height="10" rx="4" fill="#fff" ${st3}/><rect x="40" y="68" width="20" height="8" fill="${INK}"/></svg>`,
+ mri:`<svg viewBox="0 0 100 80"><rect x="8" y="6" width="84" height="58" rx="22" fill="#CDEFDD" ${st3}/><circle cx="50" cy="35" r="16" fill="#fff" ${st3}/><rect x="0" y="60" width="100" height="10" rx="4" fill="#fff" ${st3}/><rect x="40" y="70" width="20" height="7" fill="${INK}"/></svg>`,
+ pet:`<svg viewBox="0 0 100 80"><circle cx="50" cy="36" r="29" fill="#FFE7A3" ${st3}/><circle cx="50" cy="36" r="14" fill="#fff" ${st3}/><circle cx="50" cy="13" r="3.5" fill="#F26B4F"/><circle cx="73" cy="36" r="3.5" fill="#F26B4F"/><circle cx="27" cy="36" r="3.5" fill="#F26B4F"/><rect x="4" y="58" width="92" height="10" rx="4" fill="#fff" ${st3}/><rect x="40" y="68" width="20" height="8" fill="${INK}"/></svg>`
+};
+const JOBART={
+ xray:`<svg viewBox="0 0 200 140"><rect x="6" y="6" width="188" height="128" rx="18" fill="#FFE7A3"/><rect x="30" y="64" width="124" height="36" rx="18" fill="#2E2622" ${st3}/><circle cx="156" cy="82" r="24" fill="#2E2622" ${st3}/><circle cx="166" cy="74" r="5" fill="#E8B77A"/><circle cx="168" cy="88" r="5" fill="#E8B77A"/><circle cx="156" cy="94" r="5" fill="#E8B77A"/><path d="M96 22 l6 12 13 2 -9 9 2 13 -12 -6 -12 6 2 -13 -9 -9 13 -2z" fill="#F26B4F" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/></svg>`,
+ us:`<svg viewBox="0 0 200 140"><rect x="6" y="6" width="188" height="128" rx="18" fill="#BFE6F5"/><ellipse cx="86" cy="96" rx="64" ry="46" fill="#2E2622" ${st3}/><path d="M60 70 Q86 120 112 70 Q100 86 86 86 Q72 86 60 70Z" fill="#F4C96B" ${st3}/><path d="M140 20 q12 -8 22 0 l-6 34 h-10z" fill="#fff" ${st3}/><path d="M128 64 q-8 8 0 16M118 58 q-14 14 0 28" fill="none" stroke="${INK}" stroke-width="3" stroke-linecap="round"/></svg>`,
+ ct:`<svg viewBox="0 0 200 140"><rect x="6" y="6" width="188" height="128" rx="18" fill="#FFD6C9"/><path d="M26 112 V62 Q26 34 58 34 H142 Q174 34 174 62 V112Z" fill="#E8B77A" ${st3}/><path d="M58 40V112M86 36V112M114 36V112M142 40V112" stroke="${INK}" stroke-width="3"/><circle cx="100" cy="78" r="9" fill="#9B5FC0" stroke="${INK}" stroke-width="2.5"/></svg>`,
+ mri:`<svg viewBox="0 0 200 140"><rect x="6" y="6" width="188" height="128" rx="18" fill="#CDEFDD"/><path d="M52 26 V72 a48 48 0 0 0 96 0 V26 h-26 V72 a22 22 0 0 1 -44 0 V26Z" fill="#F26B4F" ${st3}/><rect x="52" y="16" width="26" height="16" fill="#E6EEF0" ${st3}/><rect x="122" y="16" width="26" height="16" fill="#E6EEF0" ${st3}/><path d="M100 54 q-14 0 -14 12 q0 12 14 12 q14 0 14 -12 q0 -12 -14 -12z" fill="#F7B7C8" stroke="${INK}" stroke-width="2.5"/></svg>`,
+ pet:`<svg viewBox="0 0 200 140"><rect x="6" y="6" width="188" height="128" rx="18" fill="#FFE7A3"/><circle cx="100" cy="74" r="50" fill="#FFC53D" opacity=".55"/><rect x="72" y="48" width="54" height="54" rx="8" fill="#fff" ${st3}/><path d="M72 62h54M90 48v54" stroke="#E6EEF0" stroke-width="3"/><path d="M100 14v14M150 30l-10 10M50 30l10 10M164 74h-14M36 74h14" stroke="${INK}" stroke-width="3" stroke-linecap="round"/></svg>`
+};
+const RESART={
+ xray:`<svg viewBox="0 0 200 140"><rect x="6" y="6" width="188" height="128" rx="18" fill="#1B2B30"/><path d="M34 60h130a9 9 0 1 1 0 16H34a9 9 0 1 1 0-16z" fill="#EAF2F2"/><path d="M34 82h130a8 8 0 1 1 0 14H34a8 8 0 1 1 0-14z" fill="#C9D6D3"/><circle cx="168" cy="34" r="16" fill="#2FA673" stroke="#fff" stroke-width="3"/><path d="M160 34l6 6 10-11" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+ us:`<svg viewBox="0 0 200 140"><rect x="6" y="6" width="188" height="128" rx="18" fill="#1B2B30"/><path d="M100 16 L36 122 A86 86 0 0 0 164 122Z" fill="#6E7D80"/><circle cx="80" cy="90" r="2" fill="#C9D6D3"/><circle cx="120" cy="80" r="2" fill="#C9D6D3"/><circle cx="110" cy="104" r="2" fill="#C9D6D3"/><ellipse cx="100" cy="84" rx="20" ry="14" fill="#2C3A3D"/></svg>`,
+ ct:`<svg viewBox="0 0 200 140"><rect x="6" y="6" width="188" height="128" rx="18" fill="#1B2B30"/><ellipse cx="100" cy="72" rx="74" ry="50" fill="#8A9A9C"/><circle cx="100" cy="110" r="10" fill="#fff"/><ellipse cx="66" cy="66" rx="18" ry="14" fill="#B8C4C6"/><ellipse cx="136" cy="66" rx="18" ry="14" fill="#B8C4C6"/><circle cx="104" cy="56" r="11" fill="#9B5FC0"/><circle cx="104" cy="56" r="18" fill="none" stroke="#FFC53D" stroke-width="3" stroke-dasharray="5 4"/></svg>`,
+ mri:`<svg viewBox="0 0 200 140"><rect x="6" y="6" width="188" height="128" rx="18" fill="#1B2B30"/><path d="M100 26 C56 26 40 54 46 80 C52 106 80 114 100 112 C120 114 148 106 154 80 C160 54 144 26 100 26Z" fill="#A9B6B8"/><path d="M100 30V110M66 50q14 6 8 18M134 50q-14 6 -8 18M62 86q16 -2 20 10M138 86q-16 -2 -20 10" fill="none" stroke="#5E6E71" stroke-width="3" stroke-linecap="round"/></svg>`,
+ pet:`<svg viewBox="0 0 200 140"><defs><radialGradient id="gl"><stop offset="0" stop-color="#FFE45C"/><stop offset="1" stop-color="#FFE45C" stop-opacity="0"/></radialGradient></defs><rect x="6" y="6" width="188" height="128" rx="18" fill="#1B2B30"/><circle cx="100" cy="34" r="18" fill="#3A4E53"/><rect x="72" y="54" width="56" height="74" rx="22" fill="#3A4E53"/><circle cx="108" cy="90" r="22" fill="url(#gl)"/><circle cx="108" cy="90" r="6" fill="#FFF6B0"/></svg>`
+};
+function face(kind){const s=`stroke="${INK}" stroke-width="1.8"`;
+ if(kind==='bear')return `<svg viewBox="0 0 40 40"><circle cx="10" cy="11" r="6" fill="#2E2622" ${s}/><circle cx="30" cy="11" r="6" fill="#2E2622" ${s}/><circle cx="20" cy="22" r="14" fill="#2E2622" ${s}/><ellipse cx="20" cy="27" rx="7" ry="5" fill="#E8C48A"/><ellipse cx="20" cy="25" rx="2.6" ry="1.8" fill="#111"/><circle cx="15" cy="19" r="1.9" fill="#fff"/><circle cx="25" cy="19" r="1.9" fill="#fff"/></svg>`;
+ if(kind==='cat')return `<svg viewBox="0 0 40 40"><path d="M7 16 L9 3 L17 10Z M33 16 L31 3 L23 10Z" fill="#F4A340" ${s} stroke-linejoin="round"/><circle cx="20" cy="22" r="14" fill="#F4A340" ${s}/><circle cx="15" cy="20" r="1.9" fill="${INK}"/><circle cx="25" cy="20" r="1.9" fill="${INK}"/><path d="M18 25h4l-2 2z" fill="#F26B4F"/><path d="M4 24h9M4 28h9M27 24h9M27 28h9" stroke="${INK}" stroke-width="1.2"/></svg>`;
+ return `<svg viewBox="0 0 40 40"><ellipse cx="14" cy="9" rx="4" ry="9" fill="#F2F2F2" ${s}/><ellipse cx="26" cy="9" rx="4" ry="9" fill="#F2F2F2" ${s}/><circle cx="20" cy="24" r="13" fill="#F2F2F2" ${s}/><circle cx="15" cy="22" r="1.9" fill="${INK}"/><circle cx="25" cy="22" r="1.9" fill="${INK}"/><circle cx="20" cy="27" r="2" fill="#F7A8C0"/></svg>`}
+const TOOLS={
+ steth:`<svg viewBox="0 0 100 80"><path d="M32 8 V30 a18 18 0 0 0 36 0 V8" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/><path d="M50 48 v8 a12 12 0 0 0 12 12 h4" fill="none" stroke="${INK}" stroke-width="5" stroke-linecap="round"/><circle cx="74" cy="68" r="9" fill="#58B6E0" ${st3}/></svg>`,
+ plan:`<svg viewBox="0 0 100 80"><ellipse cx="50" cy="40" rx="42" ry="32" fill="#FCE3CF" ${st3}/><path d="M50 4 V76 M10 22 L90 58 M90 22 L10 58" stroke="#FFC53D" stroke-width="8" opacity=".6"/><ellipse cx="50" cy="40" rx="20" ry="15" fill="#FFC53D" opacity=".9"/><ellipse cx="50" cy="40" rx="12" ry="9" fill="#F26B4F"/><circle cx="50" cy="40" r="5" fill="#7B3F9E"/></svg>`,
+ scanner:MACH.ct,
+ mask:`<svg viewBox="0 0 100 80"><path d="M30 28 Q50 8 70 28 L64 50 Q50 58 36 50Z" fill="#BFE6F5" ${st3}/><path d="M50 55 Q50 70 72 70 h10" fill="none" stroke="${INK}" stroke-width="4"/><rect x="80" y="58" width="14" height="20" rx="4" fill="#2FA673" ${st3}/></svg>`,
+ pills:`<svg viewBox="0 0 100 80"><rect x="32" y="24" width="36" height="50" rx="8" fill="#FFC53D" ${st3}/><rect x="28" y="8" width="44" height="17" rx="4" fill="#fff" ${st3}/><rect x="38" y="38" width="24" height="20" rx="3" fill="#fff"/><path d="M50 42v12M44 48h12" stroke="#F26B4F" stroke-width="3.5"/></svg>`,
+ films:`<svg viewBox="0 0 100 80"><rect x="10" y="6" width="80" height="60" rx="6" fill="#1B2B30" ${st3}/><path d="M50 14V58M40 22q-14 4-16 14M40 32q-14 4-16 14M60 22q14 4 16 14M60 32q14 4 16 14" stroke="#EAF2F2" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="40" y="66" width="20" height="9" fill="${INK}"/></svg>`,
+ plate:`<svg viewBox="0 0 100 80"><circle cx="50" cy="40" r="34" fill="#fff" ${st3}/><circle cx="50" cy="40" r="24" fill="#F3FAF7" stroke="${INK}" stroke-width="2"/><path d="M32 46q18-24 36 0z" fill="#fff" stroke="${INK}" stroke-width="2"/><circle cx="40" cy="30" r="6" fill="#2FA673"/><circle cx="60" cy="31" r="6" fill="#F26B4F"/><ellipse cx="50" cy="54" rx="10" ry="5" fill="#F4A340"/></svg>`,
+ talk:`<svg viewBox="0 0 100 80"><path d="M8 10h46a8 8 0 0 1 8 8v24a8 8 0 0 1-8 8H28l-12 11V50h-8a8 8 0 0 1-8-8V18a8 8 0 0 1 8-8z" fill="#FFC9BC" ${st3}/><path d="M31 39l-9-9a5.5 5.5 0 0 1 9-6 5.5 5.5 0 0 1 9 6z" fill="#F26B4F"/><path d="M68 30h22a6 6 0 0 1 6 6v16a6 6 0 0 1-6 6h-2v10l-10-10H68a6 6 0 0 1-6-6V36a6 6 0 0 1 6-6z" fill="#BFE6F5" ${st3}/><path d="M70 42h16M70 48h10" stroke="${INK}" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+ micro:`<svg viewBox="0 0 100 80">${MICRO}</svg>`,
+ gloves:`<svg viewBox="0 0 100 80"><rect x="32" y="34" width="38" height="42" rx="12" fill="#BFE6F5" ${st3}/><rect x="32" y="12" width="9" height="34" rx="4.5" fill="#BFE6F5" ${st3}/><rect x="42" y="6" width="9" height="38" rx="4.5" fill="#BFE6F5" ${st3}/><rect x="52" y="8" width="9" height="36" rx="4.5" fill="#BFE6F5" ${st3}/><rect x="62" y="14" width="8" height="30" rx="4" fill="#BFE6F5" ${st3}/><ellipse cx="26" cy="50" rx="6" ry="13" fill="#BFE6F5" ${st3} transform="rotate(-30 26 50)"/></svg>`,
+ drip:`<svg viewBox="0 0 100 80"><path d="M66 4 V74 M54 76 h24" stroke="${INK}" stroke-width="4" stroke-linecap="round"/><rect x="26" y="8" width="34" height="40" rx="9" fill="#FFF6D6" ${st3}/><path d="M43 48 v6" stroke="${INK}" stroke-width="3"/><rect x="38" y="54" width="10" height="12" rx="3" fill="#BFE6F5" stroke="${INK}" stroke-width="2.5"/><path d="M43 66 q0 10 -22 10" fill="none" stroke="#58B6E0" stroke-width="3.5"/></svg>`
+};
+const PEOPLE={onc:{skin:'#C68B59',hair:'short',hc:'#2B211C',coat:'#fff',top:'#58B6E0',x:'beard'},mp:{skin:'#8D5A3B',hair:'short',hc:'#1E1A18',coat:'#fff',top:'#FFC53D',x:'glasses'},rad:{skin:'#E0AC7E',hair:'tudung',hc:'#7B5EA7',coat:'#7FC8A9',top:'#7FC8A9'},path:{skin:'#F1C9A5',hair:'short',hc:'#3A2A20',coat:'#fff',top:'#B36A9E'},surg:{skin:'#B07A50',hair:'cap',hc:'#3E8E9B',coat:'#3E8E9B',top:'#3E8E9B',x:'mask'},nurse:{skin:'#D9A06F',hair:'tudung',hc:'#FFFFFF',coat:'#F7A8A0',top:'#F7A8A0'},anaes:{skin:'#E8B98F',hair:'cap',hc:'#5BA4C7',coat:'#5BA4C7',top:'#5BA4C7'},pharm:{skin:'#A86B43',hair:'short',hc:'#1E1A18',coat:'#fff',top:'#2FA673'},radl:{skin:'#F1C9A5',hair:'tudung',hc:'#1F4E79',coat:'#fff',top:'#58B6E0'},sci:{skin:'#D9A06F',hair:'short',hc:'#5A3A22',coat:'#fff',top:'#9B5FC0',x:'glasses'},diet:{skin:'#C68B59',hair:'tudung',hc:'#F4A340',coat:'#fff',top:'#F4A340'},couns:{skin:'#8D5A3B',hair:'short',hc:'#1E1A18',coat:'#FFC9BC',top:'#FFE7A3'}};
+function person(id){const p=PEOPLE[id];let pre='',post='';
+ if(p.hair==='tudung')pre=`<path d="M24 46 Q24 12 50 12 Q76 12 76 46 Q76 74 50 77 Q24 74 24 46Z" fill="${p.hc}" ${st3}/>`;
+ if(p.hair==='short')post=`<path d="M30 42 Q29 16 50 16 Q71 16 70 42 Q66 28 50 28 Q34 28 30 42Z" fill="${p.hc}" stroke="${INK}" stroke-width="2.5"/>`;
+ if(p.hair==='cap')post=`<path d="M29 36 Q29 15 50 15 Q71 15 71 36Z" fill="${p.hc}" stroke="${INK}" stroke-width="2.5"/>`;
+ if(p.x==='glasses')post+=`<circle cx="43" cy="44" r="6" fill="none" stroke="${INK}" stroke-width="2"/><circle cx="57" cy="44" r="6" fill="none" stroke="${INK}" stroke-width="2"/><path d="M49 44h2" stroke="${INK}" stroke-width="2"/>`;
+ if(p.x==='beard')post+=`<path d="M32 50 Q32 66 50 67 Q68 66 68 50 Q64 59 50 60 Q36 59 32 50Z" fill="#2B211C"/><path d="M44 56 Q50 60 56 56" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>`;
+ if(p.x==='mask')post+=`<rect x="36" y="48" width="28" height="15" rx="6" fill="#BFE3EA" stroke="${INK}" stroke-width="2"/>`;
+ return `<svg viewBox="0 0 100 110" aria-hidden="true"><path d="M14 110 Q14 72 50 70 Q86 72 86 110Z" fill="${p.coat}" ${st3}/><path d="M42 72 L50 88 L58 72" fill="${p.top}" stroke="${INK}" stroke-width="2.5" stroke-linejoin="round"/>${pre}<ellipse cx="50" cy="45" rx="19" ry="21" fill="${p.skin}" stroke="${INK}" stroke-width="2.5"/><circle cx="43" cy="44" r="2.4" fill="${INK}"/><circle cx="57" cy="44" r="2.4" fill="${INK}"/><path d="M43 54 Q50 60 57 54" fill="none" stroke="${INK}" stroke-width="2.3" stroke-linecap="round"/>${post}</svg>`}
+const ART={
+ cells:()=>`<svg viewBox="0 0 120 90">${cellS(24,28,13)}${cellS(54,20,11)}${cellS(26,64,12)}${cellS(52,52,10)}${cellS(84,50,14,1)}${cellS(102,34,10,1)}${cellS(100,68,10,1)}${cellS(76,74,9,1)}</svg>`,
+ scan:()=>MACH.ct,
+ micro:()=>`<svg viewBox="0 0 100 80">${MICRO}</svg>`,
+ lab:()=>`<svg viewBox="0 0 100 80"><rect x="16" y="10" width="14" height="50" rx="7" fill="#fff" ${st3}/><rect x="16" y="34" width="14" height="26" rx="7" fill="#F26B4F"/><rect x="38" y="10" width="14" height="50" rx="7" fill="#fff" ${st3}/><rect x="38" y="28" width="14" height="32" rx="7" fill="#58B6E0"/><rect x="60" y="10" width="14" height="50" rx="7" fill="#fff" ${st3}/><rect x="60" y="40" width="14" height="20" rx="7" fill="#2FA673"/><path d="M16 10h14M38 10h14M60 10h14" stroke="${INK}" stroke-width="3"/><ellipse cx="62" cy="70" rx="30" ry="7" fill="#fff" ${st3}/><circle cx="54" cy="69" r="2.5" fill="#9B5FC0"/><circle cx="66" cy="71" r="2.5" fill="#9B5FC0"/></svg>`,
+ team:()=>`<svg viewBox="0 0 120 90"><circle cx="30" cy="30" r="13" fill="#2FA673" ${st3}/><circle cx="30" cy="31" r="8" fill="#C68B59"/><circle cx="60" cy="22" r="13" fill="#8D5A3B" ${st3}/><circle cx="90" cy="30" r="13" fill="#fff" ${st3}/><circle cx="90" cy="31" r="8" fill="#D9A06F"/><ellipse cx="60" cy="66" rx="50" ry="18" fill="#fff" ${st3}/><rect x="40" y="58" width="16" height="12" rx="2" fill="#FFC53D" stroke="${INK}" stroke-width="2"/><rect x="64" y="60" width="16" height="10" rx="2" fill="#58B6E0" stroke="${INK}" stroke-width="2"/></svg>`,
+ wing:()=>bear(),
+ rt:()=>`<svg viewBox="0 0 100 80"><path d="M14 74 V30 Q14 8 36 8 H66 Q84 8 84 26 V40 H58 V74Z" fill="#fff" ${st3}/><rect x="56" y="38" width="30" height="12" rx="4" fill="#FFC53D" ${st3}/><path d="M64 50 L58 66 H84 L78 50Z" fill="#FFC53D" opacity=".6"/><rect x="44" y="64" width="54" height="8" rx="3" fill="#BFE6F5" ${st3}/></svg>`,
+ surg:()=>`<svg viewBox="0 0 100 80"><path d="M50 4 V16" stroke="${INK}" stroke-width="4"/><path d="M28 30 Q50 6 72 30Z" fill="#FFE7A3" ${st3}/><rect x="14" y="52" width="72" height="18" rx="5" fill="#E6EEF0" ${st3}/><path d="M26 61 H58" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/><path d="M64 56 l14 10 M64 66 l14 -10" stroke="${INK}" stroke-width="3" stroke-linecap="round"/></svg>`,
+ chemo:()=>TOOLS.drip
+};
+TOOLS.tubes=ART.lab();
+const COL={cells:'#FFB9A6',scan:'#9FD8FF',micro:'#DDC2FF',lab:'#A8EEC8',team:'#FFE07A',wing:'#FFAE99',rt:'#FFE07A',surg:'#9FD8FF',chemo:'#A8EEC8'};
+function medal(){return `<svg viewBox="0 0 120 150" class="medal" aria-hidden="true"><path d="M34 0 L52 50 H68 L86 0Z" fill="#58B6E0" ${st3}/><path d="M60 0 L52 50 H68Z" fill="#F26B4F"/><circle cx="60" cy="92" r="52" fill="#FFC53D" ${st3}/><circle cx="60" cy="92" r="42" fill="#FFE7A3" stroke="${INK}" stroke-width="2"/><svg x="26" y="56" width="68" height="74" viewBox="0 0 120 130">${bear().replace(/^<svg[^>]*>|<\/svg>$/g,'')}</svg></svg>`}
+
+/* ---------- views ---------- */
+const app=$('#app'),ov=$('#ov');
+const TREAT=['rt','surg','chemo'];
+const allTreat=()=>TREAT.every(r=>S.stars[r]);
+const wingStars=()=>allTreat()?Math.min(...TREAT.map(r=>S.stars[r])):0;
+function header(){return `<header class="top"><div class="brand">${bear()}<div><h1>${t('title_html')}</h1><p>${t('sub')}</p></div></div>
+ <div class="toggles">${curP()?`<button class="whob" id="whoB" aria-label="${t('who')}"><span class="kh">${kid(curP().av)}</span><span class="wn">${esc(curP().name)}</span></button>`:''}<div class="seg" role="group" aria-label="${t('lang')}"><button data-lang="en" aria-pressed="${S.lang==='en'}">EN</button><button data-lang="bm" aria-pressed="${S.lang==='bm'}">BM</button></div>
+ <div class="seg" role="group"><button data-mode="k" aria-pressed="${S.mode==='k'}">${t('modeK')}</button><button data-mode="p" aria-pressed="${S.mode==='p'}">${t('modeP')}</button></div>
+ <button class="round" id="snd" aria-pressed="${S.sound}" aria-label="${t('sound')}">${S.sound?ic.spk:ic.mute}</button></div></header>`}
+function helperHTML(withBear){return `<div class="helper">${mp()}<div class="bubble"><p id="say" aria-live="polite"></p><button class="round sm" id="replay" aria-label="${t('hear')}">${ic.spk}</button></div><div class="mentari" id="mbear">${bear({beanie:allTreat()?false:!!S.stars.chemo,happy:withBear,cls:'glowbear'})}</div></div>`}
+function roomCard(id,num){const st=id==='wing'?wingStars():(S.stars[id]||0),lock=id==='wing'&&!S.stars.team;
+ return `<button class="room${lock?' locked':''}" data-room="${id}" style="--c:${COL[id]}" ${lock?`aria-label="${t(id+'_t')} (${t('locked')})"`:''}><span class="num">${num}</span><div class="art">${ART[id]()}${lock?`<span class="lockb">${ic.lock}</span>`:''}</div><div class="meta"><h2>${t(id+'_t')}</h2><span class="tag">${t(id+'_tag')}</span><div class="stars">${[0,1,2].map(i=>star(i<st)).join('')}</div></div></button>`}
+const DET=['cells','scan','micro'];const detDone=()=>DET.every(r=>S.stars[r]);
+function magnifier(){return `<svg viewBox="0 0 120 120" class="medal" aria-hidden="true"><circle cx="60" cy="60" r="54" fill="#58B6E0" ${st3}/><circle cx="52" cy="52" r="24" fill="#E6F5FB" stroke="${INK}" stroke-width="7"/><path d="M70 70 L92 92" stroke="${INK}" stroke-width="11" stroke-linecap="round"/><circle cx="52" cy="52" r="10" fill="#E7B6E8" stroke="${INK}" stroke-width="2.5"/><circle cx="52" cy="52" r="4.5" fill="#7B3F9E"/><path d="M60 8 l4 8 9 1 -7 6 2 9 -8 -5 -8 5 2 -9 -7 -6 9 -1z" fill="#FFC53D" stroke="${INK}" stroke-width="2"/></svg>`}
+function showDetective(){openOv(`${magnifier()}<h2>${t('det_badge_t')}</h2><p style="text-align:center">${t('det_badge_p')}</p><div class="btnrow"><button class="cta ok" id="ovClose">${t('hooray')}</button></div>`);sfx('win');speakSeq([t('det_badge_t'),t('det_badge_p')]);$('#ovClose').onclick=closeOv}
+function badgeStrip(){return (detDone()?`<div class="cert" style="background:#BFE6F5">${magnifier()}<div><h2>${t('det_badge_t')}</h2></div><button class="pill" id="seeDet">${t('see_badge')}</button></div>`:'')+badgeStrip2()}
+function badgeStrip2(){return allTreat()?`<div class="cert">${medal()}<div><h2>${t('badge_t')}</h2><p>${t('badge_p')}</p></div><button class="cta" id="seeBadge">${t('see_badge')}</button></div>`:''}
+function footer(){return `<footer><div class="footL"><p>${t('grownups')}</p><p>${t('privacy')}</p><p><a href="https://hafizmz.github.io/beam-on/">${t('more_games')}</a> · ${t('contact')}: hafiz.zin@physics.org</p></div><div class="footR"><p>© 2026 hafiz.zin@physics.org</p><button class="linkish" id="guideb">${t('guide_btn')}</button><br><button class="linkish" id="resetb">${t('reset')}</button></div></footer>`}
+function homeMsg(){if(allTreat())return 'home_done';if(S.stars.team)return 'home_wing';if(Object.keys(S.stars).length)return 'home_more';return 'intro'}
+function renderHome(){app.innerHTML=header()+helperHTML(true)+`<div class="rooms">${['cells','scan','micro','lab','team','wing'].map((id,i)=>roomCard(id,i+1)).join('')}</div>`+badgeStrip()+footer();const p=curP();sayParts([t(homeMsg())],p?tf('hi_name',p.name):'')}
+function renderWing(){app.innerHTML=header()+`<div class="playbar wingbar"><button class="pill" data-go="home">${ic.back} ${t('backHome')}</button><h2>${t('wing_t')}</h2></div>`+helperHTML(true)+`<div class="rooms three">${TREAT.map((id,i)=>roomCard(id,i+1)).join('')}</div>`+badgeStrip();say(allTreat()?'home_done':'wing_intro')}
+let view='home';
+const THEME={home:['#E3F6EF','#CFEFE3','#20B26B'],wing:['#FFE6DE','#FFD3C6','#FF6B4A'],cells:['#FFE6DE','#FFD3C6','#FF6B4A'],scan:['#DDF1FF','#C4E6FF','#1E9BF0'],micro:['#F1E6FF','#E2CEFF','#9B51E0'],lab:['#DDF8E9','#C3F0D8','#16A34A'],team:['#FFF4CC','#FFE7A0','#F5A300'],rt:['#FFF4CC','#FFE7A0','#F5A300'],surg:['#DDF1FF','#C4E6FF','#1E9BF0'],chemo:['#DDF8E9','#C3F0D8','#16A34A']};
+function applyTheme(v){const th=THEME[v]||THEME.home,r=document.documentElement.style;r.setProperty('--wall',th[0]);r.setProperty('--tile',th[1]);r.setProperty('--acc',th[2]);document.body.classList.toggle('k',K());document.body.classList.toggle('p',!K())}
+function go(v){clearTimers();closeOv();view=v;applyTheme(v);if(v==='home')renderHome();else if(v==='wing')renderWing();else playRoom(v);window.scrollTo(0,0)}
+function playRoom(id){const back=TREAT.includes(id)?'wing':'home';
+ app.innerHTML=`<div class="play"><div class="playbar"><button class="pill" data-go="${back}" aria-label="${t(back==='wing'?'backWing':'backHome')}">${ic.back}<span class="pl">${t(back==='wing'?'backWing':'backHome')}</span></button><h2>${t(id+'_t')}</h2><button class="round" id="snd" aria-pressed="${S.sound}" aria-label="${t('sound')}">${S.sound?ic.spk:ic.mute}</button></div>
+ ${helperHTML(false)}<div class="stage" id="stage"></div><div class="chips" id="chips"></div><div class="controls" id="ctrl"></div></div>`;
+ GAMES[id]($('#stage'),$('#ctrl'))}
+function setChips(n){$('#chips').innerHTML=Array.from({length:n},()=>`<span class="chip">${star(true)}</span>`).join('')}
+function confetti(n,el){const r=(el||$('#stage')||document.body).getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+Math.min(r.height/2,260),cols=['#FF6B4A','#FFC21A','#3AB0FF','#20B26B','#9B51E0','#FF8FA3'];
+ for(let i=0;i<n;i++){const d=document.createElement('div');d.className='confetti';const a=Math.random()*Math.PI*2,v=120+Math.random()*260;
+  d.style.left=cx+'px';d.style.top=cy+'px';d.style.background=cols[i%cols.length];d.style.setProperty('--dx',Math.cos(a)*v+'px');d.style.setProperty('--dy',(Math.sin(a)*v+120)+'px');d.style.setProperty('--rot',(Math.random()*720-360)+'deg');
+  if(i%3===0)d.style.borderRadius='50%';document.body.appendChild(d);setTimeout(()=>d.remove(),1200)}}
+function cheer(){const old=$('.cheer');if(old)old.remove();const w=document.createElement('div');w.className='cheer';w.innerHTML=bear({wave:true,cls:'glowbear'});document.body.appendChild(w);setTimeout(()=>w.remove(),1700);
+ const mb=$('#mbear');if(mb){mb.innerHTML=bear({happy:true,cls:'glowbear'});setTimeout(()=>{if(mb.isConnected)mb.innerHTML=bear({cls:'glowbear'})},1800)}}
+function gotChip(i){const c=$$('#chips .chip')[i];if(c&&!c.classList.contains('got')){c.classList.add('got');confetti(22,c);cheer()}}
+let ovPrev=null;
+function openOv(html){ovPrev=document.activeElement;ov.innerHTML=`<div class="overlay" role="dialog" aria-modal="true" aria-labelledby="ovT"><div class="card">${html}</div></div>`}
+function closeOv(){const had=ov.innerHTML;ov.innerHTML='';if(had&&ovPrev&&document.contains(ovPrev))try{ovPrev.focus()}catch(e){}}
+new MutationObserver(()=>{const c=$('.card',ov);if(!c)return;const h=$('h2',c);if(h&&!h.id)h.id='ovT';const b=$('input,button',c);if(b&&!c.contains(document.activeElement))setTimeout(()=>b.focus(),60)}).observe(ov,{childList:true});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&ov.innerHTML){const b=$('#ovClose',ov)||$('#ovBack',ov)||$('#rsNo',ov);if(b){e.preventDefault();b.click()}}
+ if(e.key==='Tab'&&ov.innerHTML){const f=$$('button,input,a[href]',ov).filter(x=>!x.disabled);if(!f.length)return;const first=f[0],last=f[f.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
+function finish(room,n){clearTimers();S.stars[room]=Math.max(S.stars[room]||0,n);save();sfx('win');setTimeout(()=>confetti(70,document.body),150);const sub=TREAT.includes(room);
+ openOv(`<div class="eyebrow">${curP()?esc(tf('well_name',curP().name)):t('well_done')}</div><h2>${t(room+'_t')}</h2><div class="bigstars">${[0,1,2].map(i=>star(i<n,i)).join('')}</div><div class="tip">${bear({happy:true})}<p>${t('fact_'+room)}</p></div><div class="btnrow"><button class="pill" id="ovAgain">${ic.again} ${t('again')}</button><button class="cta" id="ovBack">${t(sub?'toWing':'toHome')}</button></div>`);
+ later(()=>speak(t('fact_'+room)),900);
+ $('#ovAgain').onclick=()=>go(room);
+ $('#ovBack').onclick=()=>{go(sub?'wing':'home');if(sub&&allTreat()&&!S.badgeSeen){S.badgeSeen=true;save();showBadge()}else if(DET.includes(room)&&detDone()&&!S.detSeen){S.detSeen=true;save();showDetective()}}}
+/* ---------- players (kept on this device only) ---------- */
+const KIDS=[{s:'#C68B59',h:'tudung',c:'#FF6B4A',b:'#FFE07A'},{s:'#8D5A3B',h:'short',c:'#1E1A18',b:'#9FD8FF'},{s:'#F1C9A5',h:'pony',c:'#C4622D',b:'#DDC2FF'},{s:'#F6D7BD',h:'bob',c:'#E8B84A',b:'#A8EEC8'},
+ {s:'#B07A50',h:'curly',c:'#2B211C',b:'#FFB9A6'},{s:'#F3D3B0',h:'bun',c:'#1E1A18',b:'#FFE07A'},{s:'#F1C9A5',h:'cap',c:'#20B26B',b:'#9FD8FF'},{s:'bear',b:'#FFD3C6'}];
+function kid(i){const k=KIDS[i]||KIDS[0],st=`stroke="${INK}" stroke-width="2.2"`;
+ if(k.s==='bear')return `<svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="29" fill="${k.b}"/><svg x="8" y="8" width="44" height="44" viewBox="0 0 40 40">${face('bear').replace(/^<svg[^>]*>|<\/svg>$/g,'')}</svg></svg>`;
+ let pre='',post='';
+ if(k.h==='tudung')pre=`<path d="M12 34 Q12 10 30 10 Q48 10 48 34 Q48 54 30 56 Q12 54 12 34Z" fill="${k.c}" ${st}/>`;
+ if(k.h==='short')post=`<path d="M15 30 Q14 12 30 12 Q46 12 45 30 Q42 20 30 20 Q18 20 15 30Z" fill="${k.c}" ${st}/>`;
+ if(k.h==='pony')post=`<path d="M15 30 Q14 12 30 12 Q46 12 45 30 Q42 21 30 21 Q18 21 15 30Z" fill="${k.c}" ${st}/><ellipse cx="48" cy="32" rx="5" ry="10" fill="${k.c}" ${st}/>`;
+ if(k.h==='curly')post=[18,24,30,36,42].map(x=>`<circle cx="${x}" cy="${x===30?13:16}" r="6.5" fill="${k.c}"/>`).join('');
+ if(k.h==='bun')post=`<circle cx="30" cy="9" r="6" fill="${k.c}" ${st}/><path d="M15 30 Q14 13 30 13 Q46 13 45 30 Q42 21 30 21 Q18 21 15 30Z" fill="${k.c}" ${st}/>`;
+ if(k.h==='bob')post=`<path d="M12 42 Q9 11 30 11 Q51 11 48 42 L43 42 Q45 23 30 21 Q15 23 17 42Z" fill="${k.c}" ${st}/>`;
+ if(k.h==='cap')post=`<path d="M14 27 Q14 11 30 11 Q46 11 46 27Z" fill="${k.c}" ${st}/><path d="M30 25 H54 Q54 30 46 30 H30Z" fill="${k.c}" ${st}/>`;
+ return `<svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="29" fill="${k.b}"/>${pre}<circle cx="30" cy="33" r="15" fill="${k.s}" ${st}/><circle cx="25" cy="32" r="1.9" fill="${INK}"/><circle cx="35" cy="32" r="1.9" fill="${INK}"/><path d="M25 38 Q30 42 35 38" fill="none" stroke="${INK}" stroke-width="2" stroke-linecap="round"/><circle cx="21" cy="37" r="2.4" fill="#FF8FA3" opacity=".7"/><circle cx="39" cy="37" r="2.4" fill="#FF8FA3" opacity=".7"/>${post}</svg>`}
+function switchTo(id){const old=curP();if(old){old.stars=S.stars;old.badgeSeen=S.badgeSeen;old.detSeen=S.detSeen;old.mode=S.mode}
+ S.cur=id;const p=curP();S.stars=Object.assign({},p.stars||{});S.badgeSeen=!!p.badgeSeen;S.detSeen=!!p.detSeen;if(p.mode)S.mode=p.mode;save();closeOv();go('home')}
+function showWho(){const ps=S.players||[];if(!ps.length)return showNew(true);
+ openOv(`<h2>${t('who')}</h2><div class="plist">${ps.map(p=>`<div class="prow"><button class="pbtn${p.id===S.cur?' on':''}" data-pid="${p.id}"><span class="kh">${kid(p.av)}</span><span>${esc(p.name)}<small>${t('age')} ${p.age>12?'13+':p.age}</small></span></button><button class="ebtn" data-ed="${p.id}" aria-label="${t('chgPic')}" title="${t('chgPic')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-5L16 4l4 4L9 19z M14 6l4 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></svg></button><button class="xbtn" data-rm="${p.id}">${t('remove')}</button></div>`).join('')}</div>
+  <div class="btnrow"><button class="pill" id="pNew">+ ${t('newP')}</button>${S.cur?`<button class="cta" id="ovClose">${t('close')}</button>`:''}</div>`);
+ $$('.pbtn',ov).forEach(b=>b.onclick=()=>switchTo(b.dataset.pid));
+ $$('.xbtn',ov).forEach(b=>b.onclick=()=>{if(!b.classList.contains('arm')){b.classList.add('arm');b.textContent=t('sure');return}
+  S.players=S.players.filter(p=>p.id!==b.dataset.rm);if(S.cur===b.dataset.rm){S.cur=null;S.stars={};S.badgeSeen=false;S.detSeen=false}save();showWho();if(!S.cur)go('home')});
+ $$('.ebtn',ov).forEach(b=>b.onclick=()=>showPic(b.dataset.ed));
+ $('#pNew').onclick=()=>showNew(false);const c=$('#ovClose',ov);if(c)c.onclick=closeOv}
+function showPic(id){const p=(S.players||[]).find(x=>x.id===id);if(!p)return showWho();
+ openOv(`<h2>${esc(tf('picFor',p.name))}</h2><div class="avgrid">${KIDS.map((k,i)=>`<button class="avpick${i===p.av?' on':''}" data-av="${i}" aria-label="${t('picL')} ${i+1}"><span class="kh">${kid(i)}</span></button>`).join('')}</div><div class="btnrow"><button class="pill" id="pCancel">${t('cancel')}</button></div>`);
+ $$('.avpick',ov).forEach(b=>b.onclick=()=>{p.av=+b.dataset.av;save();sfx('pop');showWho();if(id===S.cur){const w=$('#whoB .kh');if(w)w.innerHTML=kid(p.av)}});
+ $('#pCancel').onclick=()=>showWho()}
+function showNew(first){let av=0,age=0;
+ openOv(`<h2>${t('newT')}</h2><div class="field"><label for="pName">${t('nameL')}</label><input id="pName" maxlength="16" autocomplete="off"></div>
+  <div class="flabel">${t('picL')}</div><div class="avgrid">${KIDS.map((k,i)=>`<label class="avopt"><input type="radio" name="av" value="${i}"${i===0?' checked':''}><span class="kh">${kid(i)}</span></label>`).join('')}</div>
+  <div class="flabel">${t('ageL')}</div><div class="agerow">${[4,5,6,7,8,9,10,11,12,13].map(a=>`<label class="ageopt"><input type="radio" name="age" value="${a}"><span>${a>12?'13+':a}</span></label>`).join('')}</div><p class="agehint" id="ageHint"></p>
+  <p class="hiprev" id="hiPrev"></p><div class="btnrow">${first?'':`<button class="pill" id="pCancel">${t('cancel')}</button>`}<button class="cta" id="pStart" disabled>${t('startP')}</button></div>`);
+ const nm=$('#pName'),go_=$('#pStart');
+ const upd=()=>{const n=nm.value.trim();$('#hiPrev').textContent=n?tf('hiPrev',n):'';go_.disabled=!(n&&age)};
+ nm.oninput=upd;$$('input[name=av]',ov).forEach(r=>r.onchange=()=>{av=+r.value});
+ $$('input[name=age]',ov).forEach(r=>r.onchange=()=>{age=+r.value;const m=age<=6?'k':'p';$('#ageHint').textContent=tf('ageMode',t(m==='k'?'modeK':'modeP'));upd()});
+ if(!first)$('#pCancel').onclick=()=>showWho();
+ go_.onclick=()=>{const n=nm.value.trim();if(!n||!age)return;const id='p'+Date.now().toString(36);
+  const fresh=!(S.players||[]).length;S.players=(S.players||[]).concat([{id,name:n,age,av,mode:age<=6?'k':'p',stars:fresh?S.stars:{},badgeSeen:fresh?S.badgeSeen:false,detSeen:fresh?S.detSeen:false}]);
+  const old=curP();if(old){old.stars=S.stars;old.badgeSeen=S.badgeSeen;old.detSeen=S.detSeen;old.mode=S.mode}
+  S.cur=id;const p=curP();S.stars=Object.assign({},p.stars);S.badgeSeen=p.badgeSeen;S.detSeen=p.detSeen;S.mode=p.mode;save();sfx('win');closeOv();go('home')};
+ setTimeout(()=>nm.focus(),80)}
+function showBadge(){const team=Object.keys(TEAMMAP);
+ openOv(`${medal()}<h2>${t('badge_t')}</h2><p style="text-align:center">${t('badge_p')}</p><div class="certbox"><div class="small">${t('awarded')}</div><div class="nm" id="certName"></div><input class="namein" id="nameIn" maxlength="24" placeholder="${t('your_name')}" aria-label="${t('your_name')}"></div>
+ <div class="tip">${mp('')}<div><b>${t('sina_t')}</b><p>${t('sina_p')}</p></div></div><div class="eyebrow">${t('who_helped')}</div><div class="teamrow">${team.map(id=>`<figure>${person(id)}${t('p_'+id)}</figure>`).join('')}</div><p class="small">${t('cert_tip')}</p><div class="btnrow"><button class="cta ok" id="ovClose">${t('hooray')}</button></div>`);
+ sfx('win');speakSeq([t('badge_t'),t('badge_p'),t('sina_t'),t('sina_p')]);
+ $('#nameIn').oninput=e=>{$('#certName').textContent=e.target.value};if(curP()){$('#nameIn').value=curP().name;$('#certName').textContent=curP().name}
+ $('#ovClose').onclick=closeOv}
+
+document.addEventListener('click',e=>{const b=e.target.closest('[data-lang],[data-mode],#snd,[data-go],[data-room],#replay,#resetb,#seeBadge,#seeDet,#guideb,#whoB');if(!b)return;
+ if(b.dataset.lang){S.lang=b.dataset.lang;document.documentElement.lang=S.lang==='bm'?'ms':'en';save();go(view)}
+ else if(b.dataset.mode){S.mode=b.dataset.mode;save();go(view)}
+ else if(b.id==='snd'){S.sound=!S.sound;save();if(!S.sound)stopVoice();b.setAttribute('aria-pressed',S.sound);b.innerHTML=S.sound?ic.spk:ic.mute}
+ else if(b.dataset.go)go(b.dataset.go);
+ else if(b.dataset.room){const id=b.dataset.room;if(id==='wing'&&!S.stars.team){say('wing_locked');b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),500);return}sfx('pop');go(id)}
+ else if(b.id==='replay')speakSeq(lastSay);
+ else if(b.id==='seeBadge')showBadge();
+ else if(b.id==='seeDet')showDetective();
+ else if(b.id==='whoB')showWho();
+ else if(b.id==='guideb'){openOv(`<h2>${t('guide_t')}</h2><div class="guide"><p>${t('guide_intro')}</p><ul>${['cells','scan','micro','lab','team','wing'].map(r=>`<li><b>${t(r+'_t')}:</b> ${t('g_'+r)}</li>`).join('')}</ul><p><b>${t('g_keys')}</b></p><p>${t('g_help')}</p></div><div class="btnrow"><button class="cta" id="ovClose">${t('close')}</button></div>`);$('#ovClose').onclick=closeOv}
+ else if(b.id==='resetb'){openOv(`<h2>${t('reset')}</h2><p style="text-align:center">${t('reset_q')}</p><div class="btnrow"><button class="pill" id="rsNo">${t('no')}</button><button class="cta" id="rsYes">${t('yes')}</button></div>`);
+   $('#rsNo').onclick=closeOv;$('#rsYes').onclick=()=>{S.stars={};S.badgeSeen=false;S.detSeen=false;save();go('home')}}});
+
+/* ---------- keyboard play ---------- */
+// kbBtn: make an SVG element act like a button (Tab to it, Enter/Space to press)
+function kbBtn(el,label){if(!el)return;el.setAttribute('tabindex','0');el.setAttribute('role','button');if(label)el.setAttribute('aria-label',label);
+ el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();el.dispatchEvent(new MouseEvent('click',{bubbles:true}))}})}
+// kbAim: picture you tap on; arrow keys move a target ring, Enter/Space taps there
+function kbAim(el,label){if(!el)return;el.setAttribute('tabindex','0');el.setAttribute('aria-label',label+'. '+t('kb_aim'));let fx=.5,fy=.5,ring=null;
+ const place=()=>{const r=el.getBoundingClientRect();ring.style.left=(r.left+fx*r.width-18)+'px';ring.style.top=(r.top+fy*r.height-18)+'px'};
+ el.addEventListener('focus',()=>{ring=document.createElement('div');ring.className='kbring';document.body.appendChild(ring);place()});
+ el.addEventListener('blur',()=>{if(ring){ring.remove();ring=null}});
+ window.addEventListener('scroll',()=>{if(ring)place()},{passive:true});
+ el.addEventListener('keydown',e=>{const st=e.shiftKey?.01:.04;let used=true;
+  if(e.key==='ArrowLeft')fx-=st;else if(e.key==='ArrowRight')fx+=st;else if(e.key==='ArrowUp')fy-=st;else if(e.key==='ArrowDown')fy+=st;
+  else if(e.key==='Enter'||e.key===' '){const r=el.getBoundingClientRect();el.dispatchEvent(new MouseEvent('click',{bubbles:true,clientX:r.left+fx*r.width,clientY:r.top+fy*r.height}))}else used=false;
+  if(used){e.preventDefault();fx=Math.max(0,Math.min(1,fx));fy=Math.max(0,Math.min(1,fy));if(ring)place()}})}
+
+/* ---------- games ---------- */
+const GAMES={};
+const TEAMMAP={onc:'steth',mp:'plan',rad:'scanner',radl:'films',path:'micro',surg:'gloves',anaes:'mask',nurse:'drip',pharm:'pills',sci:'tubes',diet:'plate',couns:'talk'};
+
+/* 1. Cell City */
+GAMES.cells=(st)=>{const k=K(),ROUNDS=3;let round=0,miss=0,live=true;setChips(ROUNDS);
+ st.innerHTML=`<svg viewBox="0 0 600 380" class="gsvg" id="cv"><rect width="600" height="380" fill="#FFF1EC"/><g id="tis"></g>${k?'':`<g transform="translate(552 46)"><rect x="-32" y="-32" width="64" height="64" rx="16" fill="#fff" ${st3}/><circle id="lampc" r="20" fill="#2FA673" ${st3}/></g>`}</svg>`;
+ const g=$('#tis');
+ function mk(x,y,r,bad,born){const c=document.createElementNS(NS,'g');c.setAttribute('class','cellg'+(bad?' busy':'')+(born?' born':''));c.setAttribute('transform',`translate(${x.toFixed(1)} ${y.toFixed(1)})`);c.dataset.bad=bad?1:0;
+  const messyLook=bad&&k,odd=bad&&!k;
+  c.innerHTML=`<g class="cin" style="animation-delay:${born?0:rnd(0,1.6).toFixed(2)}s">${messyLook?`<path d="${blob(0,0,r,.18,9)}" fill="#E7B6E8" stroke="${INK}" stroke-width="3"/><path d="${blob(0,0,r*.5,.25,8)}" fill="#7B3F9E"/>`:odd?`<path d="${blob(0,0,r,.08,10)}" fill="#FFD6C9" stroke="${INK}" stroke-width="3"/><circle r="${r*.4}" fill="#A95E98"/>`:`<circle r="${r}" fill="#FFD6C9" stroke="${INK}" stroke-width="3"/><circle r="${r*.36}" fill="#B36A9E"/>`}</g>`;
+  g.appendChild(c);kbBtn(c,t('cell_l'));return c}
+ function lamp(red){const l=$('#lampc');if(!l)return;l.setAttribute('fill',red?'#F26B4F':'#2FA673');g.classList.toggle('stopall',red)}
+ function newRound(){g.innerHTML='';live=true;const cols=k?3:4,rows=3+(k?0:1),r=k?36:27,x0=40,x1=k?560:500,y0=34,y1=346,cw=(x1-x0)/cols,ch=(y1-y0)/rows;
+  const n=cols*rows,bad=Math.floor(Math.random()*n);let bx=0,by=0;
+  for(let i=0;i<n;i++){const c=i%cols,rw=Math.floor(i/cols);const x=x0+cw*(c+.5)+rnd(-cw*.14,cw*.14),y=y0+ch*(rw+.5)+rnd(-ch*.12,ch*.12);mk(x,y,r,i===bad);if(i===bad){bx=x;by=y}}
+  let kids=0;const angs=shuffle([0,60,120,180,240,300]);
+  const spawn=()=>{if(!live||kids>=6)return;const a=angs[kids]*Math.PI/180;kids++;mk(Math.min(585,Math.max(15,bx+Math.cos(a)*r*1.45)),Math.min(365,Math.max(15,by+Math.sin(a)*r*1.45)),r*.82,true,true);sfx('pop')};
+  if(k)every(spawn,1400);else every(()=>{lamp(true);spawn();later(()=>lamp(false),1800)},3600);
+  say(round?'cells_next':(k?'cells_k':'cells_p'))}
+ g.addEventListener('click',e=>{const c=e.target.closest('.cellg');if(!c||!live)return;
+  if(c.dataset.bad==='1'){live=false;sfx('good');$$('.cellg[data-bad="1"]',g).forEach(x=>x.classList.add('found'));gotChip(round);round++;clearTimers();lamp(false);say('cells_yes');
+   if(round>=ROUNDS)later(()=>finish('cells',starsFor(miss,1,3)),1100);else later(newRound,1500)}
+  else{miss++;sfx('bad');c.classList.remove('wrong');void c.getBBox();c.classList.add('wrong');say('cells_no')}});
+ newRound()};
+
+/* 2. Scan Room */
+GAMES.scan=(st,ctrl)=>{const k=K(),stations=k?['mammo','ct','us']:['mammo','ct','us','mri','pet'];let si=0,miss=0;setChips(stations.length);
+ const head=id=>`<p class="q" style="display:flex;align-items:center;gap:10px;justify-content:center"><span style="width:64px;display:inline-block">${MACH[id]}</span>${t('m_'+id)}</p>`;
+ function next(){ctrl.innerHTML='';if(si>=stations.length){finish('scan',starsFor(miss,1,3));return}({mammo,ct,us,mri,pet})[stations[si]]()}
+ function ok(key){sfx('good');gotChip(si);si++;say(key);ctrl.innerHTML=`<button class="cta ready" id="nx">${t('next')}</button>`;$('#nx').onclick=next}
+ function frame(id,inner,h=360){st.innerHTML=`<div class="qa" style="padding:12px">${head(id)}<svg viewBox="0 0 600 ${h}" class="gsvg" id="ssvg" style="border-radius:14px">${inner}</svg></div>`;return $('#ssvg')}
+ // 1. Mammogram: spot the tiny early lump
+ function mammo(){let speck='';for(let n=0;n<70;n++)speck+=`<circle cx="${rnd(90,500).toFixed(0)}" cy="${rnd(50,310).toFixed(0)}" r="${rnd(2,7).toFixed(1)}" fill="#C9D6D3" opacity="${rnd(.08,.3).toFixed(2)}"/>`;
+  const scl=Math.max(.3,Math.min(1.6,((st.clientWidth||600)-24)/600)),sx=rnd(180,440),sy=rnd(100,260),sr=Math.max(k?9:5,(k?7:5)/scl),tol=Math.max(k?34:24,24/scl);let found=false;
+  const MC=k?['#9FD8FF','#3B82F6','#1E3A8A','#FFC21A']:['#8E9DA0','#3B4B4F','#121E21','#fff'];
+  const svg=frame('mammo',`<defs><radialGradient id="bg1" cx="15%" cy="50%" r="85%"><stop offset="0" stop-color="${MC[0]}"/><stop offset="1" stop-color="${MC[1]}"/></radialGradient></defs><rect width="600" height="360" fill="${MC[2]}"/><path d="M40 20 Q540 30 540 180 Q540 330 40 340Z" fill="url(#bg1)"/>${speck}<path d="M60 70 Q300 120 470 170 M60 290 Q300 240 470 190 M60 180 L480 180" stroke="#A9B6B8" stroke-width="2" opacity=".25" fill="none"/><circle cx="${sx.toFixed(0)}" cy="${sy.toFixed(0)}" r="${sr*2.2}" fill="${MC[3]}" opacity="${k?.35:.18}"/><circle cx="${sx.toFixed(0)}" cy="${sy.toFixed(0)}" r="${sr}" fill="${MC[3]}" class="spot"/><g id="marks"></g>`);
+  kbAim(svg,t('m_mammo'));say('sc_mammo_i');svg.addEventListener('click',e=>{if(found)return;const p=svgPt(svg,e);const d=Math.hypot(p.x-sx,p.y-sy);
+   if(d<tol){found=true;$('#marks').innerHTML=`<circle cx="${sx}" cy="${sy}" r="26" fill="none" stroke="#FFC53D" stroke-width="5"/>`;ok('sc_mammo_ok')}
+   else{miss++;sfx('bad');$('#marks').insertAdjacentHTML('beforeend',`<circle cx="${p.x}" cy="${p.y}" r="14" fill="none" stroke="#F26B4F" stroke-width="3" opacity=".8"/>`);sayOnce('sc_mammo_no')}})}
+ // 2. CT: real projections + filtered back-projection of an abdominal slice
+ function ct(){const N=128,STEP=2,TOTAL=360/STEP,PER=k?TOTAL/4:TOTAL/8;let K=0,turning=false,ready=false;
+  const LPS=[[-0.36,-0.08],[-0.22,0.06],[0.46,0.02],[-0.45,0.08]],L=LPS[Math.floor(Math.random()*LPS.length)];
+  // phantom ellipses: x,y,a,b,rot(deg),value  (y down = towards the back); later ones paint over earlier ones
+  const E=[[0,0.78,0.92,0.05,0,1.35],[0,0.04,0.86,0.63,0,0.9],[0,0.05,0.79,0.56,0,1.0],[-0.36,-0.04,0.39,0.34,20,1.06],[0.5,0.05,0.16,0.23,-15,1.05],
+   [0.24,-0.24,0.15,0.09,0,0],[0.08,-0.04,0.05,0.04,0,0],[-0.06,0.12,0.045,0.035,0,0],[0.18,0.14,0.04,0.03,0,0],
+   [-0.33,0.3,0.1,0.15,-20,1.1],[0.33,0.3,0.1,0.15,20,1.1],[0.06,0.17,0.05,0.05,0,1.12],[0,0.5,0.17,0.05,0,1.75],[0,0.35,0.13,0.11,0,1.7],[0,0.47,0.05,0.04,0,1.0],
+   [L[0],L[1],0.085,0.08,0,1.22]];
+  const P=new Float32Array(N*N);for(let j=0;j<N;j++)for(let i=0;i<N;i++){const x=(i+.5)/N*2-1,y=(j+.5)/N*2-1;let v=0;
+   for(const [x0,y0,a,b,r,val] of E){const c=Math.cos(r*Math.PI/180),sn=Math.sin(r*Math.PI/180),dx=x-x0,dy=y-y0,u=(dx*c+dy*sn)/a,w=(-dx*sn+dy*c)/b;if(u*u+w*w<=1)v=val}P[j*N+i]=v}
+  const d=2/N,H=new Float32Array(2*N-1);for(let n=-(N-1);n<N;n++){H[n+N-1]=n===0?1/(4*d*d):(n%2?-1/(n*n*Math.PI*Math.PI*d*d):0)}
+  const R=new Float32Array(N*N),XS=new Float32Array(N);for(let i=0;i<N;i++)XS[i]=(i+.5)/N*2-1;
+  let lastProj=null;
+  function addAngle(th){const c=Math.cos(th),sn=Math.sin(th),p=new Float32Array(N);
+   for(let b=0;b<N;b++){const sv=XS[b];let sum=0;for(let tI=0;tI<N;tI++){const tv=XS[tI],fx=(sv*c-tv*sn+1)/2*N-.5,fy=(sv*sn+tv*c+1)/2*N-.5,i=Math.floor(fx),j=Math.floor(fy);if(i>=0&&i<N-1&&j>=0&&j<N-1){const ax=fx-i,ay=fy-j,o=j*N+i;sum+=(P[o]*(1-ax)+P[o+1]*ax)*(1-ay)+(P[o+N]*(1-ax)+P[o+N+1]*ax)*ay}}p[b]=sum*d}
+   lastProj=p;const q=new Float32Array(N);for(let b=0;b<N;b++){let acc=0;for(let m=0;m<N;m++)acc+=p[m]*H[b-m+N-1];q[b]=acc*d}
+   for(let j=0;j<N;j++){const y=XS[j];for(let i=0;i<N;i++){const sv=XS[i]*c+y*sn,f=(sv+1)/2*N-.5,b0=Math.floor(f),fr=f-b0;if(b0>=0&&b0<N-1)R[j*N+i]+=q[b0]*(1-fr)+q[b0+1]*fr}}K++}
+  st.innerHTML=`<div class="qa" style="padding:12px">${head('ct')}<div class="ctwrap">
+   <figure><svg viewBox="0 0 300 300" id="gan"><rect width="300" height="300" rx="14" fill="#EEF7FB"/><circle cx="150" cy="150" r="138" fill="#BFE6F5" stroke="${INK}" stroke-width="3"/><circle cx="150" cy="150" r="112" fill="#F7FBFD" stroke="${INK}" stroke-width="3"/>
+    <rect x="52" y="208" width="196" height="12" rx="6" fill="#C9D6D3" stroke="${INK}" stroke-width="2"/>
+    <ellipse cx="150" cy="152" rx="94" ry="66" fill="#E9C9A9" stroke="${INK}" stroke-width="2.5"/><ellipse cx="150" cy="190" rx="13" ry="10" fill="#fff" stroke="${INK}" stroke-width="1.5"/>
+    <g id="rot"><path d="M150 26 L52 262 Q150 292 248 262Z" fill="#FFC53D" opacity=".22"/><rect x="132" y="12" width="36" height="24" rx="6" fill="#FFC53D" stroke="${INK}" stroke-width="2.5"/>
+     <path d="M70 268 Q150 292 230 268" fill="none" stroke="#58B6E0" stroke-width="12" stroke-linecap="round"/><path d="M70 268 Q150 292 230 268" fill="none" stroke="${INK}" stroke-width="2" stroke-dasharray="3 5"/></g></svg>${t('ct_gan')}
+    <canvas id="prof" width="300" height="70" style="margin-top:8px;background:#1B2B30"></canvas>${t('ct_sig')}</figure>
+   <figure><canvas id="ctc" width="256" height="256" style="cursor:crosshair"></canvas>${t('ct_img')} <span id="ctn" style="font-variant-numeric:tabular-nums"></span></figure></div></div>`;
+  const ctc=$('#ctc'),cx=ctc.getContext('2d'),off=document.createElement('canvas');off.width=N;off.height=N;const ox=off.getContext('2d'),imgD=ox.createImageData(N,N),pc=$('#prof').getContext('2d');
+  const STOPS=[[0,[24,32,96]],[.6,[40,70,160]],[.88,[255,214,120]],[.97,[255,176,150]],[1.04,[255,128,140]],[1.1,[246,92,112]],[1.17,[196,70,230]],[1.3,[236,130,255]],[1.55,[255,255,255]]];
+  const lut=v=>{if(v<=STOPS[0][0])return STOPS[0][1];for(let q=1;q<STOPS.length;q++){if(v<=STOPS[q][0]){const [a0,c0]=STOPS[q-1],[a1,c1]=STOPS[q],f=(v-a0)/(a1-a0);return [c0[0]+(c1[0]-c0[0])*f,c0[1]+(c1[1]-c0[1])*f,c0[2]+(c1[2]-c0[2])*f]}}return STOPS[STOPS.length-1][1]};
+  function draw(){const sc=K?Math.PI/K:0;for(let n=0;n<N*N;n++){const v=R[n]*sc;if(k){const c=lut(v);imgD.data[4*n]=c[0];imgD.data[4*n+1]=c[1];imgD.data[4*n+2]=c[2]}else{let g=(v-0.86)/0.36;g=Math.max(0,Math.min(1,g))*255;imgD.data[4*n]=imgD.data[4*n+1]=imgD.data[4*n+2]=g}imgD.data[4*n+3]=255}
+   ox.putImageData(imgD,0,0);cx.imageSmoothingEnabled=true;cx.drawImage(off,0,0,256,256);$('#ctn').textContent=`(${K*STEP}°)`;
+   pc.fillStyle='#1B2B30';pc.fillRect(0,0,300,70);if(lastProj){let mx=0;for(const v of lastProj)mx=Math.max(mx,v);pc.strokeStyle='#58B6E0';pc.lineWidth=2;pc.beginPath();
+    for(let b=0;b<N;b++){const x=b/(N-1)*290+5,y=64-(lastProj[b]/(mx||1))*56;b?pc.lineTo(x,y):pc.moveTo(x,y)}pc.stroke()}}
+  kbAim(ctc,t('ct_img'));draw();say('sc_ct_i');ctrl.innerHTML=`<button class="cta ready" id="spin">${t('spin')} ↻</button>`;
+  $('#spin').onclick=()=>{if(turning||K>=TOTAL)return;turning=true;$('#spin').disabled=true;$('#spin').classList.remove('ready');sfx('zap');const target=Math.min(TOTAL,K+PER);
+   const stepF=()=>{for(let r=0;r<1&&K<target;r++){addAngle((K*STEP)*Math.PI/180)}$('#rot').setAttribute('transform',`rotate(${K*STEP} 150 150)`);draw();
+    if(K<target){raf=requestAnimationFrame(stepF)}else{turning=false;if(K<TOTAL){$('#spin').disabled=false;$('#spin').classList.add('ready');sayOnce('sc_ct_more')}else{ctrl.innerHTML='';ready=true;say('sc_ct_tap')}}};
+   raf=requestAnimationFrame(stepF)};
+  ctc.addEventListener('click',e=>{if(!ready)return;const r=ctc.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*2-1,y=(e.clientY-r.top)/r.height*2-1;
+   if(Math.hypot(x-L[0],y-L[1])<0.15){ready=false;cx.strokeStyle='#FFC53D';cx.lineWidth=4;cx.setLineDash([6,4]);cx.beginPath();cx.arc((L[0]+1)/2*256,(L[1]+1)/2*256,22,0,7);cx.stroke();ok('sc_ct_ok')}
+   else{miss++;sfx('bad');sayOnce('sc_ct_no')}})}
+ // 3. Ultrasound: gel, slide a curved probe, live B-mode image with speckle, echoes, fluid and shadows
+ function us(){let gel=false,x0=380,found=false,warned=false;const LP=[[140,112],[205,150],[95,138]][Math.floor(Math.random()*3)],LR=k?30:24;
+  const inE=(x,z,cx,cz,rx,rz)=>((x-cx)/rx)**2+((z-cz)/rz)**2<=1;
+  // tissue types: 0 fat,1 fascia,2 muscle,3 liver,4 fluid,5 kidney cortex,6 renal sinus,7 gas,8 bone,9 soft,10 lump
+  function T(x,z){if(z<16)return 0;if(z<19)return 1;if(z<38)return 2;
+   if(inE(x,z,LP[0],LP[1],LR,LR*.85))return 10;
+   if(inE(x,z,250,92,34,17))return 4;if(inE(x,z,120,176,24,10))return 6;if(inE(x,z,120,176,54,29))return 5;
+   if(inE(x,z,532,182,22,9))return 6;if(inE(x,z,532,182,48,27))return 5;
+   if(inE(x,z,420,182,15,15))return 4;if(z>=228&&Math.abs(x-430)<46)return 8;
+   if(inE(x,z,385,58,32,7)||inE(x,z,472,54,36,7)||inE(x,z,562,63,26,7))return 7;
+   if(inE(x,z,165,118,190,92))return 3;return 9}
+  const EC=[.32,.95,.45,.58,.02,.38,.85,1,1,.42,.2];
+  const SW=640,SD=280,SPK=new Float32Array(SW*SD);for(let n=0;n<SW*SD;n++){const r=Math.random();SPK[n]=.55+.9*r*r}
+  const spk=(x,z)=>{const i=Math.max(0,Math.min(SW-1,x)),j=Math.max(0,Math.min(SD-1,z));return SPK[j*SW+i]};
+  const W=300,H=240,AX=150,AY=-34,TH=.62,M=140,RMIN=34,RMAX=272;
+  st.innerHTML=`<div class="qa" style="padding:12px">${head('us')}<div class="ctwrap">
+   <figure><svg viewBox="0 0 600 200" id="usb" class="drag"><rect width="600" height="200" rx="14" fill="#EEF7FB"/>
+    <path d="M10 120 Q300 70 590 120 L590 200 L10 200Z" fill="#2E2622" stroke="${INK}" stroke-width="3"/><path d="M190 104 Q300 160 410 104 Q360 122 300 122 Q240 122 190 104Z" fill="#F7D27A"/>
+    <path id="gelpath" d="M40 112 Q300 66 560 112" fill="none" stroke="#9BD7F2" stroke-width="12" stroke-linecap="round" opacity="0"/>
+    <g id="probe2"><path d="M-22 40 Q0 52 22 40 L16 -10 H-16Z" fill="#fff" stroke="${INK}" stroke-width="3"/><rect x="-10" y="-34" width="20" height="26" rx="6" fill="#58B6E0" stroke="${INK}" stroke-width="3"/><path d="M0 -34 Q4 -58 40 -64" fill="none" stroke="${INK}" stroke-width="3"/></g>
+    <g id="gelb" style="cursor:pointer"><rect x="520" y="10" width="50" height="62" rx="12" fill="#9BD7F2" stroke="${INK}" stroke-width="3"/><path d="M535 10 V0 H555 V10" fill="#fff" stroke="${INK}" stroke-width="3"/><text x="545" y="50" text-anchor="middle" font-family="Fredoka,Trebuchet MS,sans-serif" font-size="16" font-weight="700" fill="${INK}">${t('us_gel')}</text></g></svg>${t('us_slide')}</figure>
+   <figure><canvas id="usc" width="${W}" height="${H}" style="cursor:crosshair"></canvas>${t('us_img')}</figure></div></div>`;
+  const svg=$('#usb'),cv=$('#usc'),cx=cv.getContext('2d'),img=cx.createImageData(W,H);
+  const IDX=new Int32Array(W*H).fill(-1);for(let py=0;py<H;py++)for(let px=0;px<W;px++){const dx=px-AX,dy=py-AY,r=Math.hypot(dx,dy),th=Math.atan2(dx,dy);
+   if(Math.abs(th)<=TH&&r>=RMIN&&r<RMAX){const mi=Math.round((th+TH)/(2*TH)*(M-1)),ri=Math.round(r-RMIN);IDX[py*W+px]=mi*(RMAX-RMIN)+ri}}
+  const POL=new Float32Array(M*(RMAX-RMIN));
+  const surfY=x=>120-50*(1-((x-300)/290)**2);
+  function render(){const R=RMAX-RMIN;
+   for(let m=0;m<M;m++){const th=-TH+2*TH*m/(M-1),sn=Math.sin(th),cs=Math.cos(th);let shadow=1,boost=1,prev=-1;
+    for(let ri=0;ri<R;ri++){const r=ri+RMIN,X=Math.round(x0+r*sn*.95),Z=Math.round((r-RMIN)*cs);let v;
+     if(!gel){v=(ri%22<3&&ri<120)?.55*Math.exp(-ri/60):0.02}
+     else{const ty=T(X,Z);v=EC[ty]*spk(X,Z);if(ty===2)v*=((Z%7)<2?1.4:.85);
+      if(prev>=0&&ty!==prev&&(ty===7||ty===8||ty===4||prev===4||ty===1||ty===10))v+=ty===4?.15:.65;
+      if(ty===10&&prev!==10)v+=.35;v*=shadow*boost*(0.75+0.25*Math.exp(-ri/160));
+      if(ty===7||ty===8){if(prev!==ty)shadow=.1}else if(prev===4&&ty!==4)boost=1.35;prev=ty}
+     POL[m*R+ri]=v}}
+   const d=img.data;for(let n=0;n<W*H;n++){const q=IDX[n];const v=q<0?-1:Math.min(1,POL[q]);
+    if(k){if(v<0){d[4*n]=20;d[4*n+1]=24;d[4*n+2]=70}else{const a=v<.5?v/.5:1,b=v<.5?0:(v-.5)/.5;d[4*n]=18+a*22+b*215;d[4*n+1]=30+a*150+b*70;d[4*n+2]=80+a*120-b*30}}
+    else{const g=v<0?0:v*255;d[4*n]=d[4*n+1]=d[4*n+2]=g}d[4*n+3]=255}cx.putImageData(img,0,0);
+   cx.strokeStyle='#58B6E0';cx.lineWidth=2;cx.beginPath();cx.arc(AX,AY,RMIN,Math.PI/2-TH,Math.PI/2+TH);cx.stroke();
+   $('#probe2').setAttribute('transform',`translate(${x0} ${surfY(x0)-40})`)}
+  function setX(x){x0=Math.max(60,Math.min(540,x));render();if(!gel&&!warned){warned=true;sayOnce('sc_us_nogel')}}
+  kbAim(cv,t('us_img'));kbBtn($('#gelb'),t('us_gel'));render();say('sc_us_gel');
+  $('#gelb').onclick=()=>{if(gel)return;gel=true;sfx('drip');$('#gelpath').setAttribute('opacity','.75');render();say('sc_us_i');later(()=>{if(!found)say('sc_us_hint')},15000)};
+  let down=false;svg.addEventListener('pointerdown',e=>{const p=svgPt(svg,e);if(p.x>510&&p.y<80)return;down=true;svg.setPointerCapture(e.pointerId);setX(p.x)});
+  svg.addEventListener('pointermove',e=>{if(down)setX(svgPt(svg,e).x)});svg.addEventListener('pointerup',()=>down=false);svg.addEventListener('pointercancel',()=>down=false);
+  ctrl.innerHTML=`<button class="round" id="ul" aria-label="◀">${ic.back}</button><button class="round" id="ur" aria-label="▶" style="transform:scaleX(-1)">${ic.back}</button>`;
+  $('#ul').onclick=()=>setX(x0-30);$('#ur').onclick=()=>setX(x0+30);
+  cv.addEventListener('click',e=>{if(found)return;if(!gel){sayOnce('sc_us_nogel');return}const b=cv.getBoundingClientRect(),px=(e.clientX-b.left)/b.width*W,py=(e.clientY-b.top)/b.height*H;
+   const dx=px-AX,dy=py-AY,r=Math.hypot(dx,dy),th=Math.atan2(dx,dy);if(Math.abs(th)>TH||r<RMIN||r>=RMAX)return;
+   const X=x0+r*Math.sin(th)*.95,Z=(r-RMIN)*Math.cos(th);
+   if(inE(X,Z,LP[0],LP[1],LR+8,LR*.85+8)){found=true;ctrl.innerHTML='';cx.strokeStyle='#FFC53D';cx.lineWidth=3;cx.setLineDash([6,4]);cx.beginPath();cx.arc(px,py,LR*0.9+6,0,7);cx.stroke();ok('sc_us_ok')}
+   else{miss++;sfx('bad');sayOnce('sc_us_no')}})}
+ // 4. MRI: magnet lines up spins, radio waves make the picture
+ function mri(){let sp='';for(let r=0;r<5;r++)for(let c=0;c<6;c++){const x=50+c*48,y=60+r*58;sp+=`<g transform="translate(${x} ${y})"><g class="spn" style="transform:rotate(${rnd(0,360).toFixed(0)}deg);transition:transform 1s ease"><circle r="13" fill="#E6F5FB" stroke="${INK}" stroke-width="2"/><path d="M0 9 V-9 M-5 -4 L0 -10 L5 -4" fill="none" stroke="#F26B4F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g></g>`}
+  frame('mri',`<rect width="600" height="360" fill="#EEF7FB"/><rect x="20" y="25" width="300" height="310" rx="18" fill="#CDEFDD" stroke="${INK}" stroke-width="3"/>${sp}<rect x="360" y="40" width="220" height="280" rx="12" fill="#1B2B30" stroke="${INK}" stroke-width="3"/>
+   <g id="brain" opacity="0" style="transition:opacity 1.6s"><path d="M470 90 C415 90 395 130 402 165 C409 205 440 232 470 230 C500 232 531 205 538 165 C545 130 525 90 470 90Z" fill="#A9B6B8"/><path d="M470 95V228M430 120q18 8 10 24M510 120q-18 8 -10 24M425 180q20 -2 25 12M515 180q-20 -2 -25 12" fill="none" stroke="#5E6E71" stroke-width="3" stroke-linecap="round"/><circle cx="${rnd(440,500).toFixed(0)}" cy="${rnd(140,200).toFixed(0)}" r="10" fill="#F4F4F4"/></g>`);
+  say('sc_mri_i');ctrl.innerHTML=`<button class="choice" id="mag">🧲 ${t('magnet')}</button><button class="choice" id="rad" disabled>📡 ${t('radio')}</button>`;
+  $('#mag').onclick=()=>{$$('.spn',st).forEach(g=>g.style.transform='rotate(0deg)');$('#mag').disabled=true;$('#rad').disabled=false;sfx('pop');say('sc_mri_mag')};
+  $('#rad').onclick=()=>{$('#rad').disabled=true;let c=0;every(()=>{if(c++<5)sfx('drip')},250);$$('.spn circle',st).forEach(cc=>cc.setAttribute('fill','#FFE7A3'));later(()=>{$('#brain').setAttribute('opacity','1')},500);later(()=>ok('sc_mri_ok'),1700)}}
+ // 5. PET: glowing sugar, find the unusual glow
+ function pet(){const spots=[{x:300,y:70,n:'brain'},{x:300,y:262,n:'bladder'},{x:rnd(0,1)<.5?262:338,y:rnd(150,215),n:'lump'}];let started=false,found=false;
+  const svg=frame('pet',`<defs><radialGradient id="glo"><stop offset="0" stop-color="#FFF6B0"/><stop offset=".45" stop-color="#FFE45C" stop-opacity=".9"/><stop offset="1" stop-color="#FFE45C" stop-opacity="0"/></radialGradient></defs><rect width="600" height="360" fill="#1B2B30"/>
+   <circle cx="300" cy="70" r="42" fill="#3A4E53"/><rect x="232" y="118" width="136" height="168" rx="46" fill="#3A4E53"/><rect x="246" y="270" width="40" height="82" rx="18" fill="#3A4E53"/><rect x="314" y="270" width="40" height="82" rx="18" fill="#3A4E53"/><rect x="196" y="128" width="34" height="120" rx="16" fill="#3A4E53"/><rect x="370" y="128" width="34" height="120" rx="16" fill="#3A4E53"/>
+   <g id="glows" opacity="0" style="transition:opacity 2s">${spots.map(o=>`<circle cx="${o.x.toFixed(0)}" cy="${o.y.toFixed(0)}" r="${o.n==='brain'?40:26}" fill="url(#glo)"/>`).join('')}</g><g id="mk3"></g>`);
+  kbAim(svg,t('m_pet'));say('sc_pet_i');ctrl.innerHTML=`<button class="cta ready" id="pst">${t('startb')}</button>`;
+  $('#pst').onclick=()=>{started=true;ctrl.innerHTML='';sfx('pop');$('#glows').setAttribute('opacity','1')};
+  svg.addEventListener('click',e=>{if(!started||found)return;const p=svgPt(svg,e);const hit=spots.find(o=>Math.hypot(p.x-o.x,p.y-o.y)<(o.n==='brain'?44:30));if(!hit)return;
+   if(hit.n==='lump'){found=true;$('#mk3').innerHTML=`<circle cx="${hit.x}" cy="${hit.y}" r="30" fill="none" stroke="#F26B4F" stroke-width="4" stroke-dasharray="6 4"/>`;ok('sc_pet_ok')}else{miss++;sfx('bad');say('sc_pet_no')}})}
+ next()};
+
+/* 3. Microscope Lab */
+GAMES.micro=(st,ctrl)=>{const k=K();let miss=0,phase=0,stains=[];setChips(3);
+ const smp=blob(300,178,20,.25);
+ st.innerHTML=`<svg viewBox="0 0 600 300" class="gsvg"><rect width="600" height="300" fill="#F3FAF7"/>
+  <g transform="translate(95 160) scale(1.5)"><g id="pot" class="tapme"><rect x="-40" y="-28" width="80" height="68" rx="12" fill="#fff" ${st3}/><rect x="-46" y="-42" width="92" height="18" rx="7" fill="#58B6E0" ${st3}/><path d="${blob(0,10,13,.25)}" fill="#D9A3B8"/></g></g>
+  <rect x="196" y="148" width="208" height="60" rx="6" fill="#DDF3FF" ${st3}/><path id="smp" d="${smp}" fill="#D9A3B8" opacity="0"/>
+  <g transform="translate(470 156) scale(1.35)"><g id="bP" class="bottle" data-c="p"><path d="M-24 -10 h48 v58 a9 9 0 0 1 -9 9 h-30 a9 9 0 0 1 -9 -9z" fill="#7B3F9E" ${st3}/><rect x="-11" y="-36" width="22" height="26" rx="3" fill="#fff" ${st3}/></g></g>
+  <g transform="translate(553 156) scale(1.35)"><g id="bK" class="bottle" data-c="k"><path d="M-24 -10 h48 v58 a9 9 0 0 1 -9 9 h-30 a9 9 0 0 1 -9 -9z" fill="#F48FB1" ${st3}/><rect x="-11" y="-36" width="22" height="26" rx="3" fill="#fff" ${st3}/></g></g>
+  <path d="M100 96 v-30" stroke="${INK}" stroke-width="0"/></svg>`;
+ say('micro_1');kbBtn($('#pot'),t('pot_l'));kbBtn($('#bP'),t('purple_l'));kbBtn($('#bK'),t('pink_l'));
+ $('#pot').onclick=()=>{if(phase!==0)return;phase=1;sfx('pop');$('#pot').classList.remove('tapme');$('#smp').setAttribute('opacity','1');gotChip(0);
+  $$('.bottle',st).forEach(b=>b.classList.add('tapme'));say('micro_2')};
+ $$('.bottle',st).forEach(b=>b.onclick=()=>{if(phase!==1||stains.includes(b.dataset.c))return;
+  if(!k&&b.dataset.c==='k'&&!stains.includes('p')){miss++;sfx('bad');b.classList.remove('tapme');void b.getBBox();b.classList.add('ouch');setTimeout(()=>{b.classList.remove('ouch');b.classList.add('tapme')},500);say('micro_order');return}
+  stains.push(b.dataset.c);sfx('drip');b.classList.remove('tapme');b.style.opacity='.5';
+  $('#smp').setAttribute('fill',stains.length===2?'#C77DB0':(b.dataset.c==='p'?'#9C6FB8':'#F4A6C4'));
+  if(stains.length===2){phase=2;gotChip(1);later(scope,900)}});
+ const deck=shuffle([...Array(k?3:4).fill(0),...Array(k?3:4).fill(1)]);let di=0;
+ function scope(){say('micro_3');st.innerHTML=`<div class="qa"><svg viewBox="0 0 300 300" class="scope"><defs><clipPath id="vc"><circle cx="150" cy="150" r="134"/></clipPath></defs><circle cx="150" cy="150" r="140" fill="#FFF6FA" stroke="${INK}" stroke-width="7"/><g clip-path="url(#vc)" id="cellv"></g></svg></div>`;
+  ctrl.innerHTML=`<button class="choice" data-a="0"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="#F7B7C8" stroke="${INK}" stroke-width="2.5"/><circle cx="20" cy="20" r="5" fill="#6A3D9A"/></svg>${t('neat')}</button><button class="choice" data-a="1"><svg viewBox="0 0 40 40"><path d="${blob(20,20,15,.28,8)}" fill="#F7B7C8" stroke="${INK}" stroke-width="2.5"/><path d="${blob(20,20,9,.3,7)}" fill="#4A2070"/></svg>${t('messy')}</button>`;
+  $$('.choice',ctrl).forEach(b=>b.onclick=()=>answer(+b.dataset.a));drawCell()}
+ function drawCell(){const m=deck[di],v=$('#cellv');const bg=`<circle cx="30" cy="40" r="46" fill="#FBD3DE" opacity=".6"/><circle cx="270" cy="260" r="50" fill="#FBD3DE" opacity=".6"/><circle cx="280" cy="50" r="38" fill="#FBD3DE" opacity=".6"/>`;
+  v.innerHTML=bg+(m?`<path d="${blob(150,150,72,k?.3:.18,10)}" fill="#F7B7C8" stroke="${INK}" stroke-width="3"/><path d="${blob(150,148,k?40:31,.3,8)}" fill="#4A2070"/>${k?`<path d="${blob(185,180,12,.3,7)}" fill="#4A2070"/>`:''}`:`<path d="${blob(150,150,72,k?0:.05,10)}" fill="#F7B7C8" stroke="${INK}" stroke-width="3"/><circle cx="150" cy="150" r="20" fill="#6A3D9A"/>`);
+  v.classList.remove('flash');void v.getBBox();v.classList.add('flash')}
+ function answer(a){if(a===deck[di]){sfx('good');di++;if(di>=deck.length){gotChip(2);ctrl.innerHTML='';finish('micro',starsFor(miss,1,3))}else{say('micro_yes');drawCell()}}else{miss++;sfx('bad');say('micro_no')}}};
+
+/* 4. Research Lab */
+GAMES.lab=(st,ctrl)=>{const k=K();let miss=0;const out=shuffle(['good','strong','weak']),cols=['#F26B4F','#58B6E0','#2FA673'],tested=new Set();setChips(k?2:3);let ci=0;
+ const shp=[`<path d="M0 -11 l3.2 6.6 7.3 1 -5.3 5.1 1.3 7.2 -6.5 -3.4 -6.5 3.4 1.3 -7.2 -5.3 -5.1 7.3 -1z" fill="#fff"/>`,`<circle r="8" fill="#fff"/>`,`<path d="M0 -10 L10 8 H-10Z" fill="#fff"/>`];
+ function shapeSvg(i){return `<svg viewBox="-20 -20 40 40"><circle r="18" fill="${cols[i]}" stroke="${INK}" stroke-width="2.5"/>${shp[i]}</svg>`}
+ if(!k){const fo=shuffle(['lab_f1','lab_f2','lab_f3']);st.innerHTML=`<div class="qa"><div class="opts">${fo.map(f=>`<button class="opt" data-f="${f}">${t(f)}</button>`).join('')}</div></div>`;say('lab_fair_q');
+  $$('.opt',st).forEach(b=>b.onclick=()=>{if(b.dataset.f==='lab_f1'){b.classList.add('yes');sfx('good');gotChip(ci++);say('lab_fair_yes');later(bench,2600)}else{miss++;b.classList.add('no');b.disabled=true;sfx('bad');say('lab_fair_no')}})}
+ else bench();
+ function dots(cx,cy,col){let s='';for(let i=0;i<8;i++){const a=i/8*Math.PI*2+rnd(-.3,.3),r=i%2?14:28;s+=`<circle cx="${(cx+Math.cos(a)*r).toFixed(1)}" cy="${(cy+Math.sin(a)*r).toFixed(1)}" r="6.5" fill="${col}" stroke="${INK}" stroke-width="1.5"/>`}return s}
+ function bench(){say('lab_test');let rows='';[0,1,2].forEach(i=>{const y=96+i*104;
+   rows+=`<g transform="translate(80 ${y})"><g class="tapme bot" data-i="${i}"><path d="M-22 -18 h44 v46 a10 10 0 0 1 -10 10 h-24 a10 10 0 0 1 -10 -10z" fill="${cols[i]}" ${st3}/><rect x="-10" y="-38" width="20" height="20" rx="3" fill="#fff" ${st3}/><g transform="translate(0 12)">${shp[i]}</g></g></g>${k?'':`<text x="80" y="${y+58}" text-anchor="middle" font-family="Fredoka,Trebuchet MS,sans-serif" font-size="14" font-weight="600" fill="${INK}">${t('drops')}</text>`}
+   <g id="dc${i}"><circle cx="270" cy="${y}" r="44" fill="#fff" ${st3}/>${dots(270,y,'#9B5FC0')}</g><g id="dh${i}"><circle cx="440" cy="${y}" r="44" fill="#fff" ${st3}/>${dots(440,y,'#F7A8C0')}</g><g id="mk${i}"></g>`});
+  st.innerHTML=`<svg viewBox="0 0 600 410" class="gsvg"><rect width="600" height="410" fill="#F3FAF7"/><text x="270" y="34" text-anchor="middle" font-family="Fredoka,Trebuchet MS,sans-serif" font-size="19" font-weight="700" fill="${INK}">${t('col_conf')}</text><text x="440" y="34" text-anchor="middle" font-family="Fredoka,Trebuchet MS,sans-serif" font-size="19" font-weight="700" fill="${INK}">${t('col_heal')}</text>${rows}</svg>`;
+  $$('.bot',st).forEach(b=>{kbBtn(b,t('med_l')+' '+String.fromCharCode(65+ +b.dataset.i));b.onclick=()=>test(+b.dataset.i,b)})}
+ function mark(x,y,ok){return `<g transform="translate(${x} ${y})"><circle r="15" fill="${ok?'#2FA673':'#F26B4F'}" stroke="${INK}" stroke-width="2.5"/><path d="${ok?'M-7 0l5 5 9-10':'M-6 -6l12 12M6 -6l-12 12'}" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></g>`}
+ function test(i,b){if(tested.has(i))return;tested.add(i);b.classList.remove('tapme');sfx('drip');const y=96+i*104,o=out[i],dc=$('#dc'+i),dh=$('#dh'+i);
+  [dc,dh].forEach(d=>d.classList.add('flash'));
+  later(()=>{const calmC=o!=='weak',hurtH=o==='strong';
+   if(calmC)$$('circle',dc).slice(1).forEach(c=>{c.setAttribute('fill','#C9D6D3');c.setAttribute('r','4')});
+   if(hurtH)$$('circle',dh).slice(1).forEach(c=>{c.setAttribute('fill','#C9D6D3');c.setAttribute('r','4')});
+   $('#mk'+i).innerHTML=mark(306,y-34,calmC)+mark(476,y-34,!hurtH);
+   if(o==='good')sfx('good');else sfx('bad');say('lab_'+o);
+   if(tested.size===3)later(pick,2600)},700)}
+ function pick(){gotChip(ci++);say('lab_pick');ctrl.innerHTML=[0,1,2].map(i=>`<button class="choice" data-i="${i}">${shapeSvg(i)}</button>`).join('');
+  $$('.choice',ctrl).forEach(b=>{b.setAttribute('aria-label',String.fromCharCode(65+ +b.dataset.i));b.onclick=()=>{const i=+b.dataset.i;if(out[i]==='good'){sfx('good');say('lab_yes');ctrl.innerHTML='';gotChip(ci++);later(()=>finish('lab',starsFor(miss,0,1)),1800)}else{miss++;sfx('bad');b.disabled=true;say('lab_pick_no')}}})}};
+
+/* 5. Team Meeting */
+GAMES.team=(st,ctrl)=>{const k=K(),map=TEAMMAP,ids=shuffle(['onc','mp',...shuffle(Object.keys(map).filter(x=>x!=='mp'&&x!=='onc')).slice(0,k?2:6)]),allTools=Object.values(map);let i=0,miss=0;setChips(ids.length+1);say('team_intro');
+ function show(){const id=ids[i],right=map[id],opts=shuffle([right,...shuffle(allTools.filter(x=>x!==right)).slice(0,k?2:3)]);ctrl.innerHTML='';
+  st.innerHTML=`<div class="qa"><div class="who">${person(id)}</div><p class="q">${t('p_'+id)}</p><p class="small">${t('who_q')}</p><div class="machines">${opts.map(o=>`<button class="mach" data-t="${o}">${TOOLS[o]}<span>${t('t_'+o)}</span></button>`).join('')}</div></div>`;
+  if(i)sayParts([t('p_'+id)+'.',t('who_q')]);
+  $$('.mach',st).forEach(b=>b.onclick=()=>{if(b.dataset.t===right){sfx('good');b.classList.add('yes');gotChip(i);$$('.mach',st).forEach(x=>x.disabled=true);say('p_'+id+'_do');
+    ctrl.innerHTML=`<button class="cta ready" id="nx">${t('next')}</button>`;$('#nx').onclick=()=>{i++;if(i>=ids.length)decide();else show()}}
+   else{miss++;sfx('bad');b.classList.add('no','shake');b.disabled=true;say('team_no')}})}
+ function decide(){sayParts([t('team_decide'),t('team_combo')]);st.innerHTML=`<div class="qa"><svg viewBox="0 0 360 120" style="width:min(420px,90%)"><g transform="translate(10 10)"><rect width="100" height="100" rx="18" fill="#BFE6F5" ${st3}/><svg x="10" y="14" width="80" height="70" viewBox="0 0 100 80">${ART.surg().replace(/^<svg[^>]*>|<\/svg>$/g,'')}</svg></g><g transform="translate(130 10)"><rect width="100" height="100" rx="18" fill="#FFE7A3" ${st3}/><svg x="10" y="14" width="80" height="70" viewBox="0 0 100 80">${ART.rt().replace(/^<svg[^>]*>|<\/svg>$/g,'')}</svg></g><g transform="translate(250 10)"><rect width="100" height="100" rx="18" fill="#CDEFDD" ${st3}/><svg x="10" y="14" width="80" height="70" viewBox="0 0 100 80">${TOOLS.drip.replace(/^<svg[^>]*>|<\/svg>$/g,'')}</svg></g></svg>
+  <p class="q">${t('team_decide')}</p><p class="small" style="font-size:17px">${t('team_combo')}</p></div>`;
+  ctrl.innerHTML=`<button class="cta ready" id="ow">${t('open_wing')}</button>`;$('#ow').onclick=()=>{gotChip(ids.length);finish('team',starsFor(miss,0,2))}}
+ show()};
+
+/* 6a. Radiotherapy */
+GAMES.rtBeams=(st,ctrl)=>{const k=K(),need=k?2:3,W=k?18:15,C={x:300,y:215},D=95;let th=-Math.PI/2,dose=0,miss=0,fired=[],busy=false;setChips(need);
+ const a0=rnd(0,Math.PI*2),organs=[{a:a0,r:k?26:20,n:'organ_kid',f:'#F2A07B'}];if(!k)organs.push({a:a0+Math.PI/2+rnd(-.2,.2),r:20,n:'organ_bow',f:'#F7C873'});
+ organs.forEach(o=>{o.x=C.x+Math.cos(o.a)*D;o.y=C.y+Math.sin(o.a)*D});
+ st.innerHTML=`<svg viewBox="0 0 600 430" class="gsvg drag" id="rsv"><rect width="600" height="430" fill="#EEF7FB"/>
+  <circle cx="300" cy="215" r="190" fill="none" stroke="#9FB8BC" stroke-width="3" stroke-dasharray="6 10"/>
+  <defs><clipPath id="bc"><ellipse cx="300" cy="215" rx="170" ry="122"/></clipPath></defs>
+  <ellipse cx="300" cy="215" rx="170" ry="122" fill="#F7E1CC" ${st3}/><circle cx="300" cy="318" r="13" fill="#fff" stroke="${INK}" stroke-width="2.5"/>
+  <g id="prev" transform="translate(300 215)"><rect x="-200" y="${-W}" width="400" height="${2*W}" fill="#FFC53D" opacity=".2"/></g>
+  <g id="fired" clip-path="url(#bc)"></g>
+  ${organs.map((o,i)=>`<g transform="translate(${o.x.toFixed(1)} ${o.y.toFixed(1)})"><g id="org${i}"><ellipse rx="${o.r}" ry="${o.r*.82}" fill="${o.f}" stroke="${INK}" stroke-width="2.5"/><circle cx="-6" cy="-3" r="2.2" fill="${INK}"/><circle cx="6" cy="-3" r="2.2" fill="${INK}"/><path d="M-5 4 Q0 8 5 4" fill="none" stroke="${INK}" stroke-width="2" stroke-linecap="round"/></g><text y="${o.r+18}" text-anchor="middle" font-family="Fredoka,Trebuchet MS,sans-serif" font-size="15" font-weight="600" fill="${INK}">${t(o.n)}</text></g>`).join('')}
+  <path id="lump" d="${blob(300,215,24,.18)}" fill="#9B5FC0" ${st3}/>
+  <g id="head" transform="translate(300 215)"><g transform="translate(190 0)"><rect x="-14" y="-30" width="38" height="60" rx="10" fill="#FFC53D" ${st3}/><rect x="-24" y="-14" width="12" height="28" rx="3" fill="${INK}"/></g></g></svg>`;
+ ctrl.innerHTML=`<button class="round" id="rl" aria-label="${t('turnL')}">${ic.l}</button><button class="cta ready" id="fire">${t('beam_on')}</button><button class="round" id="rr" aria-label="${t('turnR')}">${ic.r}</button>`;
+ const svg=$('#rsv');const deg=()=>(th*180/Math.PI).toFixed(1);
+ function draw(){$('#prev').setAttribute('transform',`translate(300 215) rotate(${deg()})`);$('#head').setAttribute('transform',`translate(300 215) rotate(${deg()})`)}
+ let down=false;const setA=e=>{const p=svgPt(svg,e);th=Math.atan2(p.y-C.y,p.x-C.x);draw()};
+ svg.addEventListener('pointerdown',e=>{if(busy)return;down=true;svg.setPointerCapture(e.pointerId);setA(e)});
+ svg.addEventListener('pointermove',e=>{if(down&&!busy)setA(e)});
+ svg.addEventListener('pointerup',()=>down=false);svg.addEventListener('pointercancel',()=>down=false);
+ $('#rl').onclick=()=>{th-=Math.PI/18;draw()};$('#rr').onclick=()=>{th+=Math.PI/18;draw()};
+ const angDiff=(a,b)=>{let d=Math.abs(a-b)%(Math.PI*2);return d>Math.PI?Math.PI*2-d:d};
+ $('#fire').onclick=()=>{if(busy)return;
+  if(!k&&fired.some(f=>angDiff(f,th)<Math.PI/6)){say('rt_spread');sfx('bad');return}
+  const hit=organs.findIndex(o=>Math.abs((o.x-C.x)*Math.sin(th)-(o.y-C.y)*Math.cos(th))<o.r+W*.85);
+  busy=true;sfx('zap');const band=document.createElementNS(NS,'rect');band.setAttribute('x',-200);band.setAttribute('y',-W);band.setAttribute('width',400);band.setAttribute('height',2*W);band.setAttribute('transform',`translate(300 215) rotate(${deg()})`);
+  band.setAttribute('fill',hit>=0?'#F26B4F':'#FFC53D');band.setAttribute('opacity',hit>=0?'.55':'.42');band.classList.add('flash');$('#fired').appendChild(band);
+  if(hit>=0){miss++;const og=$('#org'+hit);og.classList.remove('ouch');void og.getBBox();og.classList.add('ouch');$('ellipse',og).setAttribute('fill','#F26B4F');say('rt_hit');
+   later(()=>{band.remove();$('ellipse',og).setAttribute('fill',organs[hit].f);busy=false},1300);return}
+  fired.push(th);dose++;gotChip(dose-1);$('#lump').setAttribute('fill',dose>=need?'#C9D6D3':['#9B5FC0','#B98AD6','#CFB0E3'][dose]);
+  if(dose>=need){say('rt_done');$('#fire').disabled=true;$('#fire').classList.remove('ready');later(()=>finish('rt',starsFor(miss,0,2)),2200)}
+  else{say('rt_good');later(()=>busy=false,600)}};
+ draw();say('rt_intro')};
+
+GAMES.rt=(st,ctrl)=>{const k=K(),need=k?3000:5000,R=46,Cc=2*Math.PI*R;let t0=0,held=false,done=false;
+ const hw=t('hold').split(' ');st.innerHTML=`<div class="qa"><svg viewBox="0 0 320 160" style="width:min(340px,86%)"><rect x="20" y="128" width="280" height="18" rx="9" fill="#BFE6F5" ${st3}/><rect x="40" y="146" width="12" height="12" fill="${INK}"/><rect x="268" y="146" width="12" height="12" fill="${INK}"/><svg x="44" y="58" width="232" height="86" viewBox="0 0 200 74">${bearLying().replace(/^<svg[^>]*>|<\/svg>$/g,'')}</svg></svg>
+  <button class="holdbtn" id="hold" aria-label="${t('hold')}"><svg viewBox="0 0 110 110"><circle cx="55" cy="55" r="${R}" fill="#FFC53D" ${st3}/><circle id="hring" cx="55" cy="55" r="${R}" fill="none" stroke="#2FA673" stroke-width="9" stroke-dasharray="0 ${Cc}" transform="rotate(-90 55 55)" stroke-linecap="butt"/><text x="55" y="${hw.length>1?52:61}" text-anchor="middle" font-family="Fredoka,Trebuchet MS,sans-serif" font-size="17" font-weight="700" fill="${INK}">${hw.map((w,i)=>`<tspan x="55" dy="${i?19:0}">${w}</tspan>`).join('')}</text></svg></button></div>`;
+ say('rt_still');const btn=$('#hold'),ring=$('#hring');
+ const tick=()=>{if(!held||done)return;const f=Math.min(1,(performance.now()-t0)/need);ring.setAttribute('stroke-dasharray',`${f*Cc} ${Cc}`);
+  if(f>=1){done=true;sfx('good');say('rt_still_ok');later(()=>GAMES.rtBeams(st,ctrl),1800);return}raf=requestAnimationFrame(tick)};
+ const start=e=>{if(done)return;if(e&&e.preventDefault)e.preventDefault();held=true;t0=performance.now();sfx('pop');raf=requestAnimationFrame(tick)};
+ const stop=()=>{if(!held||done)return;held=false;ring.setAttribute('stroke-dasharray',`0 ${Cc}`);sayOnce('rt_still_moved')};
+ btn.addEventListener('pointerdown',start);btn.addEventListener('pointerup',stop);btn.addEventListener('pointerleave',stop);btn.addEventListener('pointercancel',stop);
+ btn.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat)start(e)});btn.addEventListener('keyup',e=>{if(e.key===' '||e.key==='Enter')stop()});
+ btn.addEventListener('contextmenu',e=>e.preventDefault())};
+
+/* 6b. Surgery */
+GAMES.surg=(st,ctrl)=>{const k=K(),rin=58,rout=k?114:88,NB=24,need=k?20:22;let miss=0,phase=0;setChips(4);
+ st.innerHTML=`<div class="qa">${bear({cls:'who',id:'sb'})}</div>`;say('surg_1');
+ ctrl.innerHTML=`<button class="cta ready" id="sleep">${t('surg_sleep_btn')}</button>`;
+ $('#sleep').onclick=()=>{sfx('pop');ctrl.innerHTML='';st.innerHTML=`<div class="qa" style="position:relative"><svg viewBox="0 0 320 120" style="width:min(360px,88%)"><rect x="20" y="92" width="280" height="14" rx="7" fill="#CFEFE3" ${st3}/><rect x="150" y="106" width="20" height="12" fill="${INK}"/><svg x="40" y="14" width="240" height="89" viewBox="0 0 200 74">${bearLying({sleepy:true,blanket:true}).replace(/^<svg[^>]*>|<\/svg>$/g,'')}</svg></svg><svg viewBox="0 0 60 40" style="width:64px;position:absolute;top:0;left:calc(50% - 150px)"><text class="zz" x="6" y="34" font-family="Fredoka,Trebuchet MS,sans-serif" font-size="26" font-weight="700" fill="${INK}">Zzz</text></svg></div>`;gotChip(0);later(trace,1600)};
+ function trace(){phase=1;say('surg_2');const ring=r=>`M300 ${200-r} a${r} ${r} 0 1 1 0 ${2*r} a${r} ${r} 0 1 1 0 ${-2*r}Z`;
+  let ticks='';for(let i=0;i<NB;i++){const a=(i+.5)/NB*Math.PI*2-Math.PI;ticks+=`<circle id="tk${i}" cx="${(300+Math.cos(a)*(rout+18)).toFixed(1)}" cy="${(200+Math.sin(a)*(rout+18)).toFixed(1)}" r="5" fill="#C9D6D3"/>`}
+  st.innerHTML=`<svg viewBox="0 0 600 400" class="gsvg drag" id="ssv"><rect width="600" height="400" fill="#3E8E9B"/><ellipse cx="300" cy="200" rx="250" ry="178" fill="#F8D3C5" ${st3}/>
+   <path d="M120 120 q30 -20 60 0 t60 0M380 300 q30 -20 60 0 t60 0M110 280 q20 -14 40 0" fill="none" stroke="#EDB3A3" stroke-width="5" stroke-linecap="round"/>
+   ${k?`<path d="${ring(rout)} ${ring(rin)}" fill="#BFF0D4" fill-rule="evenodd" opacity=".9"/>`:''}
+   <circle cx="300" cy="200" r="${rin}" fill="none" stroke="#2FA673" stroke-width="3" stroke-dasharray="6 7"/><circle cx="300" cy="200" r="${rout}" fill="none" stroke="#2FA673" stroke-width="3" stroke-dasharray="6 7"/>
+   ${ticks}<g id="trail"></g><g id="lumpg"><circle cx="300" cy="200" r="${rin}" fill="#F3B9A9" opacity="0" id="edge"/><path d="${blob(300,200,48,.1)}" fill="#9B5FC0" ${st3}/></g><g id="stitch"></g></svg>`;
+  const svg=$('#ssv'),trail=$('#trail'),cov=new Set();let down=false,cur=null,state=null;
+  const seg=s=>{cur=document.createElementNS(NS,'polyline');cur.setAttribute('fill','none');cur.setAttribute('stroke',s==='in'?INK:'#F26B4F');cur.setAttribute('stroke-width','6');cur.setAttribute('stroke-linecap','round');cur.setAttribute('stroke-linejoin','round');if(s==='in')cur.setAttribute('stroke-dasharray','2 10');trail.appendChild(cur)};
+  const add=e=>{const p=svgPt(svg,e),dx=p.x-300,dy=p.y-200,r=Math.hypot(dx,dy),s=r<rin?'close':r>rout?'far':'in';
+   if(s!==state){if(state==='in'&&s!=='in'){miss++;sfx('bad');sayOnce(s==='close'?'surg_close':'surg_far')}state=s;seg(s)}
+   cur.setAttribute('points',(cur.getAttribute('points')||'')+` ${p.x.toFixed(1)},${p.y.toFixed(1)}`);
+   if(s==='in'){const b=Math.min(NB-1,Math.floor((Math.atan2(dy,dx)+Math.PI)/(Math.PI*2)*NB));if(!cov.has(b)){cov.add(b);$('#tk'+b).setAttribute('fill','#2FA673')}
+    if(cov.size>=need)done()}};
+  svg.addEventListener('pointerdown',e=>{if(phase!==1)return;down=true;svg.setPointerCapture(e.pointerId);state=null;add(e)});
+  svg.addEventListener('pointermove',e=>{if(down&&phase===1)add(e)});
+  svg.addEventListener('pointerup',()=>down=false);svg.addEventListener('pointercancel',()=>down=false);
+  let helped=false;ctrl.innerHTML=`<button class="pill" id="htrace">${t('help_trace')}</button>`;
+  $('#htrace').onclick=()=>{if(phase!==1||helped)return;helped=true;$('#htrace').disabled=true;const rr=(rin+rout)/2;let b=0;const pl=document.createElementNS(NS,'polyline');pl.setAttribute('fill','none');pl.setAttribute('stroke',INK);pl.setAttribute('stroke-width','6');pl.setAttribute('stroke-dasharray','2 10');pl.setAttribute('stroke-linecap','round');trail.appendChild(pl);let pts='';
+   every(()=>{if(phase!==1)return;for(let q=0;q<2;q++){const a=(b+.5)/NB*Math.PI*2-Math.PI;pts+=` ${(300+Math.cos(a)*rr).toFixed(1)},${(200+Math.sin(a)*rr).toFixed(1)}`;if(!cov.has(b)){cov.add(b);$('#tk'+b).setAttribute('fill','#2FA673')}b=(b+1)%NB}pl.setAttribute('points',pts);if(cov.size>=need)done()},120)};
+  function done(){if(phase!==1)return;phase=2;down=false;sfx('good');gotChip(1);ctrl.innerHTML='';if(helped)miss=Math.max(miss,2);for(let i=0;i<NB;i++)$('#tk'+i).setAttribute('fill','#2FA673');trail.setAttribute('opacity','.4');$('#edge').setAttribute('opacity','1');
+   const lg=$('#lumpg');lg.classList.add('tapme');kbBtn(lg,t('lump_l'));say('surg_lift');setTimeout(()=>lg.focus&&document.activeElement&&document.activeElement.id==='htrace'&&lg.focus(),50);
+   lg.onclick=()=>{if(phase!==2)return;phase=3;sfx('pop');lg.classList.remove('tapme');lg.classList.add('lifted');gotChip(2);trail.innerHTML='';
+    later(()=>{lg.remove();stitch()},1000)}}
+  function stitch(){say('surg_stitch');const g=$('#stitch');g.innerHTML=`<ellipse cx="300" cy="200" rx="${rin-6}" ry="${rin-14}" fill="#C97B78" stroke="${INK}" stroke-width="2.5"/>`;
+   const pts=Array.from({length:7},(_,i)=>[250+i*16.7,i%2?226:174]);let nx=0;const ln=document.createElementNS(NS,'polyline');ln.setAttribute('fill','none');ln.setAttribute('stroke',INK);ln.setAttribute('stroke-width','5');ln.setAttribute('stroke-linecap','round');g.appendChild(ln);
+   pts.forEach((p,i)=>{const d=document.createElementNS(NS,'g');d.innerHTML=`<circle cx="${p[0]}" cy="${p[1]}" r="22" fill="transparent"/><circle class="dt" cx="${p[0]}" cy="${p[1]}" r="10" fill="#fff" stroke="${INK}" stroke-width="3"/>`;d.style.cursor='pointer';d.id='sd'+i;g.appendChild(d);kbBtn(d,t('stitch_l')+' '+(i+1));
+    d.onclick=()=>{if(i!==nx)return;sfx('pop');$('.dt',d).setAttribute('fill','#2FA673');d.classList.remove('nextdot');ln.setAttribute('points',pts.slice(0,i+1).map(q=>q.join(',')).join(' '));nx++;
+     if(nx<pts.length)$('#sd'+nx).classList.add('nextdot');else{$('ellipse',g).setAttribute('fill','#F8D3C5');gotChip(3);say('surg_done');later(()=>finish('surg',starsFor(miss,1,4)),2000)}}});
+   $('#sd0').classList.add('nextdot')}}};
+
+/* 6c. Chemotherapy */
+GAMES.chemo=(st,ctrl)=>{const k=K();let miss=0;setChips(k?2:4);
+ const bags=shuffle([{f:'bear',n:'n_bear'},{f:'cat',n:'n_cat'},{f:'rabbit',n:'n_rab'}]);
+ st.innerHTML=`<div class="qa"><div class="band">${face('bear')}MENTARI</div><div class="machines" style="max-width:520px">${bags.map(b=>`<button class="mach" data-f="${b.f}"><svg viewBox="0 0 80 100"><path d="M40 0 V10" stroke="${INK}" stroke-width="3"/><rect x="8" y="10" width="64" height="76" rx="14" fill="#FFF6D6" ${st3}/><svg x="18" y="24" width="44" height="44" viewBox="0 0 40 40">${face(b.f).replace(/^<svg[^>]*>|<\/svg>$/g,'')}</svg><path d="M40 86 v14" stroke="#58B6E0" stroke-width="4"/></svg><span>${t(b.n)}</span></button>`).join('')}</div></div>`;
+ say('chemo_1');
+ $$('.mach',st).forEach(b=>b.onclick=()=>{if(b.dataset.f==='bear'){sfx('good');b.classList.add('yes');gotChip(0);later(scene,700)}else{miss++;sfx('bad');b.classList.add('no','shake');b.disabled=true;say(tf('chemo_wrong',t(bags.find(x=>x.f===b.dataset.f).n)),true)}});
+ function scene(){const bearInner=bear({noTufts:true}).replace(/^<svg[^>]*>|<\/svg>$/g,'');
+  const beanie=BEANIE;
+  let cc='';for(let i=0;i<6;i++){const a=i/6*Math.PI*2;cc+=`<circle class="cc" cx="${(322+Math.cos(a)*13).toFixed(1)}" cy="${(268+Math.sin(a)*11).toFixed(1)}" r="7" fill="#B07BD6" stroke="#fff" stroke-width="2"/>`}
+  st.innerHTML=`<svg viewBox="0 0 600 400" class="gsvg" id="csv"><rect width="600" height="400" fill="#F3FAF7"/>
+   <path d="M90 30 V380 M60 380 h60" stroke="${INK}" stroke-width="5" stroke-linecap="round"/><path d="M74 40 h32" stroke="${INK}" stroke-width="4"/>
+   <rect x="58" y="44" width="64" height="86" rx="14" fill="#FFF6D6" ${st3}/><svg x="70" y="62" width="40" height="40" viewBox="0 0 40 40">${face('bear').replace(/^<svg[^>]*>|<\/svg>$/g,'')}</svg>
+   <rect id="medlvl" x="62" y="104" width="56" height="22" rx="8" fill="#58B6E0" opacity=".6"/>
+   <rect x="82" y="134" width="16" height="22" rx="4" fill="#E6F5FB" stroke="${INK}" stroke-width="2.5"/><circle id="dropc" cx="90" cy="142" r="3.5" fill="#58B6E0" opacity="0"/>
+   <path d="M90 156 Q118 290 240 282" fill="none" stroke="#58B6E0" stroke-width="5"/>
+   <svg x="150" y="20" width="312" height="338" viewBox="0 0 120 130">${bearInner}<g id="beanie">${beanie}</g></svg>
+   <g id="tufts"><path d="M285 60 l5 -12 l5 10 l5 -14 l5 14 l5 -12 l5 14 l5 -12 l5 10" fill="none" stroke="#2E2622" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></g>
+   <g fill="none" stroke="#FF8A73" stroke-width="4" stroke-linecap="round" opacity=".85"><path id="v0" d="M240 282 Q236 236 306 234"/><path id="v1" d="M306 234 Q246 210 252 110"/><path id="v2" d="M306 234 Q330 246 322 262"/><path id="v3" d="M306 234 Q362 232 372 280"/><path id="v4" d="M306 234 Q284 280 278 330"/></g>
+   <g id="ccg">${cc}</g><g id="wave"></g></svg>`;
+  say('chemo_2');let drips=0,energy=100,cyc=0;
+  ctrl.innerHTML=(k?'':`<div class="meter">${t('energy')}<div class="bar"><i id="en"></i></div></div>`)+`<button class="cta ready" id="drip">${t('chemo_drip')}</button>`;
+  const setE=v=>{energy=Math.max(5,Math.min(100,v));const e=$('#en');if(e){e.style.width=energy+'%';e.style.background=energy<40?'#F26B4F':energy<70?'#FFC53D':'#2FA673'}};setE(100);
+  $('#drip').onclick=()=>{const b=$('#drip');b.disabled=true;b.classList.remove('ready');sfx('drip');const dc=$('#dropc');dc.setAttribute('opacity','1');later(()=>dc.setAttribute('opacity','0'),500);
+   wave(()=>{drips++;const ccs=$$('.cc',st);ccs.slice(0,2).forEach(c=>{c.setAttribute('fill','#C9D6D3');c.classList.remove('cc');later(()=>c.remove(),700)});
+    $('#medlvl').setAttribute('height',String(Math.max(2,22-drips*7)));$('#medlvl').setAttribute('y',String(126-Math.max(2,22-drips*7)));
+    if(drips===1){$('#tufts').classList.add('fall');later(()=>$('#beanie').classList.add('on'),900);say('chemo_hair')}
+    if(drips>=3){end();return}
+    if(k){if(drips>1)say('chemo_more');later(()=>{b.disabled=false;b.classList.add('ready')},drips===1?3800:900)}
+    else{setE(energy-38);later(restQ,drips===1?4200:1200)}})};
+  function restQ(){say('chemo_rest_q');const b=$('#drip');b.style.display='none';
+   const box=document.createElement('div');box.className='btnrow';box.id='rq';box.innerHTML=`<button class="choice" id="rRest">🛌 ${t('rest')}</button><button class="choice" id="rMore">💧 ${t('more')}</button>`;ctrl.appendChild(box);
+   $('#rMore').onclick=()=>{miss++;sfx('bad');setE(energy-25);$('#rMore').disabled=true;say('chemo_rest_no')};
+   $('#rRest').onclick=()=>{sfx('good');cyc++;gotChip(cyc);setE(100);say('chemo_rest_yes');box.remove();b.style.display='';later(()=>{b.disabled=false;b.classList.add('ready')},1200)}}
+  function end(){say('chemo_done');gotChip(k?1:3);later(()=>{$('#beanie').classList.remove('on');const tf_=$('#tufts');tf_.classList.remove('fall');tf_.classList.add('grow')},2200);later(()=>finish('chemo',starsFor(miss,0,1)),4600)}}
+ function wave(done){const main=$('#v0'),br=['#v1','#v2','#v3','#v4'].map(s=>$(s)),L0=main.getTotalLength(),Ls=br.map(b=>b.getTotalLength()),layer=$('#wave'),t0=performance.now(),dur=2000;
+  function fr(now){const tt=(now-t0)/dur;let h='';for(let q=0;q<5;q++){const u=tt-q*.07;if(u<0||u>1)continue;
+    const pts=u<.35?[main.getPointAtLength(L0*u/.35)]:br.map((b,j)=>b.getPointAtLength(Ls[j]*(u-.35)/.65));
+    pts.forEach(p=>h+=`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="6" fill="#58B6E0" stroke="#fff" stroke-width="2"/>`)}
+   layer.innerHTML=h;if(tt<1.3)raf=requestAnimationFrame(fr);else{layer.innerHTML='';done()}}
+  raf=requestAnimationFrame(fr)}};
+
+document.documentElement.lang=S.lang==='bm'?'ms':'en';
+go('home');if(!curP())showWho();
+</script>
+</body>
+</html>
