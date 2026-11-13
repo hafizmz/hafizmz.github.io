@@ -524,10 +524,16 @@ function ttsSpeak(txt,done){if(!('speechSynthesis' in window))return done();try{
   if(S.lang==='bm'){v=voices.find(x=>/^ms/i.test(x.lang))||voices.find(x=>/^id/i.test(x.lang));u.lang=v?v.lang:'ms-MY'}
   else{v=voices.find(x=>/^en-GB/i.test(x.lang))||voices.find(x=>/^en/i.test(x.lang));u.lang='en-GB'}
   if(v)u.voice=v;u.rate=.95;u.pitch=1.1;u.onend=done;speechSynthesis.speak(u)}catch(e){done()}}
+/* One shared audio element, unlocked on the first tap, so recorded clips can start even after a short wait (phones block sound that does not start from a tap). */
+const AUD=new Audio();let audUnlocked=false;
+function unlockAudio(){if(audUnlocked)return;audUnlocked=true;if(curAudio)return;try{AUD.src="data:audio/wav;base64,UklGRrQBAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YZABAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA";const p=AUD.play();if(p&&p.catch)p.catch(()=>{})}catch(e){}}
+document.addEventListener('pointerdown',unlockAudio,true);document.addEventListener('keydown',unlockAudio,true);
 function playLine(txt,done){if(!CLIPS){const id=seqId;clipsReady.then(()=>{if(id===seqId){CLIPS=CLIPS||{ext:'mp3',have:new Set()};playLine(txt,done)}});return}const key=S.lang+'/'+h32(txt);
   if(!CLIPS||!CLIPS.have.has(key))return ttsSpeak(txt,done);
-  let over=false;const fail=()=>{if(over)return;over=true;ttsSpeak(txt,done)};
-  try{const a=new Audio('audio/'+key+'.'+CLIPS.ext);curAudio=a;a.onended=()=>{if(!over){over=true;done()}};a.onerror=fail;const p=a.play();if(p&&p.catch)p.catch(fail)}catch(e){fail()}}
+  const id=seqId;let over=false;const fail=e=>{if(over)return;over=true;if(id!==seqId)return;AUD.onended=AUD.onerror=null;
+   if(e&&e.name==='NotAllowedError'){const again=()=>{document.removeEventListener('pointerdown',again,true);document.removeEventListener('keydown',again,true);if(id===seqId)playLine(txt,done)};document.addEventListener('pointerdown',again,true);document.addEventListener('keydown',again,true);return}
+   ttsSpeak(txt,done)};
+  try{const a=AUD;a.onended=()=>{if(!over){over=true;done()}};a.onerror=()=>fail();a.src='audio/'+key+'.'+CLIPS.ext;curAudio=a;const p=a.play();if(p&&p.catch)p.catch(fail)}catch(e){fail()}}
 function speakSeq(list){stopVoice();if(!S.sound)return;const id=seqId;let i=0;const next=()=>{if(id!==seqId||i>=list.length)return;playLine(list[i++],next)};next()}
 function speak(txt){speakSeq([txt])}
 let lastSay=[];
