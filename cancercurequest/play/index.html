@@ -964,13 +964,13 @@ GAMES.lab=(st,ctrl)=>{const k=K();let miss=0;const out=shuffle(['good','strong',
   $$('.opt',st).forEach(b=>b.onclick=()=>{if(b.dataset.f==='lab_f1'){b.classList.add('yes');sfx('good');gotChip(ci++);say('lab_fair_yes');later(bench,2600)}else{miss++;b.classList.add('no');b.disabled=true;sfx('bad');say('lab_fair_no')}})}
  else bench();
  function dots(cx,cy,col){let s='';for(let i=0;i<8;i++){const a=i/8*Math.PI*2+rnd(-.3,.3),r=i%2?14:28;s+=`<circle cx="${(cx+Math.cos(a)*r).toFixed(1)}" cy="${(cy+Math.sin(a)*r).toFixed(1)}" r="6.5" fill="${col}" stroke="${INK}" stroke-width="1.5"/>`}return s}
- function bench(){say('lab_test');let rows='';[0,1,2].forEach(i=>{const y=88+i*114;
+ function bench(){say('lab_test');let rows='';[0,1,2].forEach(i=>{const y=88+i*132;
    rows+=`<g transform="translate(80 ${y})"><g class="tapme bot" data-i="${i}"><path d="M-22 -18 h44 v46 a10 10 0 0 1 -10 10 h-24 a10 10 0 0 1 -10 -10z" fill="${cols[i]}" ${st3}/><rect x="-10" y="-38" width="20" height="20" rx="3" fill="#fff" ${st3}/><g transform="translate(0 12)">${shp[i]}</g></g></g>${k?'':`<text x="80" y="${y+61}" text-anchor="middle" font-family="Fredoka,Trebuchet MS,sans-serif" font-size="14" font-weight="600" fill="${INK}">${t('drops')}</text>`}
    <g id="dc${i}"><circle cx="270" cy="${y}" r="44" fill="#fff" ${st3}/>${dots(270,y,'#9B5FC0')}</g><g id="dh${i}"><circle cx="440" cy="${y}" r="44" fill="#fff" ${st3}/>${dots(440,y,'#F7A8C0')}</g><g id="mk${i}"></g>`});
-  st.innerHTML=`<svg viewBox="0 0 600 410" class="gsvg"><rect width="600" height="410" fill="#F3FAF7"/><text x="270" y="34" text-anchor="middle" font-family="Fredoka,Trebuchet MS,sans-serif" font-size="19" font-weight="700" fill="${INK}">${t('col_conf')}</text><text x="440" y="34" text-anchor="middle" font-family="Fredoka,Trebuchet MS,sans-serif" font-size="19" font-weight="700" fill="${INK}">${t('col_heal')}</text>${rows}</svg>`;
+  st.innerHTML=`<svg viewBox="0 0 600 450" class="gsvg"><rect width="600" height="450" fill="#F3FAF7"/><text x="270" y="34" text-anchor="middle" font-family="Fredoka,Trebuchet MS,sans-serif" font-size="19" font-weight="700" fill="${INK}">${t('col_conf')}</text><text x="440" y="34" text-anchor="middle" font-family="Fredoka,Trebuchet MS,sans-serif" font-size="19" font-weight="700" fill="${INK}">${t('col_heal')}</text>${rows}</svg>`;
   $$('.bot',st).forEach(b=>{kbBtn(b,t('med_l')+' '+String.fromCharCode(65+ +b.dataset.i));b.onclick=()=>test(+b.dataset.i,b)})}
  function mark(x,y,ok){return `<g transform="translate(${x} ${y})"><circle r="15" fill="${ok?'#2FA673':'#F26B4F'}" stroke="${INK}" stroke-width="2.5"/><path d="${ok?'M-7 0l5 5 9-10':'M-6 -6l12 12M6 -6l-12 12'}" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></g>`}
- function test(i,b){if(tested.has(i))return;tested.add(i);b.classList.remove('tapme');sfx('drip');const y=88+i*114,o=out[i],dc=$('#dc'+i),dh=$('#dh'+i);
+ function test(i,b){if(tested.has(i))return;tested.add(i);b.classList.remove('tapme');sfx('drip');const y=88+i*132,o=out[i],dc=$('#dc'+i),dh=$('#dh'+i);
   [dc,dh].forEach(d=>d.classList.add('flash'));
   later(()=>{const calmC=o!=='weak',hurtH=o==='strong';
    if(calmC)$$('circle',dc).slice(1).forEach(c=>{c.setAttribute('fill','#C9D6D3');c.setAttribute('r','4')});
