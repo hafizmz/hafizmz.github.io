@@ -246,7 +246,7 @@ const INK='#123C43';
 const KEY='beamon-cellsquad-v1';
 let S={lang:'en',mode:'k',sound:true,stars:{},badgeSeen:false,players:[],cur:null};
 /* ---------- anonymous play data: age, chosen picture, room, stars, time. Names are never sent. Nothing is sent while sheetUrl is empty. ---------- */
-const DATA={sheetUrl:'',version:'ccq-2026-11-13'};
+const DATA={sheetUrl:'https://script.google.com/macros/s/AKfycbzSOroUwGgpNunHY9bSv7fgakLaYCHShR2h5VooSujUdQS20W8Je2Y54kQvlhAztl8i/exec',version:'ccq-2026-11-13'};
 const rid=n=>{const a='abcdefghjkmnpqrstuvwxyz23456789';let r='';for(let i=0;i<n;i++)r+=a[Math.floor(Math.random()*a.length)];return r};
 const SESSION=rid(8);let DEVICE_ID='';try{DEVICE_ID=localStorage.getItem('ccq-dev')||'';if(!DEVICE_ID){DEVICE_ID=rid(10);localStorage.setItem('ccq-dev',DEVICE_ID)}}catch(e){DEVICE_ID='nostore'}
 function deviceType(){const w=Math.min(screen.width||0,screen.height||0),touch=(navigator.maxTouchPoints||0)>0;if(/Mobi|Android.+Mobile|iPhone/i.test(navigator.userAgent)||(touch&&w<600))return 'phone';if(touch&&w<1100)return 'tablet';return 'computer'}
