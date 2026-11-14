@@ -1691,7 +1691,7 @@ const HPROF={"p": [[0, 114], [150, 148], [250, 198], [350, 242], [450, 271], [55
   pk.querySelector(".pv").disabled=i<=0;pk.querySelector(".nx").disabled=i<0||i>=list.length-1;
   pk.querySelector(".pv").style.opacity=i<=0?.35:1;pk.querySelector(".nx").style.opacity=(i<0||i>=list.length-1)?.35:1;
   pk.classList.add("open");
-  if(!keepView){const r=$("#tm").getBoundingClientRect(),k0=mpp();let w=Math.min(vb.w,1100);const h=vb.h*w/vb.w;
+  if(!keepView){const r=$("#tm").getBoundingClientRect(),k0=mpp();let w=Math.min(vb.w,650);const h=vb.h*w/vb.w;
    // put the stop in the open part of the map, above the card
    const cardH=(pk.offsetHeight||150)+16,free=r.height-cardH,yFrac=r.height?Math.max(.2,(free*.5)/r.height):.35;
    vb={x:s.mx-w/2,y:s.my-h*yFrac,w,h}}
