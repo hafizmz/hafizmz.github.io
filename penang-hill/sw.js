@@ -1,6 +1,6 @@
 /* Penang Hill Trail Guide: offline service worker.
    When you change any file, bump VERSION so phones fetch the update. */
-const VERSION = "beta-2.6.1";
+const VERSION = "beta-2.6.2";
 const CACHE = "phtg-" + VERSION;
 const FILES = [
   "./",
@@ -15,7 +15,7 @@ const FILES = [
   "./icons/icon-maskable-512.png",
   "./icons/apple-touch-icon.png",
   "./icons/favicon-32.png"
-] .concat(["0697_t.jpg", "0699_t.jpg", "0701_t.jpg", "0702_t.jpg", "0703_t.jpg", "0708_t.jpg", "0713_t.jpg", "0716_t.jpg", "0750_t.jpg", "0751_t.jpg", "0754_t.jpg", "0763_t.jpg", "0777_t.jpg", "1591_t.jpg", "1601_t.jpg", "1628_t.jpg", "1663_t.jpg", "2017_t.jpg", "2023_t.jpg", "2024_t.jpg", "2027_t.jpg", "3124_t.jpg", "3125_t.jpg", "3128_t.jpg", "3140_t.jpg", "3142_t.jpg", "3170_t.jpg", "3184_t.jpg", "6036_t.jpg", "6046_t.jpg", "6049_t.jpg", "6058_t.jpg", "6060_t.jpg", "6065_t.jpg", "6079_t.jpg", "8309_t.jpg", "8338_t.jpg", "9158_t.jpg", "9162_t.jpg", "9165_t.jpg", "9168_t.jpg", "DCA8C602_t.jpg", "DECKW_t.jpg"].map(f => "./photos/" + f)); // trail photo thumbnails, so the strips work offline
+] .concat(["0697_t.jpg", "0699_t.jpg", "0701_t.jpg", "0702_t.jpg", "0703_t.jpg", "0708_t.jpg", "0713_t.jpg", "0716_t.jpg", "0750_t.jpg", "0751_t.jpg", "0754_t.jpg", "0763_t.jpg", "0777_t.jpg", "1591_t.jpg", "1601_t.jpg", "1628_t.jpg", "1663_t.jpg", "2017_t.jpg", "2023_t.jpg", "2024_t.jpg", "2027_t.jpg", "3124_t.jpg", "3125_t.jpg", "3128_t.jpg", "3140_t.jpg", "3142_t.jpg", "3170_t.jpg", "3184_t.jpg", "6036_t.jpg", "6046_t.jpg", "6049_t.jpg", "6058_t.jpg", "6060_t.jpg", "6065_t.jpg", "6079_t.jpg", "8309_t.jpg", "8338_t.jpg", "9158_t.jpg", "9162_t.jpg", "9165_t.jpg", "9168_t.jpg", "DCA8C602_t.jpg", "DECKW_t.jpg", "HEXB_t.jpg", "OWLSW_t.jpg"].map(f => "./photos/" + f)); // trail photo thumbnails, so the strips work offline
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
